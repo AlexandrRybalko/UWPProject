@@ -1,0 +1,48 @@
+﻿<Page
+    x:Class="UWPProject.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:camera="using:UWPProject.Models"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <RelativePanel>
+        <StackPanel RelativePanel.AlignRightWithPanel="True" Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <NavigationView Name="Navigation" PaneDisplayMode="Top">
+                    <NavigationView.MenuItems>
+                        <NavigationViewItem x:Name="Random" />
+                        <NavigationViewItem x:Name="TopRated" />
+                        <NavigationViewItem x:Name="Recent" />
+                        <NavigationViewItem x:Name="Favourites" />
+                    </NavigationView.MenuItems>
+                </NavigationView>
+                <ComboBox Name="Language">
+                    <ComboBoxItem Name="English"></ComboBoxItem>
+                    <ComboBoxItem Name="Russian"></ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+            
+            <GridView ItemsSource="{x:Bind Cameras.Cameras}">
+                <GridView.ItemTemplate>
+                    <DataTemplate x:Name="ImageOverlayDataTemplate" x:DataType="camera:Camera">
+                        <Grid Height="180" Width="320">
+                            <Image Source="Placeholder.png" Stretch="UniformToFill"/>
+                            <StackPanel Orientation="Vertical" Height="60" VerticalAlignment="Bottom" Background="{ThemeResource SystemBaseLowColor}" Padding="12">
+                                <TextBlock Text="{x:Bind Country, Mode=OneWay}"/>
+                                <TextBlock Text="{x:Bind City, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid MaximumRowsOrColumns="4" Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+            </GridView>
+        </StackPanel>
+    </RelativePanel>
+</Page>
