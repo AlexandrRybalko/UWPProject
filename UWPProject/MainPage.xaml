@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <RelativePanel>
+    <RelativePanel Loaded="MainPageLoaded">
         <StackPanel RelativePanel.AlignRightWithPanel="True" Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
                 <NavigationView Name="Navigation" PaneDisplayMode="Top">
@@ -19,10 +19,15 @@
                         <NavigationViewItem x:Name="Favourites" />
                     </NavigationView.MenuItems>
                 </NavigationView>
-                <ComboBox Name="Language">
-                    <ComboBoxItem Name="English"></ComboBoxItem>
-                    <ComboBoxItem Name="Russian"></ComboBoxItem>
-                </ComboBox>
+                <DropDownButton x:Name="ChangeLanguage">
+                    <TextBlock x:Name="Language"></TextBlock>
+                    <DropDownButton.Flyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Name="English"></MenuFlyoutItem>
+                            <MenuFlyoutItem Name="Russian"></MenuFlyoutItem>
+                        </MenuFlyout>
+                    </DropDownButton.Flyout>
+                </DropDownButton>
             </StackPanel>
             
             <GridView ItemsSource="{x:Bind Cameras.Cameras}">

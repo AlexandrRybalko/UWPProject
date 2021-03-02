@@ -31,20 +31,42 @@ namespace UWPProject
         {
             this.InitializeComponent();
             Cameras = new CameraViewModel();
-            this.SetLanguage("Ru-ru");
+            this.SetEnglishLanguage(null, null);            
         }
 
-        private void SetLanguage(string language, object e = null)
+        private void MainPageLoaded(object sender, RoutedEventArgs e)
         {
-            this._resourceLoader = ResourceLoader.GetForCurrentView(language);
+            var setEnglish = new StandardUICommand(StandardUICommandKind.None);
+            setEnglish.ExecuteRequested += SetEnglishLanguage;
+            this.English.Command = setEnglish;
+
+            var setRussian = new StandardUICommand(StandardUICommandKind.None);
+            setRussian.ExecuteRequested += SetRussianLanguage;
+            this.Russian.Command = setRussian;
+        }
+
+        private void SetEnglishLanguage(XamlUICommand sender, ExecuteRequestedEventArgs args)
+        {
+            this._resourceLoader = ResourceLoader.GetForCurrentView("En-en");
             this.Random.Content = _resourceLoader.GetString("Random");
             this.TopRated.Content = _resourceLoader.GetString("TopRated");
             this.Recent.Content = _resourceLoader.GetString("Recent");
             this.Favourites.Content = _resourceLoader.GetString("Favourites");
-            this.Language.Header = _resourceLoader.GetString("Language");
-            this.Language.SelectedIndex = 0;
-            this.Russian.Content = _resourceLoader.GetString("Russian");
-            this.English.Content = _resourceLoader.GetString("English");
+            this.Language.Text = _resourceLoader.GetString("Language");
+            this.Russian.Text = _resourceLoader.GetString("Russian");
+            this.English.Text = _resourceLoader.GetString("English");
+        }
+
+        private void SetRussianLanguage(XamlUICommand sender, ExecuteRequestedEventArgs args)
+        {
+            this._resourceLoader = ResourceLoader.GetForCurrentView("Ru-ru");
+            this.Random.Content = _resourceLoader.GetString("Random");
+            this.TopRated.Content = _resourceLoader.GetString("TopRated");
+            this.Recent.Content = _resourceLoader.GetString("Recent");
+            this.Favourites.Content = _resourceLoader.GetString("Favourites");
+            this.Language.Text = _resourceLoader.GetString("Language");
+            this.Russian.Text = _resourceLoader.GetString("Russian");
+            this.English.Text = _resourceLoader.GetString("English");
         }
     }
 }
