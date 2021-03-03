@@ -25,12 +25,12 @@ namespace UWPProject
     public sealed partial class MainPage : Page
     {
         private ResourceLoader _resourceLoader;
-        public CameraViewModel Cameras { get; set; }
+        public CamerasListViewModel Cameras { get; set; }
 
         public MainPage()
         {
             this.InitializeComponent();
-            Cameras = new CameraViewModel();
+            Cameras = new CamerasListViewModel();
             this.SetEnglishLanguage(null, null);            
         }
 
@@ -43,6 +43,8 @@ namespace UWPProject
             var setRussian = new StandardUICommand(StandardUICommandKind.None);
             setRussian.ExecuteRequested += SetRussianLanguage;
             this.Russian.Command = setRussian;
+
+            this.GridView.SelectionChanged += NavigateToCameraPage;
         }
 
         private void SetEnglishLanguage(XamlUICommand sender, ExecuteRequestedEventArgs args)
@@ -67,6 +69,14 @@ namespace UWPProject
             this.Language.Text = _resourceLoader.GetString("Language");
             this.Russian.Text = _resourceLoader.GetString("Russian");
             this.English.Text = _resourceLoader.GetString("English");
+        }
+
+        private void NavigateToCameraPage(object sender, RoutedEventArgs e)
+        {
+            var camera = this.GridView.SelectedItem;
+            var t = this.GridView.SelectedItem.GetType();
+            int id = (int)t.GetProperty("Id").GetValue(camera);
+            this.Frame.Navigate(typeof(CameraPage), id);
         }
     }
 }

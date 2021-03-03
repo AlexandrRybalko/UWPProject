@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace UWPProject.Models
 {
-    public class Camera
+    public class CameraModel
     {
+        public int Id { get; set; }
         public string Country { get; set; }
         public string City { get; set; }
         public string IPAddress { get; set; }

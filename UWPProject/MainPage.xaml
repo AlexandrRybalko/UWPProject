@@ -8,9 +8,13 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <RelativePanel Loaded="MainPageLoaded">
-        <StackPanel RelativePanel.AlignRightWithPanel="True" Orientation="Vertical">
-            <StackPanel Orientation="Horizontal">
+    <Grid Loaded="MainPageLoaded">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
                 <NavigationView Name="Navigation" PaneDisplayMode="Top">
                     <NavigationView.MenuItems>
                         <NavigationViewItem x:Name="Random" />
@@ -29,13 +33,14 @@
                     </DropDownButton.Flyout>
                 </DropDownButton>
             </StackPanel>
-            
-            <GridView ItemsSource="{x:Bind Cameras.Cameras}">
+
+            <GridView Grid.Row="1" x:Name="GridView" ItemsSource="{x:Bind Cameras.Cameras}">
                 <GridView.ItemTemplate>
-                    <DataTemplate x:Name="ImageOverlayDataTemplate" x:DataType="camera:Camera">
+                    <DataTemplate x:Name="ImageOverlayDataTemplate" x:DataType="camera:CameraModel">
                         <Grid Height="180" Width="320">
                             <Image Source="Placeholder.png" Stretch="UniformToFill"/>
                             <StackPanel Orientation="Vertical" Height="60" VerticalAlignment="Bottom" Background="{ThemeResource SystemBaseLowColor}" Padding="12">
+                                <TextBlock Visibility="Collapsed" Text="{x:Bind Id, Mode=OneWay}"></TextBlock>
                                 <TextBlock Text="{x:Bind Country, Mode=OneWay}"/>
                                 <TextBlock Text="{x:Bind City, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
                             </StackPanel>
@@ -48,6 +53,6 @@
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
             </GridView>
-        </StackPanel>
-    </RelativePanel>
+        </Grid>
+    </Grid>
 </Page>

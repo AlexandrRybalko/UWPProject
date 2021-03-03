@@ -1,46 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using UWPProject.Models;
 
 namespace UWPProject.ViewModels
 {
-    public class CameraViewModel : NotificationBase<Camera>
+    public class CameraViewModel
     {
-		private ObservableCollection<Camera> _cameras = new ObservableCollection<Camera>();
+        private CameraModel _camera;
 
-		public ObservableCollection<Camera> Cameras
+        public CameraModel Camera {
+            get
+            {
+                return this._camera;
+            } 
+        }
+
+        public int Id
+        {
+            get => _camera.Id;
+        }
+
+        public string City
+        {
+            get => _camera.City;
+        }
+
+        public string Country
+        {
+            get => _camera.Country;
+        }
+
+        public CameraViewModel(int id)
+        {
+            _camera = new CameraModel { Id =  id, Country = "USA", City = "New-York" };
+        }
+
+        public string ToStringProperty
         {
             get
             {
-				return this._cameras;
+                return $"{_camera.City}, {_camera.Country}";
             }
         }
-
-		public CameraViewModel()
-		{
-			_cameras.Add(new Camera { Country = "USA", City = "New-York" });
-			_cameras.Add(new Camera { Country = "USA", City = "New-York" });
-			_cameras.Add(new Camera { Country = "USA", City = "New-York" });
-			_cameras.Add(new Camera { Country = "USA", City = "New-York" });
-			_cameras.Add(new Camera { Country = "USA", City = "New-York" });
-			_cameras.Add(new Camera { Country = "USA", City = "New-York" });
-			_cameras.Add(new Camera { Country = "USA", City = "New-York" });
-			_cameras.Add(new Camera { Country = "USA", City = "New-York" });
-			_cameras.Add(new Camera { Country = "USA", City = "New-York" });
-			_cameras.Add(new Camera { Country = "USA", City = "New-York" });
-			_cameras.Add(new Camera { Country = "USA", City = "New-York" });
-			_cameras.Add(new Camera { Country = "USA", City = "New-York" });
-			_cameras.Add(new Camera { Country = "USA", City = "New-York" });
-			_cameras.Add(new Camera { Country = "USA", City = "New-York" });
-			_cameras.Add(new Camera { Country = "USA", City = "New-York" });
-			_cameras.Add(new Camera { Country = "USA", City = "New-York" });
-			_cameras.Add(new Camera { Country = "USA", City = "New-York" });
-			_cameras.Add(new Camera { Country = "USA", City = "New-York" });
-		}
-	}
+    }
 }
