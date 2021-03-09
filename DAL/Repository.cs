@@ -54,7 +54,7 @@ namespace DAL
 
         public void AddRange(List<Camera> cameras)
         {
-            foreach(var camera in cameras)
+            foreach (var camera in cameras)
             {
                 AddCamera(camera);
             }
@@ -90,6 +90,34 @@ namespace DAL
             }
 
             return entries;
+        }
+
+        public Camera GetCamera(int id)
+        {
+            Camera entity = new Camera();
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Cameras.db");
+            using (SqliteConnection db =
+               new SqliteConnection($"Filename={dbpath}"))
+            {
+                db.Open();
+
+                SqliteCommand selectCommand = new SqliteCommand
+                    ($"SELECT * from Cameras where Id={id}", db);
+
+                SqliteDataReader query = selectCommand.ExecuteReader();
+
+                if (query.Read())
+                {
+                    entity.Id = query.GetInt32(0);
+                    entity.IpAddress = query.GetString(1);
+                    entity.Country = query.GetString(2);
+                    entity.City = query.GetString(3);
+                }
+
+                db.Close();
+            }
+
+            return entity;
         }
     }
 }

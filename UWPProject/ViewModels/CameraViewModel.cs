@@ -6,16 +6,28 @@ using System.Threading.Tasks;
 using UWPProject.Models;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using DAL;
+using AutoMapper;
 
 namespace UWPProject.ViewModels
 {
     public class CameraViewModel
     {
+        private Repository _repository = new Repository();
+        private IMapper _mapper;
         private CameraModel _cameraModel;
 
         public CameraViewModel(int id)
         {
-            _cameraModel = new CameraModel { Country = "USA", City = "New-York" };
+            var mapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Camera, CameraModel>();
+                cfg.CreateMap<Camera, CameraModel>().ReverseMap();
+            });
+            _mapper = new Mapper(mapperConfig);
+
+            var camera = _repository.GetCamera(id);
+            _cameraModel = _mapper.Map<CameraModel>(camera);
         }
 
         public int Id
