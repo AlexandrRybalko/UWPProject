@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAL;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -32,6 +33,8 @@ namespace UWPProject
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            Repository.InitializeDatabase();
         }
 
         /// <summary>

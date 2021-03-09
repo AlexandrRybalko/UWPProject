@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UWPProject.DAL
+namespace ClassLibrary1
 {
-    public class ApplicationContext
+    public class Class1
     {
     }
 }

@@ -24,7 +24,7 @@
                     </NavigationView.MenuItems>
                 </NavigationView>
                 <DropDownButton x:Name="ChangeLanguage">
-                    <TextBlock x:Name="Language"></TextBlock>
+                    <TextBlock x:Name="LanguageTextBlock"></TextBlock>
                     <DropDownButton.Flyout>
                         <MenuFlyout>
                             <MenuFlyoutItem Name="English"></MenuFlyoutItem>

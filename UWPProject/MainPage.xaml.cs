@@ -54,7 +54,7 @@ namespace UWPProject
             this.TopRated.Content = _resourceLoader.GetString("TopRated");
             this.Recent.Content = _resourceLoader.GetString("Recent");
             this.Favourites.Content = _resourceLoader.GetString("Favourites");
-            this.Language.Text = _resourceLoader.GetString("Language");
+            this.LanguageTextBlock.Text = _resourceLoader.GetString("Language");
             this.Russian.Text = _resourceLoader.GetString("Russian");
             this.English.Text = _resourceLoader.GetString("English");
         }
@@ -66,7 +66,7 @@ namespace UWPProject
             this.TopRated.Content = _resourceLoader.GetString("TopRated");
             this.Recent.Content = _resourceLoader.GetString("Recent");
             this.Favourites.Content = _resourceLoader.GetString("Favourites");
-            this.Language.Text = _resourceLoader.GetString("Language");
+            this.LanguageTextBlock.Text = _resourceLoader.GetString("Language");
             this.Russian.Text = _resourceLoader.GetString("Russian");
             this.English.Text = _resourceLoader.GetString("English");
         }
@@ -74,8 +74,8 @@ namespace UWPProject
         private void NavigateToCameraPage(object sender, RoutedEventArgs e)
         {
             var camera = this.GridView.SelectedItem;
-            var t = this.GridView.SelectedItem.GetType();
-            int id = (int)t.GetProperty("Id").GetValue(camera);
+            var type = this.GridView.SelectedItem.GetType();
+            int id = (int)type.GetProperty("Id").GetValue(camera);
             this.Frame.Navigate(typeof(CameraPage), id);
         }
     }

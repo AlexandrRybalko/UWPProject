@@ -4,45 +4,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UWPProject.Models;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace UWPProject.ViewModels
 {
     public class CameraViewModel
     {
-        private CameraModel _camera;
+        private CameraModel _cameraModel;
 
-        public CameraModel Camera {
-            get
-            {
-                return this._camera;
-            } 
+        public CameraViewModel(int id)
+        {
+            _cameraModel = new CameraModel { Country = "USA", City = "New-York" };
         }
 
         public int Id
         {
-            get => _camera.Id;
+            get => _cameraModel.Id;
         }
 
         public string City
         {
-            get => _camera.City;
+            get => _cameraModel.City;
         }
 
         public string Country
         {
-            get => _camera.Country;
-        }
-
-        public CameraViewModel(int id)
-        {
-            _camera = new CameraModel { Id =  id, Country = "USA", City = "New-York" };
+            get => _cameraModel.Country;
         }
 
         public string ToStringProperty
         {
             get
             {
-                return $"{_camera.City}, {_camera.Country}";
+                return $"{_cameraModel.City}, {_cameraModel.Country}";
             }
         }
     }

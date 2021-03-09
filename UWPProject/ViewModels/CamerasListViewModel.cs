@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AutoMapper;
+using DAL;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,7 +13,9 @@ namespace UWPProject.ViewModels
 {
     public class CamerasListViewModel
     {
+		private Repository _repository = new Repository();
 		private ObservableCollection<CameraModel> _cameras = new ObservableCollection<CameraModel>();
+		private IMapper _mapper;
 
 		public ObservableCollection<CameraModel> Cameras
         {
@@ -24,24 +28,15 @@ namespace UWPProject.ViewModels
 
 		public CamerasListViewModel()
 		{
-			_cameras.Add(new CameraModel { Id = 1, Country = "USA", City = "New-York" });
-			_cameras.Add(new CameraModel { Id = 2, Country = "USA", City = "New-York" });
-			_cameras.Add(new CameraModel { Id = 3, Country = "USA", City = "New-York" });
-			_cameras.Add(new CameraModel { Id = 4, Country = "USA", City = "New-York" });
-			_cameras.Add(new CameraModel { Id = 5, Country = "USA", City = "New-York" });
-			_cameras.Add(new CameraModel { Id = 6, Country = "USA", City = "New-York" });
-			_cameras.Add(new CameraModel { Id = 7, Country = "USA", City = "New-York" });
-			_cameras.Add(new CameraModel { Id = 8, Country = "USA", City = "New-York" });
-			_cameras.Add(new CameraModel { Country = "USA", City = "New-York" });
-			_cameras.Add(new CameraModel { Country = "USA", City = "New-York" });
-			_cameras.Add(new CameraModel { Country = "USA", City = "New-York" });
-			_cameras.Add(new CameraModel { Country = "USA", City = "New-York" });
-			_cameras.Add(new CameraModel { Country = "USA", City = "New-York" });
-			_cameras.Add(new CameraModel { Country = "USA", City = "New-York" });
-			_cameras.Add(new CameraModel { Country = "USA", City = "New-York" });
-			_cameras.Add(new CameraModel { Country = "USA", City = "New-York" });
-			_cameras.Add(new CameraModel { Country = "USA", City = "New-York" });
-			_cameras.Add(new CameraModel { Country = "USA", City = "New-York" });
+			var mapperConfig = new MapperConfiguration(cfg =>
+			{
+				cfg.CreateMap<Camera, CameraModel>();
+				cfg.CreateMap<Camera, CameraModel>().ReverseMap();
+			});
+			_mapper = new Mapper(mapperConfig);
+
+			var cameras = _repository.GetCameras();
+			_cameras = _mapper.Map<ObservableCollection<CameraModel>>(cameras);
 		}
 	}
 }
