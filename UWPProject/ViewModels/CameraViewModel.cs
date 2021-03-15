@@ -35,6 +35,11 @@ namespace UWPProject.ViewModels
             get => _cameraModel.Id;
         }
 
+        public string IpAddress
+        {
+            get => _cameraModel.IpAddress;
+        }
+
         public string City
         {
             get => _cameraModel.City;
@@ -43,6 +48,11 @@ namespace UWPProject.ViewModels
         public string Country
         {
             get => _cameraModel.Country;
+        }
+
+        public string ImageType
+        {
+            get => _cameraModel.ImageType;
         }
 
         public string ToStringProperty

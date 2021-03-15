@@ -10,10 +10,10 @@ namespace UWPProject.Models
 {
     public class CameraModel : INotifyPropertyChanged
     {
-        private int _id;
         private string _ipAddress;
         private string _country;
         private string _city;
+        private string _imageType;
         public int Id { get; set; }
         public string IpAddress
         {
@@ -39,6 +39,16 @@ namespace UWPProject.Models
             set
             {
                 _city = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string ImageType
+        {
+            get => _imageType;
+            set
+            {
+                _imageType = value;
                 this.OnPropertyChanged();
             }
         }

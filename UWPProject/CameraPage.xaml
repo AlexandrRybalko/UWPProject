@@ -22,6 +22,6 @@
             <Button Content="&#x2190;" Grid.Column="1" x:Name="BackButton"
                     ToolTipService.ToolTip="Back" IsEnabled="True"/>
         </Grid>
-        <Image Grid.Row="1" Source="Placeholder.png" Stretch="UniformToFill"></Image>
+        <Image Margin="0,40,0,0" Height="560" x:Name="CameraImage" Grid.Row="1"></Image>
     </Grid>
 </Page>

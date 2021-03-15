@@ -11,9 +11,8 @@ namespace DAL
     {
         public static void InitializeDatabase()
         {
-            //await ApplicationData.Current.LocalFolder.CreateFileAsync("sqliteSample.db", CreationCollisionOption.OpenIfExists);
-            var a = ApplicationData.Current.LocalFolder.CreateFileAsync("Cameras.db", CreationCollisionOption.OpenIfExists);
-            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Cameras.db");
+            var a = ApplicationData.Current.LocalFolder.CreateFileAsync("CamerasDB.db", CreationCollisionOption.OpenIfExists);
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "CamerasDB.db");
             using (SqliteConnection db =
                new SqliteConnection($"Filename={dbpath}"))
             {
@@ -21,7 +20,7 @@ namespace DAL
 
                 String tableCommand = "CREATE TABLE IF NOT " +
                     "EXISTS Cameras (Id INTEGER PRIMARY KEY, " +
-                    "Ip_Address NVARCHAR(2048) NOT NULL, Country NVARCHAR(2048) NOT NULL, City NVARCHAR(2048) NOT NULL)";
+                    "Ip_Address NVARCHAR(2048) NOT NULL, Country NVARCHAR(2048) NOT NULL, City NVARCHAR(2048) NOT NULL, Image_Type NVARCHAR(2048) NOT NULL)";
 
                 SqliteCommand createTable = new SqliteCommand(tableCommand, db);
 
@@ -31,7 +30,7 @@ namespace DAL
 
         public void AddCamera(Camera camera)
         {
-            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Cameras.db");
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "CamerasDB.db");
             using (SqliteConnection db =
               new SqliteConnection($"Filename={dbpath}"))
             {
@@ -40,11 +39,11 @@ namespace DAL
                 SqliteCommand insertCommand = new SqliteCommand();
                 insertCommand.Connection = db;
 
-                // Use parameterized query to prevent SQL injection attacks
-                insertCommand.CommandText = "INSERT INTO Cameras VALUES (NULL, @Ip_Address, @Country, @City);";
+                insertCommand.CommandText = "INSERT INTO Cameras VALUES (NULL, @Ip_Address, @Country, @City, @Image_Type);";
                 insertCommand.Parameters.AddWithValue("@Ip_Address", camera.IpAddress);
                 insertCommand.Parameters.AddWithValue("@Country", camera.Country);
                 insertCommand.Parameters.AddWithValue("@City", camera.City);
+                insertCommand.Parameters.AddWithValue("@Image_Type", camera.ImageType);
 
                 insertCommand.ExecuteReader();
 
@@ -64,7 +63,7 @@ namespace DAL
         {
             ObservableCollection<Camera> entries = new ObservableCollection<Camera>();
 
-            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Cameras.db");
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "CamerasDB.db");
             using (SqliteConnection db =
                new SqliteConnection($"Filename={dbpath}"))
             {
@@ -82,6 +81,7 @@ namespace DAL
                     entity.IpAddress = query.GetString(1);
                     entity.Country = query.GetString(2);
                     entity.City = query.GetString(3);
+                    entity.ImageType = query.GetString(4);
 
                     entries.Add(entity);
                 }
@@ -95,7 +95,7 @@ namespace DAL
         public Camera GetCamera(int id)
         {
             Camera entity = new Camera();
-            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Cameras.db");
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "CamerasDB.db");
             using (SqliteConnection db =
                new SqliteConnection($"Filename={dbpath}"))
             {
@@ -112,6 +112,7 @@ namespace DAL
                     entity.IpAddress = query.GetString(1);
                     entity.Country = query.GetString(2);
                     entity.City = query.GetString(3);
+                    entity.ImageType = query.GetString(4);
                 }
 
                 db.Close();
