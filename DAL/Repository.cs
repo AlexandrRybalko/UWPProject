@@ -28,7 +28,7 @@ namespace DAL
             }
         }
 
-        public void AddCamera(Camera camera)
+        public void AddCamera(CameraEntity camera)
         {
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "CamerasDB.db");
             using (SqliteConnection db =
@@ -51,7 +51,7 @@ namespace DAL
             }
         }
 
-        public void AddRange(List<Camera> cameras)
+        public void AddRange(List<CameraEntity> cameras)
         {
             foreach (var camera in cameras)
             {
@@ -59,9 +59,9 @@ namespace DAL
             }
         }
 
-        public ObservableCollection<Camera> GetCameras()
+        public ObservableCollection<CameraEntity> GetCameras()
         {
-            ObservableCollection<Camera> entries = new ObservableCollection<Camera>();
+            ObservableCollection<CameraEntity> entries = new ObservableCollection<CameraEntity>();
 
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "CamerasDB.db");
             using (SqliteConnection db =
@@ -76,7 +76,7 @@ namespace DAL
 
                 while (query.Read())
                 {
-                    Camera entity = new Camera();
+                    CameraEntity entity = new CameraEntity();
                     entity.Id = query.GetInt32(0);
                     entity.IpAddress = query.GetString(1);
                     entity.Country = query.GetString(2);
@@ -92,9 +92,9 @@ namespace DAL
             return entries;
         }
 
-        public Camera GetCamera(int id)
+        public CameraEntity GetCamera(int id)
         {
-            Camera entity = new Camera();
+            CameraEntity entity = new CameraEntity();
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "CamerasDB.db");
             using (SqliteConnection db =
                new SqliteConnection($"Filename={dbpath}"))

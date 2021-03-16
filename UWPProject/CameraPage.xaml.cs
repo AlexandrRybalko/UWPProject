@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using UWPProject.Models;
 using UWPProject.ViewModels;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
@@ -18,9 +19,9 @@ namespace UWPProject
 {
     public partial class CameraPage : Page
     {
-        public CameraViewModel Camera { get; set; }
-        private DispatcherTimer timer;
-        private MjpegDecoder mjpegDecoder;
+        public CameraViewModel CameraViewModel { get; set; }
+        private DispatcherTimer _timer;
+        private MjpegDecoder _mjpegDecoder;
 
         public CameraPage()
         {
@@ -30,25 +31,26 @@ namespace UWPProject
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            int cameraId = (int)e.Parameter;
-            Camera = new CameraViewModel(cameraId);
+            Camera camera = e.Parameter as Camera;
+            CameraViewModel = new CameraViewModel(camera);
 
             var goBackCommand = new StandardUICommand(StandardUICommandKind.None);
             goBackCommand.ExecuteRequested += GoBack;
             this.BackButton.Command = goBackCommand;
 
-            if (Camera.ImageType.Equals("mjpg"))
+            if (CameraViewModel.ImageType.Equals("mjpg"))
             {
-                mjpegDecoder = new MjpegDecoder();
-                mjpegDecoder.FrameReady += mjpeg_FrameReady;
-                mjpegDecoder.ParseStream(new Uri(Camera.IpAddress));
+                _mjpegDecoder = new MjpegDecoder();
+                _mjpegDecoder.FrameReady += mjpeg_FrameReady;
+                _mjpegDecoder.ParseStream(new Uri(CameraViewModel.IpAddress));
             }
-            else if (Camera.ImageType.Equals("jpg"))
+            else if (CameraViewModel.ImageType.Equals("jpg"))
             {
-                timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(100);
-                timer.Tick += GetImage;
-                timer.Start();
+                _timer = new DispatcherTimer();
+                _timer.Interval = TimeSpan.FromMilliseconds(10);
+                _timer.Tick += GetImage;
+                _timer.Start();           
+            
             }
         }
 
@@ -69,9 +71,9 @@ namespace UWPProject
 
         private async void GetImage<EventArgs>(object sender, EventArgs e)
         {
-            timer.Stop();
+            _timer.Stop();
             HttpClient client = new HttpClient();
-            Uri requestUri = new Uri(Camera.IpAddress);
+            Uri requestUri = new Uri(CameraViewModel.IpAddress);
             HttpResponseMessage response = await client.GetAsync(requestUri);
             // A memory stream where write the image data
             InMemoryRandomAccessStream randomAccess = new InMemoryRandomAccessStream();
@@ -86,7 +88,7 @@ namespace UWPProject
             BitmapImage bm = new BitmapImage();
             await bm.SetSourceAsync(randomAccess);
             CameraImage.Source = bm;
-            timer.Start();
+            _timer.Start();
         }
 
         private void GoBack(XamlUICommand sender, ExecuteRequestedEventArgs args)

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DAL
 {
-    public class Camera
+    public class CameraEntity
     {
         public int Id { get; set; }
         public string IpAddress { get; set; }

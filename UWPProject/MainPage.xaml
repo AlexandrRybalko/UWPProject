@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:camera="using:UWPProject.Models"
+    xmlns:viewModels="using:UWPProject.ViewModels"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -34,9 +34,9 @@
                 </DropDownButton>
             </StackPanel>
 
-            <GridView Grid.Row="1" x:Name="GridView" ItemsSource="{x:Bind Cameras.Cameras}">
+            <GridView Grid.Row="1" x:Name="GridView" ItemsSource="{x:Bind CamerasViewModel.Cameras, Mode=OneWay}">
                 <GridView.ItemTemplate>
-                    <DataTemplate x:Name="ImageOverlayDataTemplate" x:DataType="camera:CameraModel">
+                    <DataTemplate x:Name="ImageOverlayDataTemplate" x:DataType="viewModels:CameraViewModel">
                         <Grid Height="180" Width="320">
                             <Image Source="Placeholder.png" Stretch="UniformToFill"/>
                             <StackPanel Orientation="Vertical" Height="60" VerticalAlignment="Bottom" Background="{ThemeResource SystemBaseLowColor}" Padding="12">

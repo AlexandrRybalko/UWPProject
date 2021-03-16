@@ -4,63 +4,51 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UWPProject.Models;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using DAL;
-using AutoMapper;
 
 namespace UWPProject.ViewModels
 {
-    public class CameraViewModel
+    public class CameraViewModel : NotificationBase<Camera>
     {
-        private Repository _repository = new Repository();
-        private IMapper _mapper;
-        private CameraModel _cameraModel;
+        public CameraViewModel(Camera camera = null) : base(camera) { }
 
         public CameraViewModel(int id)
         {
-            var mapperConfig = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<Camera, CameraModel>();
-                cfg.CreateMap<Camera, CameraModel>().ReverseMap();
-            });
-            _mapper = new Mapper(mapperConfig);
-
-            var camera = _repository.GetCamera(id);
-            _cameraModel = _mapper.Map<CameraModel>(camera);
+            var model = new CamerasModel();
+            var camera = model.GetById(id);
         }
 
         public int Id
         {
-            get => _cameraModel.Id;
+            get { return This.Id; }
         }
 
         public string IpAddress
         {
-            get => _cameraModel.IpAddress;
-        }
-
-        public string City
-        {
-            get => _cameraModel.City;
+            get { return This.IpAddress; }
+            set { SetProperty(This.IpAddress, value, () => This.IpAddress = value); }
         }
 
         public string Country
         {
-            get => _cameraModel.Country;
+            get { return This.Country; }
+            set { SetProperty(This.Country, value, () => This.Country = value); }
         }
 
+        public string City
+        {
+            get { return This.City; }
+            set { SetProperty(This.City, value, () => This.City = value); }
+        }
+        
         public string ImageType
         {
-            get => _cameraModel.ImageType;
+            get { return This.ImageType; }
+            set { SetProperty(This.ImageType, value, () => This.ImageType = value); }
         }
 
         public string ToStringProperty
         {
-            get
-            {
-                return $"{_cameraModel.City}, {_cameraModel.Country}";
-            }
+            get { return $"{this.Country}, {this.City}"; }
         }
     }
 }

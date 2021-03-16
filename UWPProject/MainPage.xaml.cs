@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using UWPProject.Models;
 using UWPProject.ViewModels;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
@@ -25,12 +26,12 @@ namespace UWPProject
     public sealed partial class MainPage : Page
     {
         private ResourceLoader _resourceLoader;
-        public CamerasListViewModel Cameras { get; set; }
+        public CamerasViewModel CamerasViewModel { get; set; }
 
         public MainPage()
         {
             this.InitializeComponent();
-            Cameras = new CamerasListViewModel();
+            CamerasViewModel = new CamerasViewModel();
             this.SetEnglishLanguage(null, null);            
         }
 
@@ -76,7 +77,8 @@ namespace UWPProject
             var camera = this.GridView.SelectedItem;
             var type = this.GridView.SelectedItem.GetType();
             int id = (int)type.GetProperty("Id").GetValue(camera);
-            this.Frame.Navigate(typeof(CameraPage), id);
+            Camera c = this.CamerasViewModel.GetById(id);
+            this.Frame.Navigate(typeof(CameraPage), c);
         }
     }
 }
