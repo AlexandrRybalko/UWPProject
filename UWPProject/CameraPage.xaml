@@ -20,12 +20,10 @@
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <TextBlock Margin="20, 0, 0, 0" VerticalAlignment="Center" Grid.Column="0" Text="{x:Bind CameraViewModel.ToStringProperty}"></TextBlock>
-            <Button Content="&#x2190;" Grid.Column="1" x:Name="BackButton"
-                    ToolTipService.ToolTip="Back" IsEnabled="True"/>
-        </Grid>
+            <Button Grid.Column="1" x:Name="BackButton" IsEnabled="True" ToolTipService.ToolTip="Back" Width="40" Height="40">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72B;"></FontIcon>
+            </Button>
+        </Grid>        
         <Image Margin="0,40,0,0" Height="560" x:Name="CameraImage" Grid.Row="1"></Image>
-        <StackPanel Margin="786,0,0,0" Grid.Row="2" Orientation="Horizontal">
-            <Button Height="50" Width="50" Content=""/>
-        </StackPanel>
     </Grid>
 </Page>

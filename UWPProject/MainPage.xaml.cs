@@ -45,6 +45,10 @@ namespace UWPProject
             setRussian.ExecuteRequested += SetRussianLanguage;
             this.Russian.Command = setRussian;
 
+            var addCamera = new StandardUICommand(StandardUICommandKind.None);
+            addCamera.ExecuteRequested += AddNewCamera;
+            this.Done.Command = addCamera;
+
             this.GridView.SelectionChanged += NavigateToCameraPage;
         }
 
@@ -72,6 +76,23 @@ namespace UWPProject
             this.English.Text = _resourceLoader.GetString("English");
         }
 
+        private void AddNewCamera(XamlUICommand sender, ExecuteRequestedEventArgs args)
+        {
+            if (!(string.IsNullOrEmpty(this.Country.Text) && string.IsNullOrEmpty(this.City.Text) &&
+                string.IsNullOrEmpty(this.IpAddress.Text) && string.IsNullOrEmpty(this.ImageType.SelectedItem.ToString())))
+            {
+                Camera camera = new Camera
+                {
+                    Country = this.Country.Text,
+                    City = this.City.Text,
+                    IpAddress = this.IpAddress.Text,
+                    ImageType = this.ImageType.SelectedItem.ToString()
+                };
+
+                this.CamerasViewModel.AddCamera(camera);
+            }
+        }
+
         private void NavigateToCameraPage(object sender, RoutedEventArgs e)
         {
             var camera = this.GridView.SelectedItem;
@@ -79,6 +100,11 @@ namespace UWPProject
             int id = (int)type.GetProperty("Id").GetValue(camera);
             Camera c = this.CamerasViewModel.GetById(id);
             this.Frame.Navigate(typeof(CameraPage), c);
+        }
+
+        private void HideFlyout(object sender, RoutedEventArgs e)
+        {
+            AddCameraFlyout.Hide();
         }
     }
 }

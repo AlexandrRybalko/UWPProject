@@ -35,11 +35,24 @@ namespace UWPProject.ViewModels
         public void AddCamera(Camera camera)
         {
             _model.AddCamera(camera);
+            UpdateCameras();
+
         }
 
         public Camera GetById(int id)
         {
             return _model.GetById(id);
+        }
+
+        private void UpdateCameras()
+        {
+            _cameras.Clear();
+
+            foreach (var camera in _model.GetAll())
+            {
+                var cameraViewModel = new CameraViewModel(camera);
+                _cameras.Add(cameraViewModel);
+            }
         }
     }
 }

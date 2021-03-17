@@ -11,8 +11,9 @@
     <Grid Loaded="MainPageLoaded">
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>                
+                <RowDefinition></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Orientation="Horizontal">
                 <NavigationView Name="Navigation" PaneDisplayMode="Top">
@@ -34,15 +35,15 @@
                 </DropDownButton>
             </StackPanel>
 
-            <GridView Grid.Row="1" x:Name="GridView" ItemsSource="{x:Bind CamerasViewModel.Cameras, Mode=OneWay}">
+            <GridView VerticalAlignment="Top" Height="620" Grid.Row="1" x:Name="GridView" ItemsSource="{x:Bind CamerasViewModel.Cameras, Mode=OneWay}">
                 <GridView.ItemTemplate>
                     <DataTemplate x:Name="ImageOverlayDataTemplate" x:DataType="viewModels:CameraViewModel">
                         <Grid Height="180" Width="320">
                             <Image Source="Placeholder.png" Stretch="UniformToFill"/>
                             <StackPanel Orientation="Vertical" Height="60" VerticalAlignment="Bottom" Background="{ThemeResource SystemBaseLowColor}" Padding="12">
                                 <TextBlock Visibility="Collapsed" Text="{x:Bind Id, Mode=OneWay}"></TextBlock>
-                                <TextBlock Text="{x:Bind Country, Mode=OneWay}"/>
-                                <TextBlock Text="{x:Bind City, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+                                <TextBlock Text="{x:Bind City, Mode=OneWay}"/>
+                                <TextBlock Text="{x:Bind Country, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
                             </StackPanel>
                         </Grid>
                     </DataTemplate>
@@ -53,6 +54,29 @@
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
             </GridView>
+
+            <CommandBar Grid.Row="2">
+                <AppBarButton AllowFocusOnInteraction="True" Name="AddCameraButton" Icon="Add">
+                    <AppBarButton.Flyout>
+                        <Flyout x:Name="AddCameraFlyout" Placement="Full">
+                            <RelativePanel x:Name="AddCameraForm">
+                                <StackPanel x:Name="Camera" Margin="20">
+                                    <TextBox IsReadOnly="False" Width="160" x:Name="Country" Header= "Country" Margin="0,24,0,0" HorizontalAlignment="Left" />
+                                    <TextBox Width="160" x:Name="City" Header="City" Margin="0,24,0,0" HorizontalAlignment="Left" />
+                                    <TextBox Width="400" x:Name="IpAddress" Header="Address" Margin="0,24,0,0" HorizontalAlignment="Left" />
+                                    <ComboBox Width="160" Header="ImageType" x:Name="ImageType" Margin="0,24,0,0" RelativePanel.RightOf="City">
+                                        <x:String>jpg</x:String>
+                                        <x:String>mjpg</x:String>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel x:Name="Save" Orientation="Horizontal" RelativePanel.Below="Camera">
+                                    <Button Click="HideFlyout" x:Name="Done" Content="Save" Margin="24" />
+                                </StackPanel>
+                            </RelativePanel>
+                        </Flyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
+            </CommandBar>
         </Grid>
     </Grid>
 </Page>

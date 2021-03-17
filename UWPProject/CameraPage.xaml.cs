@@ -49,22 +49,20 @@ namespace UWPProject
                 _timer = new DispatcherTimer();
                 _timer.Interval = TimeSpan.FromMilliseconds(10);
                 _timer.Tick += GetImage;
-                _timer.Start();           
-            
+                _timer.Start();            
             }
         }
 
         private async void mjpeg_FrameReady(object sender, FrameReadyEventArgs e)
         {
-            using (InMemoryRandomAccessStream ms = new InMemoryRandomAccessStream())
+            using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())
             {
-                await ms.WriteAsync(e.FrameBuffer);
-                ms.Seek(0);
+                await stream.WriteAsync(e.FrameBuffer);
+                stream.Seek(0);
 
                 var bmp = new BitmapImage();
-                await bmp.SetSourceAsync(ms);
+                await bmp.SetSourceAsync(stream);
 
-                //image is the Image control in XAML
                 CameraImage.Source = bmp;
             }
         }        
