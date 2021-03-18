@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddNewCameraTextBlock" xml:space="preserve">
+    <value>Add new camera</value>
+  </data>
   <data name="English" xml:space="preserve">
     <value>English</value>
   </data>
@@ -134,6 +137,9 @@
   </data>
   <data name="Russian" xml:space="preserve">
     <value>Русский</value>
+  </data>
+  <data name="SearchCamera" xml:space="preserve">
+    <value>Search camera</value>
   </data>
   <data name="TopRated" xml:space="preserve">
     <value>TopRated</value>

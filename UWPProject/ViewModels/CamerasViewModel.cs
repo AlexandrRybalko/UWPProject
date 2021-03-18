@@ -54,5 +54,22 @@ namespace UWPProject.ViewModels
                 _cameras.Add(cameraViewModel);
             }
         }
+
+        public void SearchCameras(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                UpdateCameras();
+                return;
+            }
+
+            _cameras.Clear();
+
+            foreach (var camera in _model.GetAll().Where(x => x.City.Contains(query) || x.Country.Contains(query)))
+            {
+                var cameraViewModel = new CameraViewModel(camera);
+                _cameras.Add(cameraViewModel);
+            }
+        }
     }
 }

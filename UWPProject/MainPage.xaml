@@ -24,7 +24,8 @@
                         <NavigationViewItem x:Name="Favourites" />
                     </NavigationView.MenuItems>
                 </NavigationView>
-                <DropDownButton x:Name="ChangeLanguage">
+                <SearchBox Name="SearchBox" MinWidth="250" QueryChanged="SearchBox_QueryChanged"></SearchBox>
+                <DropDownButton x:Name="ChangeLanguage" Margin="100,0,0,0">
                     <TextBlock x:Name="LanguageTextBlock"></TextBlock>
                     <DropDownButton.Flyout>
                         <MenuFlyout>
@@ -60,6 +61,7 @@
                     <AppBarButton.Flyout>
                         <Flyout x:Name="AddCameraFlyout" Placement="Full">
                             <RelativePanel x:Name="AddCameraForm">
+                                <TextBlock x:Name="AddNewCameraTextBlock"></TextBlock>
                                 <StackPanel x:Name="Camera" Margin="20">
                                     <TextBox IsReadOnly="False" Width="160" x:Name="Country" Header= "Country" Margin="0,24,0,0" HorizontalAlignment="Left" />
                                     <TextBox Width="160" x:Name="City" Header="City" Margin="0,24,0,0" HorizontalAlignment="Left" />

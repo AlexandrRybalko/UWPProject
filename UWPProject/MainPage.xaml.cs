@@ -62,6 +62,8 @@ namespace UWPProject
             this.LanguageTextBlock.Text = _resourceLoader.GetString("Language");
             this.Russian.Text = _resourceLoader.GetString("Russian");
             this.English.Text = _resourceLoader.GetString("English");
+            this.AddNewCameraTextBlock.Text = _resourceLoader.GetString("AddNewCameraTextBlock");
+            this.SearchBox.PlaceholderText = _resourceLoader.GetString("SearchCamera");
         }
 
         private void SetRussianLanguage(XamlUICommand sender, ExecuteRequestedEventArgs args)
@@ -74,6 +76,8 @@ namespace UWPProject
             this.LanguageTextBlock.Text = _resourceLoader.GetString("Language");
             this.Russian.Text = _resourceLoader.GetString("Russian");
             this.English.Text = _resourceLoader.GetString("English");
+            this.AddNewCameraTextBlock.Text = _resourceLoader.GetString("AddNewCameraTextBlock");
+            this.SearchBox.PlaceholderText = _resourceLoader.GetString("SearchCamera");
         }
 
         private void AddNewCamera(XamlUICommand sender, ExecuteRequestedEventArgs args)
@@ -105,6 +109,12 @@ namespace UWPProject
         private void HideFlyout(object sender, RoutedEventArgs e)
         {
             AddCameraFlyout.Hide();
+        }
+
+        private void SearchBox_QueryChanged(SearchBox sender, SearchBoxQueryChangedEventArgs args)
+        {
+            string query = args.QueryText;
+            CamerasViewModel.SearchCameras(query);
         }
     }
 }
