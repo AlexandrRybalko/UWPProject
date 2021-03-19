@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace DAL.Entities
+{
+    public class CategoryEntity
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+
+        public ICollection<CamerasCategories> CamerasCategories { get; set; }
+    }
+}

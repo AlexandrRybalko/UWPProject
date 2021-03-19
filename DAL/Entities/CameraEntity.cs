@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DAL
+namespace DAL.Entities
 {
     public class CameraEntity
     {
@@ -11,5 +11,7 @@ namespace DAL
         public string Country { get; set; }
         public string City { get; set; }
         public string ImageType { get; set; }
+
+        public ICollection<CamerasCategories> CamerasCategories { get; set; }
     }
 }

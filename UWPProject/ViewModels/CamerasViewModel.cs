@@ -36,7 +36,6 @@ namespace UWPProject.ViewModels
         {
             _model.AddCamera(camera);
             UpdateCameras();
-
         }
 
         public Camera GetById(int id)

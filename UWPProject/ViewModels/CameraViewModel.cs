@@ -11,12 +11,6 @@ namespace UWPProject.ViewModels
     {
         public CameraViewModel(Camera camera = null) : base(camera) { }
 
-        public CameraViewModel(int id)
-        {
-            var model = new CamerasModel();
-            var camera = model.GetById(id);
-        }
-
         public int Id
         {
             get { return This.Id; }
