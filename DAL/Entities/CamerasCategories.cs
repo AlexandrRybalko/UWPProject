@@ -11,5 +11,7 @@ namespace DAL.Entities
 
         public int CategoryId { get; set; }
         public CategoryEntity Category { get; set; }
+
+        public DateTime UpdatedTime { get; set; }
     }
 }

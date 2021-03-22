@@ -12,6 +12,7 @@ namespace DAL
     {
         public DbSet<CameraEntity> Cameras { get; set; }
         public DbSet<CategoryEntity> Categories { get; set; }
+        public DbSet<CamerasCategories> CamerasCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

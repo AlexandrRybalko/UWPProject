@@ -9,6 +9,7 @@ namespace UWPProject.ViewModels
 {
     public class CameraViewModel : NotificationBase<Camera>
     {
+        private readonly CamerasModel _model = new CamerasModel();
         public CameraViewModel(Camera camera = null) : base(camera) { }
 
         public int Id
@@ -43,6 +44,11 @@ namespace UWPProject.ViewModels
         public string ToStringProperty
         {
             get { return $"{this.Country}, {this.City}"; }
+        }
+
+        public void AddToCategory(string categoryName)
+        {
+            _model.AddToCategory(This.Id, categoryName);
         }
     }
 }

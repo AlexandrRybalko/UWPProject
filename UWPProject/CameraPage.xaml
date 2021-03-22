@@ -26,7 +26,7 @@
         </Grid>        
         <Image Margin="0,40,0,0" Height="560" x:Name="CameraImage" Grid.Row="1"></Image>
         <StackPanel Orientation="Horizontal" Grid.Row="2">
-            <Button Width="40" Height="40" Grid.Row="2" FontFamily="Segoe MDL2 Assets" Content="&#xEB51;"></Button>
+            <Button x:Name="AddToFavouritesButton" Width="40" Height="40" Grid.Row="2" FontFamily="Segoe MDL2 Assets" Content="&#xEB51;"></Button>
         </StackPanel>
     </Grid>
 </Page>

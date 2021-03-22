@@ -37,6 +37,8 @@ namespace UWPProject
 
         private void MainPageLoaded(object sender, RoutedEventArgs e)
         {
+            Navigation.SelectedItem = this.Random;
+
             var setEnglish = new StandardUICommand(StandardUICommandKind.None);
             setEnglish.ExecuteRequested += SetEnglishLanguage;
             this.English.Command = setEnglish;
@@ -50,13 +52,13 @@ namespace UWPProject
             this.Done.Command = addCamera;
 
             this.GridView.SelectionChanged += NavigateToCameraPage;
+            this.Navigation.SelectionChanged += Navigation_SelectionChanged;
         }
 
         private void SetEnglishLanguage(XamlUICommand sender, ExecuteRequestedEventArgs args)
         {
             this._resourceLoader = ResourceLoader.GetForCurrentView("En-en");
             this.Random.Content = _resourceLoader.GetString("Random");
-            this.TopRated.Content = _resourceLoader.GetString("TopRated");
             this.Recent.Content = _resourceLoader.GetString("Recent");
             this.Favourites.Content = _resourceLoader.GetString("Favourites");
             this.LanguageTextBlock.Text = _resourceLoader.GetString("Language");
@@ -70,7 +72,6 @@ namespace UWPProject
         {
             this._resourceLoader = ResourceLoader.GetForCurrentView("Ru-ru");
             this.Random.Content = _resourceLoader.GetString("Random");
-            this.TopRated.Content = _resourceLoader.GetString("TopRated");
             this.Recent.Content = _resourceLoader.GetString("Recent");
             this.Favourites.Content = _resourceLoader.GetString("Favourites");
             this.LanguageTextBlock.Text = _resourceLoader.GetString("Language");
@@ -111,10 +112,31 @@ namespace UWPProject
             AddCameraFlyout.Hide();
         }
 
+        private void Navigation_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        {
+            string categoryName = args.SelectedItemContainer.Content.ToString();
+            CamerasViewModel.GetByCategory(categoryName);
+        }
+
         private void SearchBox_QueryChanged(SearchBox sender, SearchBoxQueryChangedEventArgs args)
         {
-            string query = args.QueryText;
-            CamerasViewModel.SearchCameras(query);
+            var selectedItem = this.Navigation.SelectedItem as NavigationViewItem;
+
+            if (selectedItem.Content.Equals("Recent"))
+            {
+                CamerasViewModel.SelectedCategory = Enums.CameraCategory.Recent;
+                CamerasViewModel.SearchRecentCameras(args.QueryText);
+            }
+            else if (selectedItem.Content.Equals("Favourites"))
+            {
+                CamerasViewModel.SelectedCategory = Enums.CameraCategory.Favourite;
+                CamerasViewModel.SearchFavouriteCameras(args.QueryText);
+            }
+            else
+            {
+                CamerasViewModel.SelectedCategory = 0;
+                CamerasViewModel.SearchRandomCameras(args.QueryText);
+            }
         }
     }
 }

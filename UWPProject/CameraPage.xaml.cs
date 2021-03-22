@@ -38,6 +38,10 @@ namespace UWPProject
             goBackCommand.ExecuteRequested += GoBack;
             this.BackButton.Command = goBackCommand;
 
+            var addToFavouritesCommand = new StandardUICommand(StandardUICommandKind.None);
+            addToFavouritesCommand.ExecuteRequested += AddToFavourites;
+            this.AddToFavouritesButton.Command = addToFavouritesCommand;
+
             if (CameraViewModel.ImageType.Equals("mjpg"))
             {
                 _mjpegDecoder = new MjpegDecoder();
@@ -51,6 +55,8 @@ namespace UWPProject
                 _timer.Tick += GetImage;
                 _timer.Start();            
             }
+
+            this.AddToRecent();
         }
 
         private async void mjpeg_FrameReady(object sender, FrameReadyEventArgs e)
@@ -87,6 +93,16 @@ namespace UWPProject
             await bm.SetSourceAsync(randomAccess);
             CameraImage.Source = bm;
             _timer.Start();
+        }
+
+        private void AddToFavourites(XamlUICommand sender, ExecuteRequestedEventArgs args)
+        {
+            CameraViewModel.AddToCategory("Favourites");
+        }
+
+        private void AddToRecent()
+        {
+            CameraViewModel.AddToCategory("Recent");
         }
 
         private void GoBack(XamlUICommand sender, ExecuteRequestedEventArgs args)

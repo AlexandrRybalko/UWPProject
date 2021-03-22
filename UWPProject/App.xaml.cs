@@ -31,8 +31,6 @@ namespace UWPProject
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-
-            Repository.InitializeDatabase();
         }
 
         /// <summary>

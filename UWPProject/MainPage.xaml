@@ -19,7 +19,6 @@
                 <NavigationView Name="Navigation" PaneDisplayMode="Top">
                     <NavigationView.MenuItems>
                         <NavigationViewItem x:Name="Random" />
-                        <NavigationViewItem x:Name="TopRated" />
                         <NavigationViewItem x:Name="Recent" />
                         <NavigationViewItem x:Name="Favourites" />
                     </NavigationView.MenuItems>
