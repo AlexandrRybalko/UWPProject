@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UWPProject.Enums;
 using UWPProject.Models;
 
 namespace UWPProject.ViewModels
@@ -34,7 +33,7 @@ namespace UWPProject.ViewModels
             set { SetProperty(ref _cameras, value); }
         }
 
-        public CameraCategory SelectedCategory { get; set; }
+        public Enums.Category SelectedCategory { get; set; }
 
         public void AddCamera(Camera camera)
         {
@@ -54,11 +53,11 @@ namespace UWPProject.ViewModels
 
         public void SearchCameras(string query)
         {
-            if (this.SelectedCategory == CameraCategory.Favourite)
+            if (this.SelectedCategory == Enums.Category.Favourite)
             {
                 this.SearchFavouriteCameras(query);
             }
-            else if (this.SelectedCategory == CameraCategory.Recent)
+            else if (this.SelectedCategory == Enums.Category.Recent)
             {
                 this.SearchRecentCameras(query);
             }

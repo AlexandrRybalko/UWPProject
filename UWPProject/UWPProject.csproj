@@ -122,12 +122,13 @@
     <Compile Include="CameraPage.xaml.cs">
       <DependentUpon>CameraPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Enums\CameraCategory.cs" />
+    <Compile Include="Enums\Category.cs" />
     <Compile Include="IEnumerableExtension.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\CamerasModel.cs" />
+    <Compile Include="Commands\ButtonCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CamerasViewModel.cs" />
     <Compile Include="ViewModels\CameraViewModel.cs" />
@@ -201,6 +202,7 @@
       <HintPath>.\MjpegProcessor.winmd</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -71,7 +71,7 @@
                                     </ComboBox>
                                 </StackPanel>
                                 <StackPanel x:Name="Save" Orientation="Horizontal" RelativePanel.Below="Camera">
-                                    <Button Click="HideFlyout" x:Name="Done" Content="Save" Margin="24" />
+                                    <Button Click="HideFlyout" x:Name="Done" Content="Save" Margin="24"  />
                                 </StackPanel>
                             </RelativePanel>
                         </Flyout>

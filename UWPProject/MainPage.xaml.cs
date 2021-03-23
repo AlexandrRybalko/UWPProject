@@ -26,7 +26,7 @@ namespace UWPProject
     public sealed partial class MainPage : Page
     {
         private ResourceLoader _resourceLoader;
-        public CamerasViewModel CamerasViewModel { get; set; }
+        public CamerasViewModel CamerasViewModel { get; set; }        
 
         public MainPage()
         {
@@ -83,6 +83,7 @@ namespace UWPProject
 
         private void AddNewCamera(XamlUICommand sender, ExecuteRequestedEventArgs args)
         {
+            var b = args;
             if (!(string.IsNullOrEmpty(this.Country.Text) && string.IsNullOrEmpty(this.City.Text) &&
                 string.IsNullOrEmpty(this.IpAddress.Text) && string.IsNullOrEmpty(this.ImageType.SelectedItem.ToString())))
             {
@@ -124,12 +125,12 @@ namespace UWPProject
 
             if (selectedItem.Content.Equals("Recent"))
             {
-                CamerasViewModel.SelectedCategory = Enums.CameraCategory.Recent;
+                CamerasViewModel.SelectedCategory = Enums.Category.Recent;
                 CamerasViewModel.SearchRecentCameras(args.QueryText);
             }
             else if (selectedItem.Content.Equals("Favourites"))
             {
-                CamerasViewModel.SelectedCategory = Enums.CameraCategory.Favourite;
+                CamerasViewModel.SelectedCategory = Enums.Category.Favourite;
                 CamerasViewModel.SearchFavouriteCameras(args.QueryText);
             }
             else

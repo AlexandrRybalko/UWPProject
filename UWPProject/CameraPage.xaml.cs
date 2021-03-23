@@ -22,10 +22,12 @@ namespace UWPProject
         public CameraViewModel CameraViewModel { get; set; }
         private DispatcherTimer _timer;
         private MjpegDecoder _mjpegDecoder;
+        public ButtonCommand GoBackCommand { get; set; }
 
         public CameraPage()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            GoBackCommand = new ButtonCommand(new Action(GoBack));
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -33,14 +35,6 @@ namespace UWPProject
             base.OnNavigatedTo(e);
             Camera camera = e.Parameter as Camera;
             CameraViewModel = new CameraViewModel(camera);
-
-            var goBackCommand = new StandardUICommand(StandardUICommandKind.None);
-            goBackCommand.ExecuteRequested += GoBack;
-            this.BackButton.Command = goBackCommand;
-
-            var addToFavouritesCommand = new StandardUICommand(StandardUICommandKind.None);
-            addToFavouritesCommand.ExecuteRequested += AddToFavourites;
-            this.AddToFavouritesButton.Command = addToFavouritesCommand;
 
             if (CameraViewModel.ImageType.Equals("mjpg"))
             {
@@ -56,7 +50,7 @@ namespace UWPProject
                 _timer.Start();            
             }
 
-            this.AddToRecent();
+            CameraViewModel.AddToRecent();
         }
 
         private async void mjpeg_FrameReady(object sender, FrameReadyEventArgs e)
@@ -95,17 +89,7 @@ namespace UWPProject
             _timer.Start();
         }
 
-        private void AddToFavourites(XamlUICommand sender, ExecuteRequestedEventArgs args)
-        {
-            CameraViewModel.AddToCategory("Favourites");
-        }
-
-        private void AddToRecent()
-        {
-            CameraViewModel.AddToCategory("Recent");
-        }
-
-        private void GoBack(XamlUICommand sender, ExecuteRequestedEventArgs args)
+        private void GoBack()
         {
             this.Frame.GoBack();
         }

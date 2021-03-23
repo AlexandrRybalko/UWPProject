@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UWPProject.Enums
 {
-    public enum CameraCategory
+    public enum Category
     {
         Recent = 1,
         Favourite = 2

@@ -10,7 +10,18 @@ namespace UWPProject.ViewModels
     public class CameraViewModel : NotificationBase<Camera>
     {
         private readonly CamerasModel _model = new CamerasModel();
-        public CameraViewModel(Camera camera = null) : base(camera) { }
+
+        public CameraViewModel(Camera camera = null) : base(camera) 
+        {
+            AddToFavouritesCommand = new ButtonCommand(new Action(AddToFavourites), CanExecuteAddToFavouritesCommand);
+        }
+
+        public ButtonCommand AddToFavouritesCommand { get; }
+
+        private bool CanExecuteAddToFavouritesCommand()
+        {
+            return !_model.GetFavourites().Any(x => x.Id == this.This.Id);
+        }
 
         public int Id
         {
@@ -46,9 +57,14 @@ namespace UWPProject.ViewModels
             get { return $"{this.Country}, {this.City}"; }
         }
 
-        public void AddToCategory(string categoryName)
+        public void AddToFavourites()
         {
-            _model.AddToCategory(This.Id, categoryName);
+            _model.AddToCategory(This.Id, "Favourites");
+        }
+
+        public void AddToRecent()
+        {
+            _model.AddToCategory(This.Id, "Recent");
         }
     }
 }
