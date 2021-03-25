@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UWPProject.Models;
+using Windows.UI.Xaml.Input;
 
 namespace UWPProject.ViewModels
 {
@@ -28,10 +29,10 @@ namespace UWPProject.ViewModels
             get { return This.Id; }
         }
 
-        public string IpAddress
+        public string RtspAddress
         {
-            get { return This.IpAddress; }
-            set { SetProperty(This.IpAddress, value, () => This.IpAddress = value); }
+            get { return This.RtspAddress; }
+            set { SetProperty(This.RtspAddress, value, () => This.RtspAddress = value); }
         }
 
         public string Country
@@ -44,12 +45,6 @@ namespace UWPProject.ViewModels
         {
             get { return This.City; }
             set { SetProperty(This.City, value, () => This.City = value); }
-        }
-        
-        public string ImageType
-        {
-            get { return This.ImageType; }
-            set { SetProperty(This.ImageType, value, () => This.ImageType = value); }
         }
 
         public string ToStringProperty

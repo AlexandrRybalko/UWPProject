@@ -51,22 +51,6 @@ namespace UWPProject.ViewModels
             return _model.GetById(id);
         }
 
-        public void SearchCameras(string query)
-        {
-            if (this.SelectedCategory == Enums.Category.Favourite)
-            {
-                this.SearchFavouriteCameras(query);
-            }
-            else if (this.SelectedCategory == Enums.Category.Recent)
-            {
-                this.SearchRecentCameras(query);
-            }
-            else
-            {
-                this.SearchRandomCameras(query);
-            }
-        }
-
         public void SearchRandomCameras(string query)
         {
             if (string.IsNullOrWhiteSpace(query))

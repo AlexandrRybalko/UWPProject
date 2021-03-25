@@ -8,7 +8,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using UWPProject.Models;
 using UWPProject.ViewModels;
+using Windows.Media.Core;
 using Windows.Storage.Streams;
+using Windows.System;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -19,79 +22,34 @@ namespace UWPProject
 {
     public partial class CameraPage : Page
     {
+        private FFmpegInterop.FFmpegInteropMSS _ffmpeg;
+
         public CameraViewModel CameraViewModel { get; set; }
-        private DispatcherTimer _timer;
-        private MjpegDecoder _mjpegDecoder;
-        public ButtonCommand GoBackCommand { get; set; }
+        public ButtonCommand GoBackCommand { get; }
 
         public CameraPage()
         {
             InitializeComponent();
-            GoBackCommand = new ButtonCommand(new Action(GoBack));
+            this.GoBackCommand = new ButtonCommand(new Action(GoBack));            
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             Camera camera = e.Parameter as Camera;
-            CameraViewModel = new CameraViewModel(camera);
+            this.CameraViewModel = new CameraViewModel(camera);
 
-            if (CameraViewModel.ImageType.Equals("mjpg"))
-            {
-                _mjpegDecoder = new MjpegDecoder();
-                _mjpegDecoder.FrameReady += mjpeg_FrameReady;
-                _mjpegDecoder.ParseStream(new Uri(CameraViewModel.IpAddress));
-            }
-            else if (CameraViewModel.ImageType.Equals("jpg"))
-            {
-                _timer = new DispatcherTimer();
-                _timer.Interval = TimeSpan.FromMilliseconds(10);
-                _timer.Tick += GetImage;
-                _timer.Start();            
-            }
+            this._ffmpeg = FFmpegInterop.FFmpegInteropMSS.CreateFFmpegInteropMSSFromUri(camera.RtspAddress, true, false);
+            MediaStreamSource streamSource = _ffmpeg.GetMediaStreamSource();
+            this.MediaElement.SetMediaStreamSource(streamSource);
+            this.MediaElement.Play();
 
             CameraViewModel.AddToRecent();
         }
 
-        private async void mjpeg_FrameReady(object sender, FrameReadyEventArgs e)
-        {
-            using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())
-            {
-                await stream.WriteAsync(e.FrameBuffer);
-                stream.Seek(0);
-
-                var bmp = new BitmapImage();
-                await bmp.SetSourceAsync(stream);
-
-                CameraImage.Source = bmp;
-            }
-        }        
-
-        private async void GetImage<EventArgs>(object sender, EventArgs e)
-        {
-            _timer.Stop();
-            HttpClient client = new HttpClient();
-            Uri requestUri = new Uri(CameraViewModel.IpAddress);
-            HttpResponseMessage response = await client.GetAsync(requestUri);
-            // A memory stream where write the image data
-            InMemoryRandomAccessStream randomAccess = new InMemoryRandomAccessStream();
-
-            DataWriter writer = new DataWriter(randomAccess.GetOutputStreamAt(0));
-
-            // Write and save the data into the stream
-            writer.WriteBytes(await response.Content.ReadAsByteArrayAsync());
-            await writer.StoreAsync();
-
-            // Create a Bitmap and assign it to the target Image control
-            BitmapImage bm = new BitmapImage();
-            await bm.SetSourceAsync(randomAccess);
-            CameraImage.Source = bm;
-            _timer.Start();
-        }
-
         private void GoBack()
-        {
-            this.Frame.GoBack();
+        { 
+            this.Frame.GoBack(); 
         }
     }
 }

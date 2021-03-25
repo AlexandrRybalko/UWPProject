@@ -64,12 +64,14 @@ namespace UWPProject.Models
 
         public IEnumerable<Camera> GetRecent()
         {
+            var categoryId = _categoryRepository.GetAll()
+                .FirstOrDefault(z => z.Title.Equals("Recent")).Id;
+
             var recentCameras = _cameraRepository.GetAll()
                 .Where(x => x.CamerasCategories
-                .Any(y => y.CategoryId == _categoryRepository.GetAll()
-                .FirstOrDefault(z => z.Title.Equals("Recent")).Id))
-                .OrderByDescending(x => x.CamerasCategories.FirstOrDefault(y => y.CategoryId == 
-                _categoryRepository.GetAll().FirstOrDefault(z => z.Title.Equals("Recent")).Id).UpdatedTime);
+                .Any(y => y.CategoryId == categoryId))
+                .OrderByDescending(x => x.CamerasCategories
+                .FirstOrDefault(y => y.CategoryId == categoryId).UpdatedTime);
 
             return _mapper.Map<IEnumerable<Camera>>(recentCameras);
         }
@@ -105,10 +107,9 @@ namespace UWPProject.Models
     public class Camera
     {
         public int Id { get; set; }
-        public string IpAddress { get; set; }
+        public string RtspAddress { get; set; }
         public string Country { get; set; }
         public string City { get; set; }
-        public string ImageType { get; set; }
 
         public ICollection<CamerasCategories> CamerasCategories { get; set; }
     }

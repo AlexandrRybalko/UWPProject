@@ -20,11 +20,11 @@
             </Grid.ColumnDefinitions>
             <TextBlock Margin="20, 0, 0, 0" VerticalAlignment="Center" 
                        Grid.Column="0" Text="{x:Bind CameraViewModel.ToStringProperty}"></TextBlock>
-            <Button Grid.Column="1" x:Name="BackButton" IsEnabled="True" ToolTipService.ToolTip="Back" Width="40" Height="40"
+            <Button Grid.Column="1" x:Name="BackButton" ToolTipService.ToolTip="Back" Width="40" Height="40"
                      FontFamily="Segoe MDL2 Assets" Content="&#xE72B;" Command="{x:Bind Path=GoBackCommand}">
             </Button>
         </Grid>        
-        <Image Margin="0,40,0,0" Height="560" x:Name="CameraImage" Grid.Row="1"></Image>
+        <MediaElement Name="MediaElement" Width="1000" Height="600" Grid.Row="1"></MediaElement>
         <StackPanel Orientation="Horizontal" Grid.Row="2">
             <Button x:Name="AddToFavouritesButton" Width="44" Height="40" Grid.Row="2" Background="White" Command="{x:Bind Path=CameraViewModel.AddToFavouritesCommand}">
                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEB51;"/>

@@ -16,7 +16,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Orientation="Horizontal">
-                <NavigationView Name="Navigation" PaneDisplayMode="Top">
+                <NavigationView Name="Navigation" PaneDisplayMode="Top" SelectionChanged="Navigation_SelectionChanged">
                     <NavigationView.MenuItems>
                         <NavigationViewItem x:Name="Random" />
                         <NavigationViewItem x:Name="Recent" />
@@ -27,15 +27,16 @@
                 <DropDownButton x:Name="ChangeLanguage" Margin="100,0,0,0">
                     <TextBlock x:Name="LanguageTextBlock"></TextBlock>
                     <DropDownButton.Flyout>
-                        <MenuFlyout>
-                            <MenuFlyoutItem Name="English"></MenuFlyoutItem>
-                            <MenuFlyoutItem Name="Russian"></MenuFlyoutItem>
+                        <MenuFlyout x:Name="ChangeLanguageFlyout">
+                            <MenuFlyoutItem Name="English" Command="{x:Bind Path=SetEnglishCommand}"></MenuFlyoutItem>
+                            <MenuFlyoutItem Name="Russian" Command="{x:Bind Path=SetRussianCommand}"></MenuFlyoutItem>
                         </MenuFlyout>
                     </DropDownButton.Flyout>
                 </DropDownButton>
             </StackPanel>
 
-            <GridView VerticalAlignment="Top" Height="620" Grid.Row="1" x:Name="GridView" ItemsSource="{x:Bind CamerasViewModel.Cameras, Mode=OneWay}">
+            <GridView VerticalAlignment="Top" Height="620" Grid.Row="1" x:Name="GridView" ItemsSource="{x:Bind CamerasViewModel.Cameras, Mode=OneWay}"
+                      SelectionChanged="NavigateToCameraPage">
                 <GridView.ItemTemplate>
                     <DataTemplate x:Name="ImageOverlayDataTemplate" x:DataType="viewModels:CameraViewModel">
                         <Grid Height="180" Width="320">
@@ -64,14 +65,10 @@
                                 <StackPanel x:Name="Camera" Margin="20">
                                     <TextBox IsReadOnly="False" Width="160" x:Name="Country" Header= "Country" Margin="0,24,0,0" HorizontalAlignment="Left" />
                                     <TextBox Width="160" x:Name="City" Header="City" Margin="0,24,0,0" HorizontalAlignment="Left" />
-                                    <TextBox Width="400" x:Name="IpAddress" Header="Address" Margin="0,24,0,0" HorizontalAlignment="Left" />
-                                    <ComboBox Width="160" Header="ImageType" x:Name="ImageType" Margin="0,24,0,0" RelativePanel.RightOf="City">
-                                        <x:String>jpg</x:String>
-                                        <x:String>mjpg</x:String>
-                                    </ComboBox>
+                                    <TextBox Width="400" x:Name="RtspAddressTextBox" Header="RTSP address" Margin="0,24,0,0" HorizontalAlignment="Left" />
                                 </StackPanel>
                                 <StackPanel x:Name="Save" Orientation="Horizontal" RelativePanel.Below="Camera">
-                                    <Button Click="HideFlyout" x:Name="Done" Content="Save" Margin="24"  />
+                                    <Button Click="HideFlyout" x:Name="Done" Content="Save" Margin="24" Command="{x:Bind AddNewCameraCommand}" />
                                 </StackPanel>
                             </RelativePanel>
                         </Flyout>
