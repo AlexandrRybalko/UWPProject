@@ -2,8 +2,10 @@
 using UWPProject.Models;
 using UWPProject.ViewModels;
 using Windows.ApplicationModel.Resources;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+//using Microsoft.UI.Xaml.Controls;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -17,50 +19,28 @@ namespace UWPProject
         private ResourceLoader _resourceLoader;
         public CamerasViewModel CamerasViewModel { get; set; } 
         public ButtonCommand AddNewCameraCommand { get; }
-        public ButtonCommand SetEnglishCommand { get; }
-        public ButtonCommand SetRussianCommand { get; }
 
         public MainPage()
         {
             this.InitializeComponent();
             CamerasViewModel = new CamerasViewModel();
 
-            AddNewCameraCommand = new ButtonCommand(new Action(AddNewCamera));
-            SetEnglishCommand = new ButtonCommand(new Action(SetEnglishLanguage));
-            SetRussianCommand = new ButtonCommand(new Action(SetRussianLanguage));
+            string language = ApplicationData.Current.LocalSettings.Values["Language"] as string;
+            if (!string.IsNullOrEmpty(language))
+            {
+                this._resourceLoader = ResourceLoader.GetForCurrentView(language);
+            }
+            else
+            {
+                this._resourceLoader = ResourceLoader.GetForCurrentView("En-en");
+            }
 
-            this.SetEnglishLanguage();            
+            AddNewCameraCommand = new ButtonCommand(new Action(AddNewCamera));        
         }
 
         private void MainPageLoaded(object sender, RoutedEventArgs e)
         {
             Navigation.SelectedItem = this.Random;
-        }
-
-        private void SetEnglishLanguage()
-        {
-            this._resourceLoader = ResourceLoader.GetForCurrentView("En-en");
-            this.Random.Content = _resourceLoader.GetString("Random");
-            this.Recent.Content = _resourceLoader.GetString("Recent");
-            this.Favourites.Content = _resourceLoader.GetString("Favourites");
-            this.LanguageTextBlock.Text = _resourceLoader.GetString("Language");
-            this.Russian.Text = _resourceLoader.GetString("Russian");
-            this.English.Text = _resourceLoader.GetString("English");
-            this.AddNewCameraTextBlock.Text = _resourceLoader.GetString("AddNewCameraTextBlock");
-            this.SearchBox.PlaceholderText = _resourceLoader.GetString("SearchCamera");
-        }
-
-        private void SetRussianLanguage()
-        {
-            this._resourceLoader = ResourceLoader.GetForCurrentView("Ru-ru");
-            this.Random.Content = _resourceLoader.GetString("Random");
-            this.Recent.Content = _resourceLoader.GetString("Recent");
-            this.Favourites.Content = _resourceLoader.GetString("Favourites");
-            this.LanguageTextBlock.Text = _resourceLoader.GetString("Language");
-            this.Russian.Text = _resourceLoader.GetString("Russian");
-            this.English.Text = _resourceLoader.GetString("English");
-            this.AddNewCameraTextBlock.Text = _resourceLoader.GetString("AddNewCameraTextBlock");
-            this.SearchBox.PlaceholderText = _resourceLoader.GetString("SearchCamera");
         }
 
         private void AddNewCamera()
@@ -90,8 +70,15 @@ namespace UWPProject
 
         private void Navigation_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
-            string categoryName = args.SelectedItemContainer.Content.ToString();
-            CamerasViewModel.GetByCategory(categoryName);
+            if (args.IsSettingsSelected)
+            {
+                this.Frame.Navigate(typeof(SettingsPage));
+            }
+            else
+            {
+                string categoryName = args.SelectedItemContainer.Content.ToString();
+                CamerasViewModel.GetByCategory(categoryName);
+            }            
         }
 
         private void SearchBox_QueryChanged(SearchBox sender, SearchBoxQueryChangedEventArgs args)

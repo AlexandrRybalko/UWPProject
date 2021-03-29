@@ -8,6 +8,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -31,6 +32,22 @@ namespace UWPProject
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            var requestedTheme = ApplicationData.Current.LocalSettings.Values["Theme"] as string;
+
+            if (!string.IsNullOrEmpty(requestedTheme))
+            {
+                switch (requestedTheme)
+                {
+                    case "Light":
+                        this.RequestedTheme = ApplicationTheme.Light;
+                        break;
+
+                    case "Dark":
+                        this.RequestedTheme = ApplicationTheme.Dark;
+                        break;
+                }
+            }
         }
 
         /// <summary>

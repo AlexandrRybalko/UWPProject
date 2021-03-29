@@ -7,6 +7,15 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary Source="Dictionary1.xaml" x:Key="Light"></ResourceDictionary>
+                <ResourceDictionary Source="Dictionary2.xaml" x:Key="Dark"></ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="68"></RowDefinition>
@@ -21,12 +30,13 @@
             <TextBlock Margin="20, 0, 0, 0" VerticalAlignment="Center" 
                        Grid.Column="0" Text="{x:Bind CameraViewModel.ToStringProperty}"></TextBlock>
             <Button Grid.Column="1" x:Name="BackButton" ToolTipService.ToolTip="Back" Width="40" Height="40"
+                    Style="{ThemeResource buttonStyle}"
                      FontFamily="Segoe MDL2 Assets" Content="&#xE72B;" Command="{x:Bind Path=GoBackCommand}">
             </Button>
         </Grid>        
         <MediaElement Name="MediaElement" Width="1000" Height="600" Grid.Row="1"></MediaElement>
         <StackPanel Orientation="Horizontal" Grid.Row="2">
-            <Button x:Name="AddToFavouritesButton" Width="44" Height="40" Grid.Row="2" Background="White" Command="{x:Bind Path=CameraViewModel.AddToFavouritesCommand}">
+            <Button x:Name="AddToFavouritesButton" Width="44" Height="40" Grid.Row="2" Style="{ThemeResource buttonStyle}" Command="{x:Bind Path=CameraViewModel.AddToFavouritesCommand}">
                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEB51;"/>
             </Button>
         </StackPanel>

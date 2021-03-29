@@ -120,6 +120,15 @@
   <data name="AddNewCameraTextBlock" xml:space="preserve">
     <value>Добавить новую камеру</value>
   </data>
+  <data name="Dark" xml:space="preserve">
+    <value>Темная</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>По умолчанию</value>
+  </data>
+  <data name="DialogMessage" xml:space="preserve">
+    <value>Перезапустите приложение, чтобы применить изменения</value>
+  </data>
   <data name="English" xml:space="preserve">
     <value>English</value>
   </data>
@@ -128,6 +137,9 @@
   </data>
   <data name="Language" xml:space="preserve">
     <value>Язык</value>
+  </data>
+  <data name="Light" xml:space="preserve">
+    <value>Светлая</value>
   </data>
   <data name="Random" xml:space="preserve">
     <value>Случайные</value>
@@ -140,6 +152,9 @@
   </data>
   <data name="SearchCamera" xml:space="preserve">
     <value>Найти камеру</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Тема</value>
   </data>
   <data name="TopRated" xml:space="preserve">
     <value>Самые популярные</value>

@@ -1,0 +1,58 @@
+﻿<Page
+    x:Class="UWPProject.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UWPProject"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary Source="Dictionary1.xaml" x:Key="Light"></ResourceDictionary>
+                <ResourceDictionary Source="Dictionary2.xaml" x:Key="Dark"></ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <StackPanel x:Name="Theme" Grid.Row="0">
+            <TextBlock Text="{x:Bind _resourceLoader.GetString('Theme')}"></TextBlock>
+            <StackPanel>
+                <RadioButton x:Name="Default" Checked="SetTheme"
+                             IsChecked="{x:Bind IsChecked('Theme', 'Default')}"
+                             Content="{x:Bind _resourceLoader.GetString('Default')}"></RadioButton>
+                <RadioButton x:Name="Light" Checked="SetTheme"
+                             IsChecked="{x:Bind IsChecked('Theme', 'Light')}"
+                             Content="{x:Bind _resourceLoader.GetString('Light')}"></RadioButton>
+                <RadioButton x:Name="Dark" Checked="SetTheme"
+                             IsChecked="{x:Bind IsChecked('Theme', 'Dark')}"
+                             Content="{x:Bind _resourceLoader.GetString('Dark')}"></RadioButton>
+            </StackPanel>
+        </StackPanel>
+        
+        <StackPanel x:Name="Language" Grid.Row="1" Margin="0,20,0,0">
+            <TextBlock Text="{x:Bind _resourceLoader.GetString('Language')}"></TextBlock>
+            <StackPanel>
+                <RadioButton x:Name="English" Checked="SetLanguage"
+                             IsChecked="{x:Bind IsChecked('Language', 'En-en')}"
+                             Content="{x:Bind _resourceLoader.GetString('English')}"></RadioButton>
+                <RadioButton x:Name="Russian" Checked="SetRussian"
+                             IsChecked="{x:Bind IsChecked('Language', 'Ru-ru')}"
+                             Content="{x:Bind _resourceLoader.GetString('Russian')}"></RadioButton>
+            </StackPanel>
+        </StackPanel>
+
+        <Button Grid.Row="2" Margin="0,20,0,0" Width="90" Height="40"
+                Content="OK" Command="{x:Bind ApplyChangesCommand}"
+                Style="{ThemeResource buttonStyle}"></Button>
+    </Grid>
+</Page>

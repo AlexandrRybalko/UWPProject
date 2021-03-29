@@ -16,23 +16,15 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Orientation="Horizontal">
-                <NavigationView Name="Navigation" PaneDisplayMode="Top" SelectionChanged="Navigation_SelectionChanged">
+                <NavigationView Name="Navigation" IsSettingsVisible="True" IsBackButtonVisible="Collapsed"
+                                PaneDisplayMode="Top" SelectionChanged="Navigation_SelectionChanged">
                     <NavigationView.MenuItems>
-                        <NavigationViewItem x:Name="Random" />
-                        <NavigationViewItem x:Name="Recent" />
-                        <NavigationViewItem x:Name="Favourites" />
-                    </NavigationView.MenuItems>
+                        <NavigationViewItem x:Name="Random" Content="{x:Bind _resourceLoader.GetString('Random'), Mode=OneWay}" />
+                        <NavigationViewItem x:Name="Recent" Content="{x:Bind _resourceLoader.GetString('Recent')}"/>
+                        <NavigationViewItem x:Name="Favourites" Content="{x:Bind _resourceLoader.GetString('Favourites')}"/>
+                    </NavigationView.MenuItems>                    
                 </NavigationView>
-                <SearchBox Name="SearchBox" MinWidth="250" QueryChanged="SearchBox_QueryChanged"></SearchBox>
-                <DropDownButton x:Name="ChangeLanguage" Margin="100,0,0,0">
-                    <TextBlock x:Name="LanguageTextBlock"></TextBlock>
-                    <DropDownButton.Flyout>
-                        <MenuFlyout x:Name="ChangeLanguageFlyout">
-                            <MenuFlyoutItem Name="English" Command="{x:Bind Path=SetEnglishCommand}"></MenuFlyoutItem>
-                            <MenuFlyoutItem Name="Russian" Command="{x:Bind Path=SetRussianCommand}"></MenuFlyoutItem>
-                        </MenuFlyout>
-                    </DropDownButton.Flyout>
-                </DropDownButton>
+                <SearchBox Name="SearchBox" PlaceholderText="{x:Bind _resourceLoader.GetString('SearchCamera')}" MinWidth="250" QueryChanged="SearchBox_QueryChanged"></SearchBox>
             </StackPanel>
 
             <GridView VerticalAlignment="Top" Height="620" Grid.Row="1" x:Name="GridView" ItemsSource="{x:Bind CamerasViewModel.Cameras, Mode=OneWay}"
@@ -61,7 +53,7 @@
                     <AppBarButton.Flyout>
                         <Flyout x:Name="AddCameraFlyout" Placement="Full">
                             <RelativePanel x:Name="AddCameraForm">
-                                <TextBlock x:Name="AddNewCameraTextBlock"></TextBlock>
+                                <TextBlock x:Name="AddNewCameraTextBlock" Text="{x:Bind _resourceLoader.GetString('AddNewCameraTextBlock')}"></TextBlock>
                                 <StackPanel x:Name="Camera" Margin="20">
                                     <TextBox IsReadOnly="False" Width="160" x:Name="Country" Header= "Country" Margin="0,24,0,0" HorizontalAlignment="Left" />
                                     <TextBox Width="160" x:Name="City" Header="City" Margin="0,24,0,0" HorizontalAlignment="Left" />
