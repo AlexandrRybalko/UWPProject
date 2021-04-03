@@ -26,6 +26,8 @@ namespace UWPProject
 
         public CameraViewModel CameraViewModel { get; set; }
         public ButtonCommand GoBackCommand { get; }
+        public ButtonCommand AddToFavouritesCommand { get; set; }
+        public ButtonCommand RemoveFromFavouritesCommand { get; set; }
 
         public CameraPage()
         {
@@ -39,6 +41,18 @@ namespace UWPProject
             Camera camera = e.Parameter as Camera;
             this.CameraViewModel = new CameraViewModel(camera);
 
+            this.AddToFavouritesCommand = new ButtonCommand(new Action(this.AddToFavourites), () => true);
+            this.RemoveFromFavouritesCommand = new ButtonCommand(new Action(this.RemoveFromFavourites), () => true);
+
+            if (this.CameraViewModel.CanExecuteAddToFavouritesCommand())
+            {
+                this.AddToFavouritesButton.Command = this.AddToFavouritesCommand;
+            }
+            else
+            {
+                this.AddToFavouritesButton.Command = this.RemoveFromFavouritesCommand;
+            }
+
             this._ffmpeg = FFmpegInterop.FFmpegInteropMSS.CreateFFmpegInteropMSSFromUri(camera.RtspAddress, true, false);
             MediaStreamSource streamSource = _ffmpeg.GetMediaStreamSource();
             this.MediaElement.SetMediaStreamSource(streamSource);
@@ -50,6 +64,20 @@ namespace UWPProject
         private void GoBack()
         { 
             this.Frame.GoBack(); 
+        }
+
+        private void AddToFavourites()
+        {
+            this.CameraViewModel.AddToFavourites();
+            /*this.AddToFavouritesButton.Command = RemoveFromFavouritesCommand;
+            this.AddToFavouritesButton.Style = (Style)this.Resources["removeFromFavouritesButton"];*/
+        }
+
+        private void RemoveFromFavourites()
+        {
+            this.CameraViewModel.RemoveFromFavourites();
+            this.AddToFavouritesButton.Command = this.AddToFavouritesCommand;
+            this.AddToFavouritesButton.Style = (Style)this.Resources["addToFavouritesButton"];
         }
     }
 }

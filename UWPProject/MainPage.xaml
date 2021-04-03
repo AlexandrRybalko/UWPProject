@@ -25,6 +25,7 @@
                     </NavigationView.MenuItems>                    
                 </NavigationView>
                 <SearchBox Name="SearchBox" PlaceholderText="{x:Bind _resourceLoader.GetString('SearchCamera')}" MinWidth="250" QueryChanged="SearchBox_QueryChanged"></SearchBox>
+                <Button Click="Button_Click">Map</Button>
             </StackPanel>
 
             <GridView VerticalAlignment="Top" Height="620" Grid.Row="1" x:Name="GridView" ItemsSource="{x:Bind CamerasViewModel.Cameras, Mode=OneWay}"

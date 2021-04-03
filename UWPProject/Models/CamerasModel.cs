@@ -14,12 +14,14 @@ namespace UWPProject.Models
     {
         private readonly CameraRepository _cameraRepository;
         private readonly CategoryRepository _categoryRepository;
+        private readonly CameraCategoryRepository _cameraCategoryRepository;
         private readonly IMapper _mapper;
 
         public CamerasModel()
         {
             _cameraRepository = new CameraRepository();
             _categoryRepository = new CategoryRepository();
+            _cameraCategoryRepository = new CameraCategoryRepository();
 
             var mapperConfig = new MapperConfiguration(cfg =>
             {
@@ -102,6 +104,12 @@ namespace UWPProject.Models
         {
             _cameraRepository.AddToCategory(cameraId, categoryName);
         }
+
+        public void RemoveFromCategory(int cameraId, string categoryName)
+        {
+            int categoryId = _categoryRepository.GetAll().FirstOrDefault(x => x.Title.Equals(categoryName)).Id;
+            _cameraCategoryRepository.RemoveFromCategory(cameraId, categoryId);
+        }
     }
 
     public class Camera
@@ -110,6 +118,8 @@ namespace UWPProject.Models
         public string RtspAddress { get; set; }
         public string Country { get; set; }
         public string City { get; set; }
+        public double Latitude { get; set; }
+        public double Longtitude { get; set; }
 
         public ICollection<CamerasCategories> CamerasCategories { get; set; }
     }

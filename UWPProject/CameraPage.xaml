@@ -33,10 +33,13 @@
                     Style="{ThemeResource buttonStyle}"
                      FontFamily="Segoe MDL2 Assets" Content="&#xE72B;" Command="{x:Bind Path=GoBackCommand}">
             </Button>
-        </Grid>        
+        </Grid>
+
         <MediaElement Name="MediaElement" Width="1000" Height="600" Grid.Row="1"></MediaElement>
+        
         <StackPanel Orientation="Horizontal" Grid.Row="2">
-            <Button x:Name="AddToFavouritesButton" Width="44" Height="40" Grid.Row="2" Style="{ThemeResource buttonStyle}" Command="{x:Bind Path=CameraViewModel.AddToFavouritesCommand}">
+            <Button x:Name="AddToFavouritesButton" Width="44" Height="40" 
+                    Grid.Row="2" Style="{ThemeResource buttonStyle}">
                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEB51;"/>
             </Button>
         </StackPanel>

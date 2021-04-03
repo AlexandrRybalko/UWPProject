@@ -5,4 +5,8 @@
         <Setter Property="Background" Value="LightGray"></Setter>
         <Setter Property="Foreground" Value="Green"></Setter>
     </Style>
+
+    <SolidColorBrush x:Key="BorderBrush" Color="Black"></SolidColorBrush>
+
+    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="MediumSlateBlue"></SolidColorBrush>
 </ResourceDictionary>

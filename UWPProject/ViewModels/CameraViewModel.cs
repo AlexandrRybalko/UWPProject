@@ -19,7 +19,7 @@ namespace UWPProject.ViewModels
 
         public ButtonCommand AddToFavouritesCommand { get; }
 
-        private bool CanExecuteAddToFavouritesCommand()
+        public bool CanExecuteAddToFavouritesCommand()
         {
             return !_model.GetFavourites().Any(x => x.Id == this.This.Id);
         }
@@ -47,6 +47,16 @@ namespace UWPProject.ViewModels
             set { SetProperty(This.City, value, () => This.City = value); }
         }
 
+        public double Latitude 
+        { 
+            get { return This.Latitude; } 
+        }
+
+        public double Longtitude 
+        {
+            get { return This.Longtitude; } 
+        }
+
         public string ToStringProperty
         {
             get { return $"{this.Country}, {this.City}"; }
@@ -60,6 +70,11 @@ namespace UWPProject.ViewModels
         public void AddToRecent()
         {
             _model.AddToCategory(This.Id, "Recent");
+        }
+
+        public void RemoveFromFavourites()
+        {
+            _model.RemoveFromCategory(This.Id, "Favourites");
         }
     }
 }

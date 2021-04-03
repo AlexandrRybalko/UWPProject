@@ -14,6 +14,7 @@
                 <ResourceDictionary Source="Dictionary1.xaml" x:Key="Light"></ResourceDictionary>
                 <ResourceDictionary Source="Dictionary2.xaml" x:Key="Dark"></ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
+            
         </ResourceDictionary>
     </Page.Resources>
     
@@ -24,7 +25,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         
-        <StackPanel x:Name="Theme" Grid.Row="0">
+        <StackPanel x:Name="Theme" Grid.Row="0" Margin="20,0,0,0">
             <TextBlock Text="{x:Bind _resourceLoader.GetString('Theme')}"></TextBlock>
             <StackPanel>
                 <RadioButton x:Name="Default" Checked="SetTheme"
@@ -39,7 +40,7 @@
             </StackPanel>
         </StackPanel>
         
-        <StackPanel x:Name="Language" Grid.Row="1" Margin="0,20,0,0">
+        <StackPanel x:Name="Language" Grid.Row="1" Margin="20,20,0,0">
             <TextBlock Text="{x:Bind _resourceLoader.GetString('Language')}"></TextBlock>
             <StackPanel>
                 <RadioButton x:Name="English" Checked="SetLanguage"

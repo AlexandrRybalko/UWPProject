@@ -19,5 +19,13 @@ namespace DAL.Repositories
         {
             return _ctx.CamerasCategories.ToList();
         }
+
+        public void RemoveFromCategory(int cameraId, int categoryId)
+        {
+            var cameraCategory = _ctx.CamerasCategories.FirstOrDefault(x => x.CameraId == cameraId && x.CategoryId == categoryId);
+            _ctx.CamerasCategories.Remove(cameraCategory);
+
+            _ctx.SaveChanges();
+        }
     }
 }
