@@ -56,9 +56,11 @@
                             <RelativePanel x:Name="AddCameraForm">
                                 <TextBlock x:Name="AddNewCameraTextBlock" Text="{x:Bind _resourceLoader.GetString('AddNewCameraTextBlock')}"></TextBlock>
                                 <StackPanel x:Name="Camera" Margin="20">
-                                    <TextBox IsReadOnly="False" Width="160" x:Name="Country" Header= "Country" Margin="0,24,0,0" HorizontalAlignment="Left" />
+                                    <TextBox Width="160" x:Name="Country" Header= "Country" Margin="0,24,0,0" HorizontalAlignment="Left" />
                                     <TextBox Width="160" x:Name="City" Header="City" Margin="0,24,0,0" HorizontalAlignment="Left" />
                                     <TextBox Width="400" x:Name="RtspAddressTextBox" Header="RTSP address" Margin="0,24,0,0" HorizontalAlignment="Left" />
+                                    <TextBox x:Name="Latitude" Header="Latitude"></TextBox>
+                                    <TextBox x:Name="Longitude" Header="Longitude"></TextBox>
                                 </StackPanel>
                                 <StackPanel x:Name="Save" Orientation="Horizontal" RelativePanel.Below="Camera">
                                     <Button Click="HideFlyout" x:Name="Done" Content="Save" Margin="24" Command="{x:Bind AddNewCameraCommand}" />

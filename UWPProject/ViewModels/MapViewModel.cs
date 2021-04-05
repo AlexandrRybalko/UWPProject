@@ -35,7 +35,7 @@ namespace UWPProject.ViewModels
                 BasicGeoposition cameraPosition = new BasicGeoposition
                 {
                     Latitude = camera.Latitude,
-                    Longitude = camera.Longtitude
+                    Longitude = camera.Longitude
                 };
                 Geopoint cameraPoint = new Geopoint(cameraPosition);
 
@@ -57,16 +57,8 @@ namespace UWPProject.ViewModels
                 ZIndex = 1,
                 MapElements = cameraMarks,
             };
-            /////////camerasLayer.MapElementClick += AA;
 
             LandmarkLayers.Add(camerasLayer);
-        }
-
-        private void AA(object sender, MapElementsLayerClickEventArgs args)
-        {
-            var a = sender;
-            var b = args.MapElements[0];
-            int o = 0;
         }
     }
 }

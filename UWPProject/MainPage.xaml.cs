@@ -43,17 +43,35 @@ namespace UWPProject
             Navigation.SelectedItem = this.Random;
         }
 
-        private void AddNewCamera()
+        private async void AddNewCamera()
         {
-            if (!(string.IsNullOrEmpty(this.Country.Text) || string.IsNullOrEmpty(this.City.Text) ||
-                string.IsNullOrEmpty(this.RtspAddressTextBox.Text)))
+            if (!(string.IsNullOrWhiteSpace(this.Country.Text) || string.IsNullOrWhiteSpace(this.City.Text) ||
+                string.IsNullOrWhiteSpace(this.RtspAddressTextBox.Text)))
             {
-                Camera camera = new Camera
+                Camera camera = new Camera()
                 {
                     Country = this.Country.Text,
                     City = this.City.Text,
                     RtspAddress = this.RtspAddressTextBox.Text,
                 };
+
+                if (string.IsNullOrWhiteSpace(this.Latitude.Text))
+                {
+                    await CamerasViewModel.GetLatitude(camera);
+                }
+                else
+                {
+                    camera.Latitude = double.Parse(this.Latitude.Text);
+                }
+
+                if (string.IsNullOrWhiteSpace(this.Longitude.Text))
+                {
+                    await CamerasViewModel.GetLongitude(camera);
+                }
+                else
+                {
+                    camera.Longitude = double.Parse(this.Longitude.Text);
+                }
 
                 this.CamerasViewModel.AddCamera(camera);
             }

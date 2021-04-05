@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Web.Http;
 
 namespace UWPProject.Models
 {
@@ -110,6 +111,74 @@ namespace UWPProject.Models
             int categoryId = _categoryRepository.GetAll().FirstOrDefault(x => x.Title.Equals(categoryName)).Id;
             _cameraCategoryRepository.RemoveFromCategory(cameraId, categoryId);
         }
+
+        public async Task GetLatitude(Camera camera)
+        {
+            StringBuilder sb = new StringBuilder("https://api.ipgeolocation.io/ipgeo?apiKey=4def6b275e0b429d8f133f0f55ffd0ba&ip=");
+            sb.Append(camera.RtspAddress.Split('/')[2]);
+            Uri requestURI = new Uri(sb.ToString());
+
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = new HttpResponseMessage();
+            response = await client.GetAsync(requestURI);
+            string responseString = await response.Content.ReadAsStringAsync();
+
+            camera.Latitude = this.GetLatitude(responseString);
+        }
+
+        public async Task GetLongitude(Camera camera)
+        {
+            StringBuilder sb = new StringBuilder("https://api.ipgeolocation.io/ipgeo?apiKey=4def6b275e0b429d8f133f0f55ffd0ba&ip=");
+            sb.Append(camera.RtspAddress.Split('/')[2]);
+            Uri requestURI = new Uri(sb.ToString());
+
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = new HttpResponseMessage();
+            response = await client.GetAsync(requestURI);
+            string responseString = await response.Content.ReadAsStringAsync();
+
+            camera.Longitude = this.GetLongitude(responseString);
+        }
+
+        private double GetLatitude(string httpResponse)
+        {
+            double result = 0d;
+            string latitude;
+            var arr = httpResponse.Split(',');
+
+            foreach (var str in arr)
+            {
+                if (str.Contains("latitude"))
+                {
+                    latitude = str.Split(':')[1].Remove(0, 1);
+                    latitude = latitude.Remove(latitude.Length - 1);
+
+                    result = Double.Parse(latitude);
+                }
+            }
+
+            return result;
+        }
+
+        private double GetLongitude(string httpResponse)
+        {
+            double result = 0d;
+            string longtitude;
+            var arr = httpResponse.Split(',');
+
+            foreach (var str in arr)
+            {
+                if (str.Contains("longitude"))
+                {
+                    longtitude = str.Split(':')[1].Remove(0, 1);
+                    longtitude = longtitude.Remove(longtitude.Length - 1);
+
+                    result = Double.Parse(longtitude);
+                }
+            }
+
+            return result;
+        }
     }
 
     public class Camera
@@ -119,7 +188,7 @@ namespace UWPProject.Models
         public string Country { get; set; }
         public string City { get; set; }
         public double Latitude { get; set; }
-        public double Longtitude { get; set; }
+        public double Longitude { get; set; }
 
         public ICollection<CamerasCategories> CamerasCategories { get; set; }
     }

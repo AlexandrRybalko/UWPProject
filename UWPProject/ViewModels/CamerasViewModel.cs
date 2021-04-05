@@ -114,5 +114,15 @@ namespace UWPProject.ViewModels
                 _cameras.Add(cameraViewModel);
             }
         }
+
+        public async Task GetLatitude(Camera camera)
+        {
+            await _model.GetLatitude(camera);
+        }
+
+        public async Task GetLongitude(Camera camera)
+        {
+             await _model.GetLongitude(camera);
+        }
     }
 }

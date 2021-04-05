@@ -52,9 +52,9 @@ namespace UWPProject.ViewModels
             get { return This.Latitude; } 
         }
 
-        public double Longtitude 
+        public double Longitude 
         {
-            get { return This.Longtitude; } 
+            get { return This.Longitude; } 
         }
 
         public string ToStringProperty
