@@ -142,6 +142,7 @@
     <Compile Include="ViewModels\CamerasViewModel.cs" />
     <Compile Include="ViewModels\CameraViewModel.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />
+    <Compile Include="ViewModels\NewCameraViewModel.cs" />
     <Compile Include="ViewModels\NotificationBase.cs" />
     <Compile Include="ViewModels\UnknownCameraViewModel.cs" />
   </ItemGroup>

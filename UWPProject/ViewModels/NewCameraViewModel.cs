@@ -7,21 +7,21 @@ using UWPProject.Models;
 
 namespace UWPProject.ViewModels
 {
-    public class UnknownCameraViewModel : NotificationBase<Camera>
+    public class NewCameraViewModel : NotificationBase<Camera>
     {
         private readonly CamerasModel _model;
 
-        public UnknownCameraViewModel()
+        public NewCameraViewModel()
         {
             _model = new CamerasModel();
         }
 
-        public string CameraCountry 
+        public string CameraCountry
         {
             get => This.Country;
-            set 
-            { 
-                SetProperty(This.Country, value, () => This.Country = value); 
+            set
+            {
+                SetProperty(This.Country, value, () => This.Country = value);
             }
         }
 
@@ -79,8 +79,18 @@ namespace UWPProject.ViewModels
 
         public bool IsValid()
         {
-            return !(string.IsNullOrWhiteSpace(This.RtspAddress) || string.IsNullOrWhiteSpace(This.Country) ||
-                string.IsNullOrWhiteSpace(This.City));
+            if (string.IsNullOrWhiteSpace(This.RtspAddress) || string.IsNullOrWhiteSpace(This.Country) 
+                || string.IsNullOrWhiteSpace(This.City))
+            {
+                return false;
+            }
+
+            if (!This.RtspAddress.StartsWith("rtsp://") || This.RtspAddress.Length < 15)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

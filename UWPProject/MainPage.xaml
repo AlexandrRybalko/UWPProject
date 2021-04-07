@@ -8,6 +8,16 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary Source="Dictionary1.xaml" x:Key="Light"></ResourceDictionary>
+                <ResourceDictionary Source="Dictionary2.xaml" x:Key="Dark"></ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
+        </ResourceDictionary>
+    </Page.Resources>
+
     <Grid Loaded="MainPageLoaded">
         <Grid>
             <Grid.RowDefinitions>
@@ -51,20 +61,24 @@
             </GridView>
 
             <CommandBar Grid.Row="2">
-                <AppBarButton AllowFocusOnInteraction="True" Name="AddCameraButton" Icon="Add">
+                <AppBarButton AllowFocusOnInteraction="True" Name="AddCameraButton" Icon="Add"
+                              ToolTipService.ToolTip="{x:Bind _resourceLoader.GetString('AddNewCameraTextBlock')}">
                     <AppBarButton.Flyout>
                         <Flyout x:Name="AddCameraFlyout" Placement="Full">
                             <RelativePanel x:Name="AddCameraForm">
                                 <TextBlock x:Name="AddNewCameraTextBlock" Text="{x:Bind _resourceLoader.GetString('AddNewCameraTextBlock')}"></TextBlock>
                                 <StackPanel x:Name="Camera" Margin="20">
-                                    <TextBox Width="160" x:Name="Country" Header= "{x:Bind _resourceLoader.GetString('Country')}" Margin="0,24,0,0" HorizontalAlignment="Left" />
-                                    <TextBox Width="160" x:Name="City" Header="{x:Bind _resourceLoader.GetString('City')}" Margin="0,24,0,0" HorizontalAlignment="Left" />
-                                    <TextBox Width="400" x:Name="RtspAddressTextBox" Header="{x:Bind _resourceLoader.GetString('RtspAddress')}" Margin="0,24,0,0" HorizontalAlignment="Left" />
-                                    <TextBox x:Name="Latitude" Header="{x:Bind _resourceLoader.GetString('Latitude')}"></TextBox>
-                                    <TextBox x:Name="Longitude" Header="{x:Bind _resourceLoader.GetString('Longitude')}"></TextBox>
+                                    <TextBox Width="160" x:Name="Country" Header="{x:Bind _resourceLoader.GetString('Country')}" 
+                                             Text="{x:Bind _newCamera.CameraCountry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,24,0,0" HorizontalAlignment="Left" LostFocus="TextBoxLostFocus"/>
+                                    <TextBox Width="160" x:Name="City" Header="{x:Bind _resourceLoader.GetString('City')}" 
+                                             Text="{x:Bind _newCamera.CameraCity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,24,0,0" HorizontalAlignment="Left" LostFocus="TextBoxLostFocus"/>
+                                    <TextBox Width="400" x:Name="RtspAddressTextBox" Header="{x:Bind _resourceLoader.GetString('RtspAddress')}" 
+                                             Text="{x:Bind _newCamera.RtspAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,24,0,0" HorizontalAlignment="Left" LostFocus="TextBoxLostFocus"/>
+                                    <TextBox x:Name="Latitude" Header="{x:Bind _resourceLoader.GetString('Latitude')}" Text="{x:Bind _newCamera.Latitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                    <TextBox x:Name="Longitude" Header="{x:Bind _resourceLoader.GetString('Longitude')}" Text="{x:Bind _newCamera.Longitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                                 </StackPanel>
                                 <StackPanel x:Name="Save" Orientation="Horizontal" RelativePanel.Below="Camera">
-                                    <Button Click="HideFlyout" x:Name="Done" Content="Save" Margin="24" Command="{x:Bind AddNewCameraCommand}" />
+                                    <Button x:Name="Done" Content="Save" Margin="24" Command="{x:Bind AddNewCameraCommand}" />
                                 </StackPanel>
                             </RelativePanel>
                         </Flyout>

@@ -55,7 +55,7 @@
                                          Text="{x:Bind UnknownCameraViewModel.Longitude, Mode=TwoWay}"></TextBox>
                             </StackPanel>
                             <StackPanel x:Name="Save" Orientation="Horizontal" RelativePanel.Below="Camera">
-                                <Button x:Name="Done" Content="Save" Margin="24" Click="Done_Click"  Command="{x:Bind AddNewCameraCommand}" />
+                                <Button x:Name="Done" Content="Save" Margin="24" Command="{x:Bind AddNewCameraCommand}" />
                             </StackPanel>
                         </RelativePanel>
                     </Flyout>

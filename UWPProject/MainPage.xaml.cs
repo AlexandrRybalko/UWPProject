@@ -17,14 +17,17 @@ namespace UWPProject
     public sealed partial class MainPage : Page
     {
         private ResourceLoader _resourceLoader;
-        public CamerasViewModel CamerasViewModel { get; set; } 
-        public ButtonCommand AddNewCameraCommand { get; }
+        private NewCameraViewModel _newCamera;
+
+        public CamerasViewModel CamerasViewModel { get; set; }
+        public ButtonCommand AddNewCameraCommand { get; set; }
         public bool CanGoBack { get => (Window.Current.Content as Frame).CanGoBack; }
 
         public MainPage()
         {
             this.InitializeComponent();
             CamerasViewModel = new CamerasViewModel();
+            _newCamera = new NewCameraViewModel();
 
             string language = ApplicationData.Current.LocalSettings.Values["Language"] as string;
             if (!string.IsNullOrEmpty(language))
@@ -36,47 +39,13 @@ namespace UWPProject
                 this._resourceLoader = ResourceLoader.GetForCurrentView("En-en");
             }
 
-            AddNewCameraCommand = new ButtonCommand(new Action(AddNewCamera));        
+            AddNewCameraCommand = new ButtonCommand(new Action(AddCamera), () => false);
         }
 
         private void MainPageLoaded(object sender, RoutedEventArgs e)
         {
             Navigation.SelectedItem = this.Random;
             Navigation.IsBackButtonVisible = (CanGoBack) ? NavigationViewBackButtonVisible.Visible : NavigationViewBackButtonVisible.Collapsed;
-        }
-
-        private async void AddNewCamera()
-        {
-            if (!(string.IsNullOrWhiteSpace(this.Country.Text) || string.IsNullOrWhiteSpace(this.City.Text) ||
-                string.IsNullOrWhiteSpace(this.RtspAddressTextBox.Text)))
-            {
-                Camera camera = new Camera()
-                {
-                    Country = this.Country.Text,
-                    City = this.City.Text,
-                    RtspAddress = this.RtspAddressTextBox.Text,
-                };
-
-                if (string.IsNullOrWhiteSpace(this.Latitude.Text))
-                {
-                    await CamerasViewModel.GetLatitude(camera);
-                }
-                else
-                {
-                    camera.Latitude = double.Parse(this.Latitude.Text);
-                }
-
-                if (string.IsNullOrWhiteSpace(this.Longitude.Text))
-                {
-                    await CamerasViewModel.GetLongitude(camera);
-                }
-                else
-                {
-                    camera.Longitude = double.Parse(this.Longitude.Text);
-                }
-
-                this.CamerasViewModel.AddCamera(camera);
-            }
         }
 
         private void NavigateToCameraPage(object sender, RoutedEventArgs e)
@@ -120,12 +89,7 @@ namespace UWPProject
                 CamerasViewModel.SelectedCategory = 0;
                 CamerasViewModel.SearchRandomCameras(args.QueryText);
             }
-        }
-
-        private void HideFlyout(object sender, RoutedEventArgs e)
-        {
-            AddCameraFlyout.Hide();
-        }
+        }        
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -137,9 +101,33 @@ namespace UWPProject
             this.Frame.GoBack();
         }
 
-        private void Country_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        private void TextBoxLostFocus(object sender, RoutedEventArgs e)
         {
+            Done.Command = new ButtonCommand(new Action(AddCamera), () => _newCamera.IsValid());
+        }
 
+        private async void AddCamera()
+        {
+            await _newCamera.AddNewCamera();
+            CamerasViewModel.UpdateCameras();
+            HideFlyout();
+        }
+
+        private async void HideFlyout()
+        {
+            AddCameraFlyout.Hide();
+            Country.Text = "";
+            City.Text = "";
+            RtspAddressTextBox.Text = "";
+            Latitude.Text = "0.0";
+            Longitude.Text = "0.0";
+
+            ContentDialog dialog = new ContentDialog();
+            dialog.Content = _resourceLoader.GetString("CameraHasBeenAdded");
+            dialog.CloseButtonText = "OK";
+            dialog.CloseButtonStyle = (Style)this.Resources["buttonStyle"];
+
+            await dialog.ShowAsync();            
         }
     }
 }

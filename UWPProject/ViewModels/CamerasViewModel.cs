@@ -115,6 +115,19 @@ namespace UWPProject.ViewModels
             }
         }
 
+        public void UpdateCameras()
+        {
+            _cameras.Clear();
+
+            var cameras = _model.GetAllCameras();
+
+            foreach (var camera in cameras)
+            {
+                var cameraViewModel = new CameraViewModel(camera);
+                _cameras.Add(cameraViewModel);
+            }
+        }
+
         public async Task GetLatitude(Camera camera)
         {
             await _model.GetLatitude(camera);

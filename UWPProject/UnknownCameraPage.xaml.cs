@@ -42,7 +42,7 @@ namespace UWPProject
 
             this.UnknownCameraViewModel = new UnknownCameraViewModel();
 
-            AddNewCameraCommand = new ButtonCommand(new Action(UnknownCameraViewModel.AddNewCamera), () => false);
+            AddNewCameraCommand = new ButtonCommand(new Action(AddCamera), () => false);
             NavigateToMainPageCommand = new ButtonCommand(new Action(() => this.Frame.Navigate(typeof(MainPage))));
         }        
 
@@ -72,12 +72,13 @@ namespace UWPProject
 
         private void TextBoxLostFocus(object sender, RoutedEventArgs e)
         {
-            Done.Command = new ButtonCommand(new Action(UnknownCameraViewModel.AddNewCamera),
-                () => UnknownCameraViewModel.IsValid());
+            Done.Command = new ButtonCommand(new Action(AddCamera), () => UnknownCameraViewModel.IsValid());
         }
 
-        private async void Done_Click(object sender, RoutedEventArgs e)
+        public async void AddCamera()
         {
+            await UnknownCameraViewModel.AddNewCamera();
+
             AddCameraFlyout.Hide();
 
             Country.Text = "";

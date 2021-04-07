@@ -63,7 +63,7 @@ namespace UWPProject
 
         private void GoBack()
         {
-            this.Frame.GoBack();
+            //this.Frame.GoBack();
 
             this.Frame.Navigate(typeof(UnknownCameraPage), CameraViewModel.RtspAddress);
         }
