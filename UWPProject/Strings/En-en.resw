@@ -120,6 +120,18 @@
   <data name="AddNewCameraTextBlock" xml:space="preserve">
     <value>Add new camera</value>
   </data>
+  <data name="AddUnknownCamera" xml:space="preserve">
+    <value>Add this camera</value>
+  </data>
+  <data name="CameraHasBeenAdded" xml:space="preserve">
+    <value>The camera has been added</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Country</value>
+  </data>
   <data name="Dark" xml:space="preserve">
     <value>Dark</value>
   </data>
@@ -135,17 +147,35 @@
   <data name="Favourites" xml:space="preserve">
     <value>Favourites</value>
   </data>
+  <data name="GoToMainPageButtonToolTip" xml:space="preserve">
+    <value>Go the main page</value>
+  </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>
+  <data name="Latitude" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
   <data name="Light" xml:space="preserve">
     <value>Light</value>
+  </data>
+  <data name="Longitude" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="Map" xml:space="preserve">
+    <value>Map</value>
+  </data>
+  <data name="NavigateToMainPage" xml:space="preserve">
+    <value>Main page</value>
   </data>
   <data name="Random" xml:space="preserve">
     <value>Random</value>
   </data>
   <data name="Recent" xml:space="preserve">
     <value>Recent</value>
+  </data>
+  <data name="RtspAddress" xml:space="preserve">
+    <value>RTSP адрес</value>
   </data>
   <data name="Russian" xml:space="preserve">
     <value>Русский</value>

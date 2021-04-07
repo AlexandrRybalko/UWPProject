@@ -13,8 +13,8 @@ namespace UWPProject
     public sealed partial class SettingsPage : Page
     {
         private ResourceLoader _resourceLoader;
+        private int c;
 
-        public ButtonCommand ApplyChangesCommand { get; }
         public ButtonCommand GoBackCommand { get; set; }
 
         public SettingsPage()
@@ -32,17 +32,29 @@ namespace UWPProject
                 _resourceLoader = ResourceLoader.GetForCurrentView(language);
             }
 
-            ApplyChangesCommand = new ButtonCommand(new Action(ApplyChanges), () => true);            
+            this.GoBackCommand = new ButtonCommand(new Action(() => this.Frame.GoBack()), () => true);
         }
 
-        private void SetTheme(object sender, RoutedEventArgs e)
+        private async void SetTheme(object sender, RoutedEventArgs e)
         {
-            var button = (RadioButton)sender;
-            string themeTitle = button.Name.Equals("Default") ? "" : button.Name;
-            ApplicationData.Current.LocalSettings.Values["Theme"] = themeTitle;
+            if (c != 0)
+            {
+                var button = (RadioButton)sender;
+                string themeTitle = button.Name.Equals("Default") ? "" : button.Name;
+                ApplicationData.Current.LocalSettings.Values["Theme"] = themeTitle;
+
+                ContentDialog dialog = new ContentDialog();
+                dialog.Content = _resourceLoader.GetString("DialogMessage");
+                dialog.CloseButtonText = "OK";
+                dialog.CloseButtonStyle = (Style)this.Resources["buttonStyle"];
+
+                await dialog.ShowAsync();
+            }
+
+            c++;
         }
 
-        private void SetLanguage(object sender, RoutedEventArgs e)
+        private void SetEnglish(object sender, RoutedEventArgs e)
         {
             ApplicationData.Current.LocalSettings.Values["Language"] = "En-en";
         }
@@ -67,18 +79,6 @@ namespace UWPProject
             }
 
             return true;
-        }
-
-        private void ApplyChanges()
-        {
-            this.GoBackCommand = new ButtonCommand(new Action(this.Frame.GoBack), () => true);
-            ContentDialog dialog = new ContentDialog();
-            dialog.Content = _resourceLoader.GetString("DialogMessage");
-            dialog.CloseButtonText = "OK";
-            dialog.CloseButtonStyle = (Style)this.Resources["buttonStyle"];
-            dialog.CloseButtonCommand = GoBackCommand;            
-
-            dialog.ShowAsync();
         }
     }
 }

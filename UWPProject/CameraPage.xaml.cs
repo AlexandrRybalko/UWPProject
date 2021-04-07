@@ -25,22 +25,22 @@ namespace UWPProject
         private FFmpegInterop.FFmpegInteropMSS _ffmpeg;
 
         public CameraViewModel CameraViewModel { get; set; }
-        public ButtonCommand GoBackCommand { get; }
+        public ButtonCommand GoBackCommand { get; set; }
         public ButtonCommand AddToFavouritesCommand { get; set; }
         public ButtonCommand RemoveFromFavouritesCommand { get; set; }
 
         public CameraPage()
         {
-            InitializeComponent();
-            this.GoBackCommand = new ButtonCommand(new Action(GoBack));            
+            InitializeComponent();                        
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             Camera camera = e.Parameter as Camera;
             this.CameraViewModel = new CameraViewModel(camera);
 
+            this.GoBackCommand = new ButtonCommand(new Action(GoBack));
             this.AddToFavouritesCommand = new ButtonCommand(new Action(this.AddToFavourites), () => true);
             this.RemoveFromFavouritesCommand = new ButtonCommand(new Action(this.RemoveFromFavourites), () => true);
 
@@ -53,7 +53,7 @@ namespace UWPProject
                 this.AddToFavouritesButton.Command = this.RemoveFromFavouritesCommand;
             }
 
-            this._ffmpeg = FFmpegInterop.FFmpegInteropMSS.CreateFFmpegInteropMSSFromUri(camera.RtspAddress, true, false);
+            this._ffmpeg = await FFmpegInterop.FFmpegInteropMSS.CreateFromUriAsync(camera.RtspAddress);
             MediaStreamSource streamSource = _ffmpeg.GetMediaStreamSource();
             this.MediaElement.SetMediaStreamSource(streamSource);
             this.MediaElement.Play();
@@ -62,8 +62,10 @@ namespace UWPProject
         }
 
         private void GoBack()
-        { 
-            this.Frame.GoBack(); 
+        {
+            this.Frame.GoBack();
+
+            this.Frame.Navigate(typeof(UnknownCameraPage), CameraViewModel.RtspAddress);
         }
 
         private void AddToFavourites()

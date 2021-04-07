@@ -50,7 +50,7 @@ namespace UWPProject.Models
             {
                 return this.GetFavourites();
             }
-            else if (categoryName.Equals("Recent"))
+            if (categoryName.Equals("Recent"))
             {
                 return this.GetRecent();
             }

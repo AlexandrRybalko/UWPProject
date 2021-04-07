@@ -24,8 +24,20 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        
-        <StackPanel x:Name="Theme" Grid.Row="0" Margin="20,0,0,0">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Button x:Name="BackButton" ToolTipService.ToolTip="Back" Width="40" Height="40"
+                    Style="{ThemeResource buttonStyle}"
+                     FontFamily="Segoe MDL2 Assets" Content="&#xE72B;" Command="{x:Bind Path=GoBackCommand}">
+            </Button>
+        </StackPanel>
+
+        <StackPanel x:Name="Theme" Grid.Row="1" Grid.Column="0" Margin="20,0,0,0">
             <TextBlock Text="{x:Bind _resourceLoader.GetString('Theme')}"></TextBlock>
             <StackPanel>
                 <RadioButton x:Name="Default" Checked="SetTheme"
@@ -39,11 +51,11 @@
                              Content="{x:Bind _resourceLoader.GetString('Dark')}"></RadioButton>
             </StackPanel>
         </StackPanel>
-        
-        <StackPanel x:Name="Language" Grid.Row="1" Margin="20,20,0,0">
+
+        <StackPanel x:Name="Language" Grid.Row="2" Grid.Column="0" Margin="20,20,0,0">
             <TextBlock Text="{x:Bind _resourceLoader.GetString('Language')}"></TextBlock>
             <StackPanel>
-                <RadioButton x:Name="English" Checked="SetLanguage"
+                <RadioButton x:Name="English" Checked="SetEnglish"
                              IsChecked="{x:Bind IsChecked('Language', 'En-en')}"
                              Content="{x:Bind _resourceLoader.GetString('English')}"></RadioButton>
                 <RadioButton x:Name="Russian" Checked="SetRussian"
@@ -51,9 +63,5 @@
                              Content="{x:Bind _resourceLoader.GetString('Russian')}"></RadioButton>
             </StackPanel>
         </StackPanel>
-
-        <Button Grid.Row="2" Margin="0,20,0,0" Width="90" Height="40"
-                Content="OK" Command="{x:Bind ApplyChangesCommand}"
-                Style="{ThemeResource buttonStyle}"></Button>
     </Grid>
 </Page>

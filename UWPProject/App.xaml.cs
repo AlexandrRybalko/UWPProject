@@ -91,6 +91,30 @@ namespace UWPProject
             }
         }
 
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            base.OnActivated(args);
+            Frame rootFrame = Window.Current.Content as Frame;
+
+            if (args.Kind == ActivationKind.Protocol)
+            {
+                if (rootFrame == null)
+                {
+                    rootFrame = new Frame();
+
+                    rootFrame.NavigationFailed += OnNavigationFailed;
+
+                    Window.Current.Content = rootFrame;
+                }
+
+                ProtocolActivatedEventArgs eventArgs = args as ProtocolActivatedEventArgs;
+
+                rootFrame.Navigate(typeof(UnknownCameraPage), eventArgs.Uri.AbsoluteUri);                
+            }
+
+            Window.Current.Activate();
+        }
+
         /// <summary>
         /// Invoked when Navigation to a certain page fails
         /// </summary>

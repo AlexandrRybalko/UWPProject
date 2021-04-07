@@ -19,6 +19,7 @@ namespace UWPProject
         private ResourceLoader _resourceLoader;
         public CamerasViewModel CamerasViewModel { get; set; } 
         public ButtonCommand AddNewCameraCommand { get; }
+        public bool CanGoBack { get => (Window.Current.Content as Frame).CanGoBack; }
 
         public MainPage()
         {
@@ -41,6 +42,7 @@ namespace UWPProject
         private void MainPageLoaded(object sender, RoutedEventArgs e)
         {
             Navigation.SelectedItem = this.Random;
+            Navigation.IsBackButtonVisible = (CanGoBack) ? NavigationViewBackButtonVisible.Visible : NavigationViewBackButtonVisible.Collapsed;
         }
 
         private async void AddNewCamera()
@@ -94,7 +96,7 @@ namespace UWPProject
             }
             else
             {
-                string categoryName = args.SelectedItemContainer.Content.ToString();
+                string categoryName = args.SelectedItemContainer.Name.ToString();
                 CamerasViewModel.GetByCategory(categoryName);
             }            
         }
@@ -128,6 +130,16 @@ namespace UWPProject
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(MapPage));
+        }
+
+        private void Navigation_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        {
+            this.Frame.GoBack();
+        }
+
+        private void Country_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        {
+
         }
     }
 }
