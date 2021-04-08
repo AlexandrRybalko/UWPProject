@@ -1,21 +1,9 @@
-﻿using MjpegProcessor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System;
 using UWPProject.Models;
 using UWPProject.ViewModels;
 using Windows.Media.Core;
-using Windows.Storage.Streams;
-using Windows.System;
-using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 namespace UWPProject
@@ -63,9 +51,7 @@ namespace UWPProject
 
         private void GoBack()
         {
-            //this.Frame.GoBack();
-
-            this.Frame.Navigate(typeof(UnknownCameraPage), CameraViewModel.RtspAddress);
+            this.Frame.GoBack();
         }
 
         private void AddToFavourites()

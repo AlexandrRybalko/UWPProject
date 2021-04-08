@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UWPProject.ViewModels;
-using Windows.Devices.Geolocation;
-using Windows.Foundation;
+﻿using UWPProject.ViewModels;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
 

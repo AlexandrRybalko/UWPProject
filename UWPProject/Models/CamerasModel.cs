@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DAL;
 using DAL.Entities;
 using DAL.Repositories;
 using System;
