@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Background;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -78,6 +80,8 @@ namespace UWPProject
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+
+            StartBackgroundTask();
         }
 
         protected override void OnActivated(IActivatedEventArgs args)
@@ -126,6 +130,28 @@ namespace UWPProject
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        private async void StartBackgroundTask()
+        {
+            var task = BackgroundTaskRegistration.AllTasks.Values.FirstOrDefault(x => x.Name == "testTask");
+            if (task != null)
+            {
+                task.Unregister(true);
+            }
+
+            var taskBuilder = new BackgroundTaskBuilder();
+            taskBuilder.Name = "testTask";
+            taskBuilder.TaskEntryPoint = typeof(UpdateLocalDbBackgroundTask.UpdateLocalDbBackgroundTask).ToString();
+
+            ApplicationTrigger trigger = new ApplicationTrigger();
+
+            taskBuilder.SetTrigger(trigger);
+            taskBuilder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
+            task = taskBuilder.Register();
+            //task.Completed += UpdateLocalDbBackgroundTastCompleted;
+
+            await trigger.RequestAsync();
         }
     }
 }

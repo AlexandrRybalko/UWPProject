@@ -232,6 +232,10 @@
       <Project>{02c316c7-0b06-4063-bc0b-4ab90a94d050}</Project>
       <Name>DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UpdateLocalDbBackgroundTask\UpdateLocalDbBackgroundTask.csproj">
+      <Project>{9955fffa-0bdb-48d8-b26b-f05ef7a5bd8c}</Project>
+      <Name>UpdateLocalDbBackgroundTask</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MjpegProcessor">

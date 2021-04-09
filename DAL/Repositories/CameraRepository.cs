@@ -58,5 +58,51 @@ namespace DAL.Repositories
         {
             return _ctx.Cameras.FirstOrDefault(x => x.Id == id);
         }
+
+        public void UpdateCameras(IEnumerable<CameraEntity> newCameras)
+        {
+            var allCameras = this.GetAll().ToList();
+            List<CameraEntity> camerasToDelete = new List<CameraEntity>();
+            List<CameraEntity> camerasToAdd = new List<CameraEntity>();
+
+            foreach (var cameraToDelete in allCameras)
+            {
+                if (!newCameras.Contains(cameraToDelete, new CameraEqualityComparer()))
+                {
+                    camerasToDelete.Add(cameraToDelete);
+                }
+            }
+
+            foreach (var cameraToAdd in newCameras)
+            {
+                if (!allCameras.Contains(cameraToAdd, new CameraEqualityComparer()))
+                {
+                    camerasToAdd.Add(cameraToAdd);
+                }
+            }
+
+            _ctx.Cameras.RemoveRange(camerasToDelete);
+            _ctx.Cameras.AddRange(camerasToAdd);
+
+            _ctx.SaveChanges();
+        }
+    }
+
+    class CameraEqualityComparer : IEqualityComparer<CameraEntity>
+    {
+        public bool Equals(CameraEntity x, CameraEntity y)
+        {
+            if (x.RtspAddress.Equals(y.RtspAddress))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public int GetHashCode(CameraEntity obj)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

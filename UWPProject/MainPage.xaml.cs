@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using UWPProject.Models;
 using UWPProject.ViewModels;
+using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Resources;
 using Windows.Storage;
 using Windows.UI.Xaml;
