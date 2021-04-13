@@ -9,13 +9,13 @@ namespace UWPProject.ViewModels
 {
     public class MapViewModel
     {
-        private readonly CamerasModel _model;
+        private readonly CamerasModel model;
 
         public ObservableCollection<MapLayer> LandmarkLayers { get; }
 
         public MapViewModel()
         {
-            _model = new CamerasModel();
+            model = new CamerasModel();
             LandmarkLayers = new ObservableCollection<MapLayer>();
 
             this.AddCamerasLayer();
@@ -24,7 +24,7 @@ namespace UWPProject.ViewModels
         private void AddCamerasLayer()
         {
             var cameraMarks = new List<MapElement>();
-            var cameras = _model.GetAllCameras();
+            var cameras = model.GetAllCameras();
 
             foreach (var camera in cameras)
             {

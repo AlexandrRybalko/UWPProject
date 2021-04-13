@@ -11,9 +11,9 @@ namespace UWPProject
 {
     public sealed partial class UnknownCameraPage : Page
     {
-        private string _rtspAddress;
-        private FFmpegInterop.FFmpegInteropMSS _ffmpeg;
-        private ResourceLoader _resourceLoader;
+        private string rtspAddress;
+        private FFmpegInterop.FFmpegInteropMSS ffmpeg;
+        private ResourceLoader resourceLoader;
 
         public UnknownCameraViewModel UnknownCameraViewModel { get; set; }
         public ButtonCommand AddNewCameraCommand { get; set; }
@@ -26,11 +26,11 @@ namespace UWPProject
             string language = ApplicationData.Current.LocalSettings.Values["Language"] as string;
             if (!string.IsNullOrEmpty(language))
             {
-                this._resourceLoader = ResourceLoader.GetForCurrentView(language);
+                this.resourceLoader = ResourceLoader.GetForCurrentView(language);
             }
             else
             {
-                this._resourceLoader = ResourceLoader.GetForCurrentView("En-en");
+                this.resourceLoader = ResourceLoader.GetForCurrentView("En-en");
             }
 
             this.UnknownCameraViewModel = new UnknownCameraViewModel();
@@ -45,10 +45,10 @@ namespace UWPProject
 
             try
             {
-                _rtspAddress = e.Parameter as string;
-                UnknownCameraViewModel.RtspAddress = _rtspAddress;
-                this._ffmpeg = await FFmpegInterop.FFmpegInteropMSS.CreateFromUriAsync(_rtspAddress);
-                MediaStreamSource streamSource = _ffmpeg.GetMediaStreamSource();
+                rtspAddress = e.Parameter as string;
+                UnknownCameraViewModel.RtspAddress = rtspAddress;
+                this.ffmpeg = await FFmpegInterop.FFmpegInteropMSS.CreateFromUriAsync(rtspAddress);
+                MediaStreamSource streamSource = ffmpeg.GetMediaStreamSource();
                 this.MediaElement.SetMediaStreamSource(streamSource);
                 this.MediaElement.Play();
             }
@@ -83,7 +83,7 @@ namespace UWPProject
             AddButton.IsEnabled = false;
 
             ContentDialog dialog = new ContentDialog();
-            dialog.Content = _resourceLoader.GetString("CameraHasBeenAdded");
+            dialog.Content = resourceLoader.GetString("CameraHasBeenAdded");
             dialog.CloseButtonText = "OK";
 
             await dialog.ShowAsync();

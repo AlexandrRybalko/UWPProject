@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Linq;
+using UWPProject.Entities;
 using UWPProject.Models;
 
 namespace UWPProject.ViewModels
 {
     public class CameraViewModel : NotificationBase<Camera>
     {
-        private readonly CamerasModel _model = new CamerasModel();
+        private readonly CamerasModel model = new CamerasModel();
 
         public CameraViewModel(Camera camera = null) : base(camera) 
         {
@@ -17,7 +18,7 @@ namespace UWPProject.ViewModels
 
         public bool CanExecuteAddToFavouritesCommand()
         {
-            return !_model.GetFavourites().Any(x => x.Id == this.This.Id);
+            return !model.GetFavourites().Any(x => x.Id == this.This.Id);
         }
 
         public int Id
@@ -60,17 +61,17 @@ namespace UWPProject.ViewModels
 
         public void AddToFavourites()
         {
-            _model.AddToCategory(This.Id, "Favourites");
+            model.AddToCategory(This.Id, "Favourites");
         }
 
         public void AddToRecent()
         {
-            _model.AddToCategory(This.Id, "Recent");
+            model.AddToCategory(This.Id, "Recent");
         }
 
         public void RemoveFromFavourites()
         {
-            _model.RemoveFromCategory(This.Id, "Favourites");
+            model.RemoveFromCategory(This.Id, "Favourites");
         }
     }
 }

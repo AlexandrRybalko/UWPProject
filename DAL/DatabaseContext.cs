@@ -1,5 +1,8 @@
 ﻿using DAL.Entities;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
+using Windows.Storage;
 
 namespace DAL
 {
@@ -29,6 +32,36 @@ namespace DAL
             base.OnConfiguring(optionsBuilder);
 
             optionsBuilder.UseSqlite("Data Source=CamerasDatabase.db");
+
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "CamerasDatabase.db");
+            if (!File.Exists(dbpath))
+            {
+                using (SqliteConnection db =
+               new SqliteConnection($"Filename={dbpath}"))
+                {
+                    db.Open();
+
+                    string createCameras = "CREATE TABLE IF NOT EXISTS Cameras (Id INTEGER, RtspAddress TEXT NOT NULL," +
+                        "Country TEXT NOT NULL, City TEXT NOT NULL, Latitude REAL NOT NULL, Longitude REAL NOT NULL, " +
+                        "PRIMARY KEY(Id AUTOINCREMENT));";
+                    string createCategories = "CREATE TABLE IF NOT EXISTS Categories(Id INTEGER, Title TEXT NOT NULL," +
+                        "PRIMARY KEY(Id AUTOINCREMENT));" +
+                        "INSERT INTO Categories(Title) VALUES(\"Recent\");" +
+                        "INSERT INTO Categories(Title) VALUES(\"Favourites\");";
+                    string createCamerasCategories = "CREATE TABLE IF NOT EXISTS CamerasCategories(CameraId INTEGER, CategoryId INTEGER, " +
+                        "UpdatedTime TEXT, FOREIGN KEY(CategoryId) REFERENCES Categories(Id), FOREIGN KEY(CameraId) REFERENCES Cameras(Id)," +
+                        "PRIMARY KEY(CameraId, CategoryId));";
+
+                    SqliteCommand createTable = new SqliteCommand(createCameras, db);
+                    createTable.ExecuteReader();
+
+                    createTable = new SqliteCommand(createCategories, db);
+                    createTable.ExecuteReader();
+
+                    createTable = new SqliteCommand(createCamerasCategories, db);
+                    createTable.ExecuteReader();
+                }
+            }
         }
     }
 }

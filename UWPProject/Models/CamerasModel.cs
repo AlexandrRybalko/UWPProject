@@ -6,22 +6,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UWPProject.Entities;
 using Windows.Web.Http;
 
 namespace UWPProject.Models
 {
     public class CamerasModel
     {
-        private readonly CameraRepository _cameraRepository;
-        private readonly CategoryRepository _categoryRepository;
-        private readonly CameraCategoryRepository _cameraCategoryRepository;
-        private readonly IMapper _mapper;
+        private readonly CameraRepository cameraRepository;
+        private readonly CategoryRepository categoryRepository;
+        private readonly CameraCategoryRepository cameraCategoryRepository;
+        private readonly IMapper mapper;
 
         public CamerasModel()
         {
-            _cameraRepository = new CameraRepository();
-            _categoryRepository = new CategoryRepository();
-            _cameraCategoryRepository = new CameraCategoryRepository();
+            cameraRepository = new CameraRepository();
+            categoryRepository = new CategoryRepository();
+            cameraCategoryRepository = new CameraCategoryRepository();
 
             var mapperConfig = new MapperConfiguration(cfg =>
             {
@@ -31,16 +32,16 @@ namespace UWPProject.Models
                 cfg.CreateMap<Category, CategoryEntity>();
                 cfg.CreateMap<Category, CategoryEntity>().ReverseMap();
 
-                cfg.CreateMap<CamerasCategories, DAL.Entities.CamerasCategories>();
-                cfg.CreateMap<CamerasCategories, DAL.Entities.CamerasCategories>().ReverseMap();
+                cfg.CreateMap<Entities.CamerasCategories, DAL.Entities.CamerasCategories>();
+                cfg.CreateMap<Entities.CamerasCategories, DAL.Entities.CamerasCategories>().ReverseMap();
             });
-            _mapper = new Mapper(mapperConfig);
+            mapper = new Mapper(mapperConfig);
         }
 
         public IEnumerable<Camera> GetAllCameras()
         {
-            var cameras = _cameraRepository.GetAll();
-            return _mapper.Map<IEnumerable<Camera>>(cameras);
+            var cameras = cameraRepository.GetAll();
+            return mapper.Map<IEnumerable<Camera>>(cameras);
         }
 
         public IEnumerable<Camera> GetCamerasByCategory(string categoryName)
@@ -66,49 +67,49 @@ namespace UWPProject.Models
 
         public IEnumerable<Camera> GetRecent()
         {
-            var categoryId = _categoryRepository.GetAll()
+            var categoryId = categoryRepository.GetAll()
                 .FirstOrDefault(z => z.Title.Equals("Recent")).Id;
 
-            var recentCameras = _cameraRepository.GetAll()
+            var recentCameras = cameraRepository.GetAll()
                 .Where(x => x.CamerasCategories
                 .Any(y => y.CategoryId == categoryId))
                 .OrderByDescending(x => x.CamerasCategories
                 .FirstOrDefault(y => y.CategoryId == categoryId).UpdatedTime);
 
-            return _mapper.Map<IEnumerable<Camera>>(recentCameras);
+            return mapper.Map<IEnumerable<Camera>>(recentCameras);
         }
 
         public IEnumerable<Camera> GetFavourites()
         {
-            var favouriteCameras = _cameraRepository.GetAll()
+            var favouriteCameras = cameraRepository.GetAll()
                 .Where(x => x.CamerasCategories
-                .Any(y => y.CategoryId == _categoryRepository.GetAll()
+                .Any(y => y.CategoryId == categoryRepository.GetAll()
                 .FirstOrDefault(z => z.Title.Equals("Favourites")).Id));
 
-            return _mapper.Map<IEnumerable<Camera>>(favouriteCameras);
+            return mapper.Map<IEnumerable<Camera>>(favouriteCameras);
         }
 
         public Camera GetById(int id)
         {
-            var camera = _cameraRepository.GetById(id);
-            return _mapper.Map<Camera>(camera);
+            var camera = cameraRepository.GetById(id);
+            return mapper.Map<Camera>(camera);
         }
 
         public void AddCamera(Camera camera)
         {
-            var cameraEntity = _mapper.Map<CameraEntity>(camera);
-            _cameraRepository.Add(cameraEntity);
+            var cameraEntity = mapper.Map<CameraEntity>(camera);
+            cameraRepository.Add(cameraEntity);
         }
 
         public void AddToCategory(int cameraId, string categoryName)
         {
-            _cameraRepository.AddToCategory(cameraId, categoryName);
+            cameraRepository.AddToCategory(cameraId, categoryName);
         }
 
         public void RemoveFromCategory(int cameraId, string categoryName)
         {
-            int categoryId = _categoryRepository.GetAll().FirstOrDefault(x => x.Title.Equals(categoryName)).Id;
-            _cameraCategoryRepository.RemoveFromCategory(cameraId, categoryId);
+            int categoryId = categoryRepository.GetAll().FirstOrDefault(x => x.Title.Equals(categoryName)).Id;
+            cameraCategoryRepository.RemoveFromCategory(cameraId, categoryId);
         }
 
         public async Task GetLatitude(Camera camera)
@@ -178,31 +179,5 @@ namespace UWPProject.Models
 
             return result;
         }
-    }
-
-    public class Camera
-    {
-        public int Id { get; set; }
-        public string RtspAddress { get; set; }
-        public string Country { get; set; }
-        public string City { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-
-        public ICollection<CamerasCategories> CamerasCategories { get; set; }
-    }
-
-    public class Category
-    {
-        public int Id { get; set; }
-        public string Title { get; set; }
-
-        public ICollection<CamerasCategories> CamerasCategories { get; set; }
-    }
-
-    public class CamerasCategories
-    {
-        public int CameraId { get; set; }
-        public int CategoryId { get; set; }
     }
 }

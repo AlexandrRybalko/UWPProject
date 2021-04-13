@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateLocalDbBackgroundTask", "UpdateLocalDbBackgroundTask\UpdateLocalDbBackgroundTask.csproj", "{9955FFFA-0BDB-48D8-B26B-F05EF7A5BD8C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UwpBackend", "..\..\source\repos\UwpBackend\UwpBackend\UwpBackend.csproj", "{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,6 +91,26 @@ Global
 		{9955FFFA-0BDB-48D8-B26B-F05EF7A5BD8C}.Release|x64.Build.0 = Release|x64
 		{9955FFFA-0BDB-48D8-B26B-F05EF7A5BD8C}.Release|x86.ActiveCfg = Release|x86
 		{9955FFFA-0BDB-48D8-B26B-F05EF7A5BD8C}.Release|x86.Build.0 = Release|x86
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Debug|ARM.Build.0 = Debug|Any CPU
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Debug|x64.Build.0 = Debug|Any CPU
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Debug|x86.Build.0 = Debug|Any CPU
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Release|ARM.ActiveCfg = Release|Any CPU
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Release|ARM.Build.0 = Release|Any CPU
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Release|ARM64.Build.0 = Release|Any CPU
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Release|x64.ActiveCfg = Release|Any CPU
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Release|x64.Build.0 = Release|Any CPU
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Release|x86.ActiveCfg = Release|Any CPU
+		{9B5D18F7-B1A0-4A99-947A-88AA8E89C4FC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

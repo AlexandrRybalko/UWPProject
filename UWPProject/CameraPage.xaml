@@ -24,23 +24,25 @@
         </Grid.RowDefinitions>
         <Grid Margin="0, 20, 0, 0" Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <TextBlock Margin="20, 0, 0, 0" VerticalAlignment="Center" 
                        Grid.Column="0" Text="{x:Bind CameraViewModel.ToStringProperty}"></TextBlock>
-            <Button Grid.Column="1" x:Name="BackButton" ToolTipService.ToolTip="Back" Width="40" Height="40"
+            <Button Grid.Column="1" x:Name="BackButton" ToolTipService.ToolTip="{x:Bind resourceLoader.GetString('Back')}" Width="40" Height="40"
                     Style="{ThemeResource buttonStyle}"
                      FontFamily="Segoe MDL2 Assets" Content="&#xE72B;" Command="{x:Bind Path=GoBackCommand}">
             </Button>
         </Grid>
 
         <MediaElement Name="MediaElement" Width="1000" Height="600" Grid.Row="1"></MediaElement>
+
+        <Image Name="Im"></Image>
         
         <StackPanel Orientation="Horizontal" Grid.Row="2">
             <Button x:Name="AddToFavouritesButton" Width="44" Height="40" 
                     Grid.Row="2" Style="{ThemeResource buttonStyle}">
-                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEB51;"/>
+                <FontIcon x:Name="HeartIcon" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEB51;"/>
             </Button>
         </StackPanel>
     </Grid>

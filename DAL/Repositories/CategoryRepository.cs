@@ -7,16 +7,16 @@ namespace DAL.Repositories
 {
     public class CategoryRepository
     {
-        private readonly DatabaseContext _ctx;
+        private readonly DatabaseContext ctx;
 
         public CategoryRepository()
         {
-            _ctx = new DatabaseContext();
+            ctx = new DatabaseContext();
         }
 
         public IEnumerable<CategoryEntity> GetAll()
         {
-            return _ctx.Categories.Include(x => x.CamerasCategories).ToList();
+            return ctx.Categories.Include(x => x.CamerasCategories).ToList();
         }
     }
 }

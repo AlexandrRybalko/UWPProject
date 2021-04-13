@@ -2,66 +2,67 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using UWPProject.Entities;
 using UWPProject.Models;
 
 namespace UWPProject.ViewModels
 {
     public class CamerasViewModel : NotificationBase
     {
-        private readonly CamerasModel _model;
-        private ObservableCollection<CameraViewModel> _cameras;
+        private readonly CamerasModel model;
+        private ObservableCollection<CameraViewModel> cameras;
 
         public CamerasViewModel()
         {
-            _model = new CamerasModel();
-            _cameras = new ObservableCollection<CameraViewModel>();
+            model = new CamerasModel();
+            this.cameras = new ObservableCollection<CameraViewModel>();
 
-            var cameras = _model.GetRandom();
+            var cameras = model.GetRandom();
             foreach (var camera in cameras)
             {
                 var cameraViewModel = new CameraViewModel(camera);
-                _cameras.Add(cameraViewModel);
+                this.cameras.Add(cameraViewModel);
             }
         }
 
         public ObservableCollection<CameraViewModel> Cameras
         {
-            get { return _cameras; }
-            set { SetProperty(ref _cameras, value); }
+            get { return cameras; }
+            set { SetProperty(ref cameras, value); }
         }
 
         public Enums.Category SelectedCategory { get; set; }
 
         public void AddCamera(Camera camera)
         {
-            _model.AddCamera(camera);
-            UpdateCameras(_model.GetRandom());
+            model.AddCamera(camera);
+            UpdateCameras(model.GetRandom());
         }
 
         public void GetByCategory(string categoryName)
         {
-            UpdateCameras(_model.GetCamerasByCategory(categoryName));
+            UpdateCameras(model.GetCamerasByCategory(categoryName));
         }
 
         public Camera GetById(int id)
         {
-            return _model.GetById(id);
+            return model.GetById(id);
         }
 
         public void SearchRandomCameras(string query)
         {
             if (string.IsNullOrWhiteSpace(query))
             {
-                UpdateCameras(_model.GetRandom());
+                UpdateCameras(model.GetRandom());
                 return;
             }
 
-            _cameras.Clear();
+            cameras.Clear();
 
-            foreach (var camera in _model.GetAllCameras().Where(x => x.City.Contains(query) || x.Country.Contains(query)))
+            foreach (var camera in model.GetAllCameras().Where(x => x.City.Contains(query) || x.Country.Contains(query)))
             {
                 var cameraViewModel = new CameraViewModel(camera);
-                _cameras.Add(cameraViewModel);
+                cameras.Add(cameraViewModel);
             }
         }
 
@@ -69,17 +70,17 @@ namespace UWPProject.ViewModels
         {
             if (string.IsNullOrWhiteSpace(query))
             {
-                UpdateCameras(_model.GetFavourites());
+                UpdateCameras(model.GetFavourites());
                 return;
             }
 
-            _cameras.Clear();
-            var searchedCameras = _model.GetFavourites();
+            cameras.Clear();
+            var searchedCameras = model.GetFavourites();
 
             foreach (var camera in searchedCameras.Where(x => x.City.Contains(query) || x.Country.Contains(query)))
             {
                 var cameraViewModel = new CameraViewModel(camera);
-                _cameras.Add(cameraViewModel);
+                cameras.Add(cameraViewModel);
             }
         }
 
@@ -87,52 +88,52 @@ namespace UWPProject.ViewModels
         {
             if (string.IsNullOrWhiteSpace(query))
             {
-                UpdateCameras(_model.GetRecent());
+                UpdateCameras(model.GetRecent());
                 return;
             }
 
-            _cameras.Clear();
-            var searchedCameras = _model.GetRecent();
+            cameras.Clear();
+            var searchedCameras = model.GetRecent();
 
             foreach (var camera in searchedCameras.Where(x => x.City.Contains(query) || x.Country.Contains(query)))
             {
                 var cameraViewModel = new CameraViewModel(camera);
-                _cameras.Add(cameraViewModel);
+                cameras.Add(cameraViewModel);
             }
         }
 
         private void UpdateCameras(IEnumerable<Camera> cameras)
         {
-            _cameras.Clear();
+            this.cameras.Clear();
 
             foreach (var camera in cameras)
             {
                 var cameraViewModel = new CameraViewModel(camera);
-                _cameras.Add(cameraViewModel);
+                this.cameras.Add(cameraViewModel);
             }
         }
 
         public void UpdateCameras()
         {
-            _cameras.Clear();
+            this.cameras.Clear();
 
-            var cameras = _model.GetAllCameras();
+            var cameras = model.GetAllCameras();
 
             foreach (var camera in cameras)
             {
                 var cameraViewModel = new CameraViewModel(camera);
-                _cameras.Add(cameraViewModel);
+                this.cameras.Add(cameraViewModel);
             }
         }
 
         public async Task GetLatitude(Camera camera)
         {
-            await _model.GetLatitude(camera);
+            await model.GetLatitude(camera);
         }
 
         public async Task GetLongitude(Camera camera)
         {
-             await _model.GetLongitude(camera);
+             await model.GetLongitude(camera);
         }
     }
 }

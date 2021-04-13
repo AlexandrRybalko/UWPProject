@@ -1,15 +1,16 @@
 ﻿using System.Threading.Tasks;
+using UWPProject.Entities;
 using UWPProject.Models;
 
 namespace UWPProject.ViewModels
 {
     public class NewCameraViewModel : NotificationBase<Camera>
     {
-        private readonly CamerasModel _model;
+        private readonly CamerasModel model;
 
         public NewCameraViewModel()
         {
-            _model = new CamerasModel();
+            model = new CamerasModel();
         }
 
         public string CameraCountry
@@ -58,7 +59,7 @@ namespace UWPProject.ViewModels
             }
             else
             {
-                await _model.GetLatitude(This);
+                await model.GetLatitude(This);
             }
 
             if (!string.IsNullOrWhiteSpace(Longitude) && double.TryParse(Longitude, out longitude))
@@ -67,10 +68,10 @@ namespace UWPProject.ViewModels
             }
             else
             {
-                await _model.GetLongitude(This);
+                await model.GetLongitude(This);
             }
 
-            _model.AddCamera(This);
+            model.AddCamera(This);
         }
 
         public bool IsValid()

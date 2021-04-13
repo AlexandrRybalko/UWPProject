@@ -30,13 +30,13 @@
                                 PaneDisplayMode="Top" SelectionChanged="Navigation_SelectionChanged"
                                 BackRequested="Navigation_BackRequested">
                     <NavigationView.MenuItems>
-                        <NavigationViewItem x:Name="Random" Content="{x:Bind _resourceLoader.GetString('Random')}" />
-                        <NavigationViewItem x:Name="Recent" Content="{x:Bind _resourceLoader.GetString('Recent')}"/>
-                        <NavigationViewItem x:Name="Favourites" Content="{x:Bind _resourceLoader.GetString('Favourites')}"/>
+                        <NavigationViewItem x:Name="Random" Content="{x:Bind resourceLoader.GetString('Random')}" />
+                        <NavigationViewItem x:Name="Recent" Content="{x:Bind resourceLoader.GetString('Recent')}"/>
+                        <NavigationViewItem x:Name="Favourites" Content="{x:Bind resourceLoader.GetString('Favourites')}"/>
                     </NavigationView.MenuItems>                    
                 </NavigationView>
-                <SearchBox Name="SearchBox" PlaceholderText="{x:Bind _resourceLoader.GetString('SearchCamera')}" MinWidth="250" QueryChanged="SearchBox_QueryChanged"></SearchBox>
-                <Button Click="Button_Click" Content="{x:Bind _resourceLoader.GetString('Map')}"></Button>
+                <SearchBox Name="SearchBox" PlaceholderText="{x:Bind resourceLoader.GetString('SearchCamera')}" MinWidth="250" QueryChanged="SearchBox_QueryChanged"></SearchBox>
+                <Button Click="Button_Click" Content="{x:Bind resourceLoader.GetString('Map')}"></Button>
             </StackPanel>
 
             <GridView VerticalAlignment="Top" Height="620" Grid.Row="1" x:Name="GridView" ItemsSource="{x:Bind CamerasViewModel.Cameras, Mode=OneWay}"
@@ -62,20 +62,20 @@
 
             <CommandBar Grid.Row="2">
                 <AppBarButton AllowFocusOnInteraction="True" Name="AddCameraButton" Icon="Add"
-                              ToolTipService.ToolTip="{x:Bind _resourceLoader.GetString('AddNewCameraTextBlock')}">
+                              ToolTipService.ToolTip="{x:Bind resourceLoader.GetString('AddNewCameraTextBlock')}">
                     <AppBarButton.Flyout>
                         <Flyout x:Name="AddCameraFlyout" Placement="Full">
                             <RelativePanel x:Name="AddCameraForm">
-                                <TextBlock x:Name="AddNewCameraTextBlock" Text="{x:Bind _resourceLoader.GetString('AddNewCameraTextBlock')}"></TextBlock>
+                                <TextBlock x:Name="AddNewCameraTextBlock" Text="{x:Bind resourceLoader.GetString('AddNewCameraTextBlock')}"></TextBlock>
                                 <StackPanel x:Name="Camera" Margin="20">
-                                    <TextBox Width="160" x:Name="Country" Header="{x:Bind _resourceLoader.GetString('Country')}" 
-                                             Text="{x:Bind _newCamera.CameraCountry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,24,0,0" HorizontalAlignment="Left" LostFocus="TextBoxLostFocus"/>
-                                    <TextBox Width="160" x:Name="City" Header="{x:Bind _resourceLoader.GetString('City')}" 
-                                             Text="{x:Bind _newCamera.CameraCity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,24,0,0" HorizontalAlignment="Left" LostFocus="TextBoxLostFocus"/>
-                                    <TextBox Width="400" x:Name="RtspAddressTextBox" Header="{x:Bind _resourceLoader.GetString('RtspAddress')}" 
-                                             Text="{x:Bind _newCamera.RtspAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,24,0,0" HorizontalAlignment="Left" LostFocus="TextBoxLostFocus"/>
-                                    <TextBox x:Name="Latitude" Header="{x:Bind _resourceLoader.GetString('Latitude')}" Text="{x:Bind _newCamera.Latitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                                    <TextBox x:Name="Longitude" Header="{x:Bind _resourceLoader.GetString('Longitude')}" Text="{x:Bind _newCamera.Longitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                    <TextBox Width="160" x:Name="Country" Header="{x:Bind resourceLoader.GetString('Country')}" 
+                                             Text="{x:Bind newCamera.CameraCountry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,24,0,0" HorizontalAlignment="Left" LostFocus="TextBoxLostFocus"/>
+                                    <TextBox Width="160" x:Name="City" Header="{x:Bind resourceLoader.GetString('City')}" 
+                                             Text="{x:Bind newCamera.CameraCity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,24,0,0" HorizontalAlignment="Left" LostFocus="TextBoxLostFocus"/>
+                                    <TextBox Width="400" x:Name="RtspAddressTextBox" Header="{x:Bind resourceLoader.GetString('RtspAddress')}" 
+                                             Text="{x:Bind newCamera.RtspAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,24,0,0" HorizontalAlignment="Left" LostFocus="TextBoxLostFocus"/>
+                                    <TextBox x:Name="Latitude" Header="{x:Bind resourceLoader.GetString('Latitude')}" Text="{x:Bind newCamera.Latitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                    <TextBox x:Name="Longitude" Header="{x:Bind resourceLoader.GetString('Longitude')}" Text="{x:Bind newCamera.Longitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                                 </StackPanel>
                                 <StackPanel x:Name="Save" Orientation="Horizontal" RelativePanel.Below="Camera">
                                     <Button x:Name="Done" Content="Save" Margin="24" Command="{x:Bind AddNewCameraCommand}" />
@@ -84,6 +84,8 @@
                         </Flyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
+                <AppBarButton x:Name="RefreshButton" Icon="Refresh" ToolTipService.ToolTip="{x:Bind resourceLoader.GetString('UpdateCameras')}"
+                              Command="{x:Bind RefreshCamerasCommand}"></AppBarButton>
             </CommandBar>
         </Grid>
     </Grid>

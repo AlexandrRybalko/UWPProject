@@ -122,6 +122,9 @@
     <Compile Include="CameraPage.xaml.cs">
       <DependentUpon>CameraPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Camera.cs" />
+    <Compile Include="Entities\CamerasCategories.cs" />
+    <Compile Include="Entities\Category.cs" />
     <Compile Include="Enums\Category.cs" />
     <Compile Include="ListExtension.cs" />
     <Compile Include="MainPage.xaml.cs">

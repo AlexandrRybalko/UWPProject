@@ -1,6 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using UWPProject.Models;
+using System.Net.Http;
+using System.Threading.Tasks;
+using UWPProject.Entities;
 using UWPProject.ViewModels;
 using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Resources;
@@ -17,30 +22,34 @@ namespace UWPProject
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private ResourceLoader _resourceLoader;
-        private NewCameraViewModel _newCamera;
+        private ResourceLoader resourceLoader;
+        private NewCameraViewModel newCamera;
+        private FFmpegInterop.FFmpegInteropMSS ffmpeg;
 
         public CamerasViewModel CamerasViewModel { get; set; }
         public ButtonCommand AddNewCameraCommand { get; set; }
+        public ButtonCommand RefreshCamerasCommand { get; set; }
         public bool CanGoBack { get => (Window.Current.Content as Frame).CanGoBack; }
 
         public MainPage()
         {
             this.InitializeComponent();
             CamerasViewModel = new CamerasViewModel();
-            _newCamera = new NewCameraViewModel();
+            newCamera = new NewCameraViewModel();
 
             string language = ApplicationData.Current.LocalSettings.Values["Language"] as string;
             if (!string.IsNullOrEmpty(language))
             {
-                this._resourceLoader = ResourceLoader.GetForCurrentView(language);
+                this.resourceLoader = ResourceLoader.GetForCurrentView(language);
             }
             else
             {
-                this._resourceLoader = ResourceLoader.GetForCurrentView("En-en");
+                this.resourceLoader = ResourceLoader.GetForCurrentView("En-en");
+                ApplicationData.Current.LocalSettings.Values["Language"] = "En-en";
             }
 
             AddNewCameraCommand = new ButtonCommand(new Action(AddCamera), () => false);
+            RefreshCamerasCommand = new ButtonCommand(new Action(StartBackgroundTask));
         }
 
         private void MainPageLoaded(object sender, RoutedEventArgs e)
@@ -69,6 +78,28 @@ namespace UWPProject
                 string categoryName = args.SelectedItemContainer.Name.ToString();
                 CamerasViewModel.GetByCategory(categoryName);
             }            
+        }
+
+        private async void StartBackgroundTask()
+        {
+            var task = BackgroundTaskRegistration.AllTasks.Values.FirstOrDefault(x => x.Name == "testTask");
+            if (task != null)
+            {
+                task.Unregister(true);
+            }
+
+            var taskBuilder = new BackgroundTaskBuilder();
+            taskBuilder.Name = "testTask";
+            taskBuilder.TaskEntryPoint = typeof(UpdateLocalDbBackgroundTask.UpdateLocalDbBackgroundTask).ToString();
+
+            ApplicationTrigger trigger = new ApplicationTrigger();
+
+            taskBuilder.SetTrigger(trigger);
+            taskBuilder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
+            task = taskBuilder.Register();
+            //task.Completed += (BackgroundTaskRegistration sender, BackgroundTaskCompletedEventArgs args) => CamerasViewModel.UpdateCameras();
+
+            await trigger.RequestAsync();
         }
 
         private void SearchBox_QueryChanged(SearchBox sender, SearchBoxQueryChangedEventArgs args)
@@ -104,14 +135,22 @@ namespace UWPProject
 
         private void TextBoxLostFocus(object sender, RoutedEventArgs e)
         {
-            Done.Command = new ButtonCommand(new Action(AddCamera), () => _newCamera.IsValid());
+            Done.Command = new ButtonCommand(new Action(AddCamera), () => newCamera.IsValid());
         }
 
         private async void AddCamera()
         {
-            await _newCamera.AddNewCamera();
-            CamerasViewModel.UpdateCameras();
-            HideFlyout();
+            try
+            {
+                ffmpeg = await FFmpegInterop.FFmpegInteropMSS.CreateFromUriAsync(RtspAddressTextBox.Text);
+                await newCamera.AddNewCamera();
+                CamerasViewModel.UpdateCameras();
+                HideFlyout();
+            }
+            catch(Exception e)
+            {
+                ShowContentDialog(e.Message);
+            }
         }
 
         private async void HideFlyout()
@@ -124,11 +163,20 @@ namespace UWPProject
             Longitude.Text = "0.0";
 
             ContentDialog dialog = new ContentDialog();
-            dialog.Content = _resourceLoader.GetString("CameraHasBeenAdded");
+            dialog.Content = resourceLoader.GetString("CameraHasBeenAdded");
             dialog.CloseButtonText = "OK";
             dialog.CloseButtonStyle = (Style)this.Resources["buttonStyle"];
 
             await dialog.ShowAsync();            
+        }
+
+        private async void ShowContentDialog(string message)
+        {
+            ContentDialog dialog = new ContentDialog();
+            dialog.Content = message;
+            dialog.CloseButtonText = "OK";
+
+            await dialog.ShowAsync();
         }
     }
 }

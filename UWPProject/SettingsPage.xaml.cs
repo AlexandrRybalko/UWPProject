@@ -8,7 +8,7 @@ namespace UWPProject
 {
     public sealed partial class SettingsPage : Page
     {
-        private ResourceLoader _resourceLoader;
+        private ResourceLoader resourceLoader;
         private int c;
 
         public ButtonCommand GoBackCommand { get; set; }
@@ -21,11 +21,11 @@ namespace UWPProject
 
             if (string.IsNullOrEmpty(language))
             {
-                _resourceLoader = ResourceLoader.GetForCurrentView("En-en");
+                resourceLoader = ResourceLoader.GetForCurrentView("En-en");
             }
             else
             {
-                _resourceLoader = ResourceLoader.GetForCurrentView(language);
+                resourceLoader = ResourceLoader.GetForCurrentView(language);
             }
 
             this.GoBackCommand = new ButtonCommand(new Action(() => this.Frame.GoBack()), () => true);
@@ -40,7 +40,7 @@ namespace UWPProject
                 ApplicationData.Current.LocalSettings.Values["Theme"] = themeTitle;
 
                 ContentDialog dialog = new ContentDialog();
-                dialog.Content = _resourceLoader.GetString("DialogMessage");
+                dialog.Content = resourceLoader.GetString("DialogMessage");
                 dialog.CloseButtonText = "OK";
                 dialog.CloseButtonStyle = (Style)this.Resources["buttonStyle"];
 

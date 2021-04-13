@@ -38,29 +38,29 @@
         </StackPanel>
 
         <StackPanel x:Name="Theme" Grid.Row="1" Grid.Column="0" Margin="20,0,0,0">
-            <TextBlock Text="{x:Bind _resourceLoader.GetString('Theme')}"></TextBlock>
+            <TextBlock Text="{x:Bind resourceLoader.GetString('Theme')}"></TextBlock>
             <StackPanel>
                 <RadioButton x:Name="Default" Checked="SetTheme"
                              IsChecked="{x:Bind IsChecked('Theme', 'Default')}"
-                             Content="{x:Bind _resourceLoader.GetString('Default')}"></RadioButton>
+                             Content="{x:Bind resourceLoader.GetString('Default')}"></RadioButton>
                 <RadioButton x:Name="Light" Checked="SetTheme"
                              IsChecked="{x:Bind IsChecked('Theme', 'Light')}"
-                             Content="{x:Bind _resourceLoader.GetString('Light')}"></RadioButton>
+                             Content="{x:Bind resourceLoader.GetString('Light')}"></RadioButton>
                 <RadioButton x:Name="Dark" Checked="SetTheme"
                              IsChecked="{x:Bind IsChecked('Theme', 'Dark')}"
-                             Content="{x:Bind _resourceLoader.GetString('Dark')}"></RadioButton>
+                             Content="{x:Bind resourceLoader.GetString('Dark')}"></RadioButton>
             </StackPanel>
         </StackPanel>
 
         <StackPanel x:Name="Language" Grid.Row="2" Grid.Column="0" Margin="20,20,0,0">
-            <TextBlock Text="{x:Bind _resourceLoader.GetString('Language')}"></TextBlock>
+            <TextBlock Text="{x:Bind resourceLoader.GetString('Language')}"></TextBlock>
             <StackPanel>
                 <RadioButton x:Name="English" Checked="SetEnglish"
                              IsChecked="{x:Bind IsChecked('Language', 'En-en')}"
-                             Content="{x:Bind _resourceLoader.GetString('English')}"></RadioButton>
+                             Content="{x:Bind resourceLoader.GetString('English')}"></RadioButton>
                 <RadioButton x:Name="Russian" Checked="SetRussian"
                              IsChecked="{x:Bind IsChecked('Language', 'Ru-ru')}"
-                             Content="{x:Bind _resourceLoader.GetString('Russian')}"></RadioButton>
+                             Content="{x:Bind resourceLoader.GetString('Russian')}"></RadioButton>
             </StackPanel>
         </StackPanel>
     </Grid>

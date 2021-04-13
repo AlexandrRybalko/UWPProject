@@ -1,10 +1,13 @@
 ﻿using DAL;
 using DAL.Entities;
 using DAL.Repositories;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
@@ -13,31 +16,40 @@ namespace UpdateLocalDbBackgroundTask
 {
     public sealed class UpdateLocalDbBackgroundTask : IBackgroundTask
     {
-        private BackgroundTaskDeferral _deferral;
-        private CamerasDbContext _ctx = new CamerasDbContext();
-        private CameraRepository _cameraRepository = new CameraRepository();
+        private BackgroundTaskDeferral deferral;
+        private CameraRepository cameraRepository = new CameraRepository();
 
-        public void Run(IBackgroundTaskInstance taskInstance)
+        public async void Run(IBackgroundTaskInstance taskInstance)
         {
-            _deferral = taskInstance.GetDeferral();
+            deferral = taskInstance.GetDeferral();
 
-            var newCameras =_ctx.GetNewCameras();
-            List<CameraEntity> cameras = new List<CameraEntity>();
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync(new Uri("https://localhost:44389/api/Cameras"));
+            response.EnsureSuccessStatusCode();
 
-            foreach (var camera in newCameras)
+            var contentStream = await response.Content.ReadAsStreamAsync();
+
+            var streamReader = new StreamReader(contentStream);
+            var jsonReader = new JsonTextReader(streamReader);
+
+            JsonSerializer serializer = new JsonSerializer();
+
+            try
             {
-                cameras.Add(new CameraEntity
+                var cameras = serializer.Deserialize<List<CameraEntity>>(jsonReader);
+                foreach (var camera in cameras)
                 {
-                    RtspAddress = camera.RtspAddress,
-                    Country = camera.Country,
-                    City = camera.City,
-                    Latitude = camera.Latitude,
-                    Longitude = camera.Longitude
-                });
+                    camera.Id = 0;
+                }
+
+                cameraRepository.UpdateCameras(cameras);
+            }
+            catch (JsonReaderException)
+            {
+                Console.WriteLine("Invalid JSON.");
             }
 
-            _cameraRepository.UpdateCameras(cameras);
-            _deferral.Complete();
+            deferral.Complete();
         }
     }
 }

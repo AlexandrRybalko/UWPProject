@@ -29,29 +29,29 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Content="{x:Bind _resourceLoader.GetString('NavigateToMainPage')}"
+            <Button Grid.Column="0" Content="{x:Bind resourceLoader.GetString('NavigateToMainPage')}"
                     Command="{x:Bind NavigateToMainPageCommand}"
-                    MinWidth="100" Height="45" ToolTipService.ToolTip="{x:Bind _resourceLoader.GetString('GoToMainPageButtonToolTip')}"></Button>
+                    MinWidth="100" Height="45" ToolTipService.ToolTip="{x:Bind resourceLoader.GetString('GoToMainPageButtonToolTip')}"></Button>
         </Grid>
 
         <MediaElement Name="MediaElement" Width="1000" Height="600" Grid.Row="1"></MediaElement>
 
         <StackPanel Orientation="Horizontal" Grid.Row="2">
-            <Button x:Name="AddButton" ToolTipService.ToolTip="{x:Bind _resourceLoader.GetString('AddUnknownCamera')}">
+            <Button x:Name="AddButton" ToolTipService.ToolTip="{x:Bind resourceLoader.GetString('AddUnknownCamera')}">
                 <Button.Flyout>
                     <Flyout x:Name="AddCameraFlyout" Placement="Full">
                         <RelativePanel x:Name="AddCameraForm">
-                            <TextBlock x:Name="AddNewCameraTextBlock" Text="{x:Bind _resourceLoader.GetString('AddNewCameraTextBlock')}"></TextBlock>
+                            <TextBlock x:Name="AddNewCameraTextBlock" Text="{x:Bind resourceLoader.GetString('AddNewCameraTextBlock')}"></TextBlock>
                             <StackPanel x:Name="Camera" Margin="20">
-                                <TextBox Width="160" x:Name="Country" Header= "{x:Bind _resourceLoader.GetString('Country')}" 
+                                <TextBox Width="160" x:Name="Country" Header= "{x:Bind resourceLoader.GetString('Country')}" 
                                          Margin="0,24,0,0" HorizontalAlignment="Left" Text="{x:Bind UnknownCameraViewModel.CameraCountry, 
                                          Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" LostFocus="TextBoxLostFocus"/>
-                                <TextBox Width="160" x:Name="City" Header="{x:Bind _resourceLoader.GetString('City')}" Margin="0,24,0,0" 
+                                <TextBox Width="160" x:Name="City" Header="{x:Bind resourceLoader.GetString('City')}" Margin="0,24,0,0" 
                                          HorizontalAlignment="Left" Text="{x:Bind UnknownCameraViewModel.CameraCity, Mode=TwoWay,
                                          UpdateSourceTrigger=PropertyChanged}" LostFocus="TextBoxLostFocus"/>
-                                <TextBox x:Name="Latitude" Header="{x:Bind _resourceLoader.GetString('Latitude')}"
+                                <TextBox x:Name="Latitude" Header="{x:Bind resourceLoader.GetString('Latitude')}"
                                          Text="{x:Bind UnknownCameraViewModel.Latitude, Mode=TwoWay}"></TextBox>
-                                <TextBox x:Name="Longitude" Header="{x:Bind _resourceLoader.GetString('Longitude')}"
+                                <TextBox x:Name="Longitude" Header="{x:Bind resourceLoader.GetString('Longitude')}"
                                          Text="{x:Bind UnknownCameraViewModel.Longitude, Mode=TwoWay}"></TextBox>
                             </StackPanel>
                             <StackPanel x:Name="Save" Orientation="Horizontal" RelativePanel.Below="Camera">

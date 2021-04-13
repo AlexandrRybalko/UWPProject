@@ -6,24 +6,24 @@ namespace DAL.Repositories
 {
     public class CameraCategoryRepository
     {
-        private readonly DatabaseContext _ctx;
+        private readonly DatabaseContext ctx;
 
         public CameraCategoryRepository()
         {
-            _ctx = new DatabaseContext();
+            ctx = new DatabaseContext();
         }
 
         public IEnumerable<CamerasCategories> GetAll()
         {
-            return _ctx.CamerasCategories.ToList();
+            return ctx.CamerasCategories.ToList();
         }
 
         public void RemoveFromCategory(int cameraId, int categoryId)
         {
-            var cameraCategory = _ctx.CamerasCategories.FirstOrDefault(x => x.CameraId == cameraId && x.CategoryId == categoryId);
-            _ctx.CamerasCategories.Remove(cameraCategory);
+            var cameraCategory = ctx.CamerasCategories.FirstOrDefault(x => x.CameraId == cameraId && x.CategoryId == categoryId);
+            ctx.CamerasCategories.Remove(cameraCategory);
 
-            _ctx.SaveChanges();
+            ctx.SaveChanges();
         }
     }
 }

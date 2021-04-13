@@ -123,8 +123,17 @@
   <data name="AddUnknownCamera" xml:space="preserve">
     <value>Add this camera</value>
   </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
   <data name="CameraHasBeenAdded" xml:space="preserve">
     <value>The camera has been added</value>
+  </data>
+  <data name="CameraHasBeenAddedToFavourites" xml:space="preserve">
+    <value>The camera has been added to the favourites</value>
+  </data>
+  <data name="CameraHasBeenRemovedFromFavourites" xml:space="preserve">
+    <value>The camera has been removed from the favourites</value>
   </data>
   <data name="City" xml:space="preserve">
     <value>City</value>
@@ -188,5 +197,8 @@
   </data>
   <data name="TopRated" xml:space="preserve">
     <value>TopRated</value>
+  </data>
+  <data name="UpdateCameras" xml:space="preserve">
+    <value>Update DB</value>
   </data>
 </root>

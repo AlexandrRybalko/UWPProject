@@ -123,8 +123,17 @@
   <data name="AddUnknownCamera" xml:space="preserve">
     <value>Добавить эту камеру</value>
   </data>
+  <data name="Back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
   <data name="CameraHasBeenAdded" xml:space="preserve">
     <value>Камера добавлена</value>
+  </data>
+  <data name="CameraHasBeenAddedToFavourites" xml:space="preserve">
+    <value>Камера добавлена в избранное</value>
+  </data>
+  <data name="CameraHasBeenRemovedFromFavourites" xml:space="preserve">
+    <value>Камера удалена из избранного</value>
   </data>
   <data name="City" xml:space="preserve">
     <value>Город</value>
@@ -188,5 +197,8 @@
   </data>
   <data name="TopRated" xml:space="preserve">
     <value>Самые популярные</value>
+  </data>
+  <data name="UpdateCameras" xml:space="preserve">
+    <value>Обновить БД</value>
   </data>
 </root>

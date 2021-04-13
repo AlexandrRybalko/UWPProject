@@ -59,5 +59,8 @@
   <Capabilities>
     <Capability Name="internetClient" />
     <uap:Capability Name="enterpriseAuthentication"/>
+    <uap:Capability Name="sharedUserCertificates"/>
+    <Capability Name="privateNetworkClientServer"/>
+    <Capability Name="internetClientServer"/>
   </Capabilities>
 </Package>

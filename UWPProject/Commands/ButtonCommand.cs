@@ -5,19 +5,19 @@ namespace UWPProject
 {
     public class ButtonCommand : ICommand
     {
-        private readonly Action _execute;
-        private readonly Func<bool> _canExecute;
+        private readonly Action execute;
+        private readonly Func<bool> canExecute;
 
         public event EventHandler CanExecuteChanged;
 
         public bool CanExecute(object parameter)
         {
-            return _canExecute == null ? true : _canExecute();
+            return canExecute == null ? true : canExecute();
         }
 
         public void Execute(object parameter)
         {
-            _execute();
+            execute();
         }
 
         public void RaiseCanExecuteChanged()
@@ -38,8 +38,8 @@ namespace UWPProject
         {
             if (execute == null)
                 throw new ArgumentNullException("execute");
-            _execute = execute;
-            _canExecute = canExecute;
+            this.execute = execute;
+            this.canExecute = canExecute;
         }
     }
 }
