@@ -81,7 +81,7 @@ namespace UWPProject
                 Window.Current.Activate();
             }
 
-            StartBackgroundTask();
+            //StartBackgroundTask();
         }
 
         protected override void OnActivated(IActivatedEventArgs args)

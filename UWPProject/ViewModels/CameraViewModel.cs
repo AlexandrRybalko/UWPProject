@@ -1,17 +1,27 @@
-﻿using System;
+﻿using MjpegProcessor;
+using System;
 using System.Linq;
 using UWPProject.Entities;
 using UWPProject.Models;
+using Windows.Storage.Streams;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace UWPProject.ViewModels
 {
     public class CameraViewModel : NotificationBase<Camera>
     {
         private readonly CamerasModel model = new CamerasModel();
+        private MjpegDecoder mjpegDecoder;
+        private ImageSource previewImage = new BitmapImage();
 
         public CameraViewModel(Camera camera = null) : base(camera) 
         {
             AddToFavouritesCommand = new ButtonCommand(new Action(AddToFavourites), CanExecuteAddToFavouritesCommand);
+
+            mjpegDecoder = new MjpegDecoder();
+            mjpegDecoder.FrameReady += FrameReady;
+            mjpegDecoder.ParseStream(new Uri($"http://{Ip}/mjpg/video.mjpg"));
         }
 
         public ButtonCommand AddToFavouritesCommand { get; }
@@ -59,6 +69,17 @@ namespace UWPProject.ViewModels
             get { return $"{this.Country}, {this.City}"; }
         }
 
+        private string Ip
+        {
+            get => RtspAddress.Split('/')[2];
+        }
+
+        public ImageSource PreviewImage
+        {
+            get => previewImage;
+            set { SetProperty<ImageSource>(previewImage, value, () => previewImage = value); }
+        }
+
         public void AddToFavourites()
         {
             model.AddToCategory(This.Id, "Favourites");
@@ -72,6 +93,30 @@ namespace UWPProject.ViewModels
         public void RemoveFromFavourites()
         {
             model.RemoveFromCategory(This.Id, "Favourites");
+        }        
+
+        private async void FrameReady(object sender, FrameReadyEventArgs e)
+        {
+            using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())
+            {
+                await stream.WriteAsync(e.FrameBuffer);
+                stream.Seek(0);
+
+                var bmp = new BitmapImage();
+                await bmp.SetSourceAsync(stream);
+
+                PreviewImage = bmp;
+            }
+
+            try
+            {
+                mjpegDecoder.FrameReady -= FrameReady;
+                mjpegDecoder = null;
+            }
+            catch (System.ArgumentException)
+            {
+
+            }
         }
     }
 }

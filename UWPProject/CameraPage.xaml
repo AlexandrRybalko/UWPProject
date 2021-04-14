@@ -37,8 +37,6 @@
 
         <MediaElement Name="MediaElement" Width="1000" Height="600" Grid.Row="1"></MediaElement>
 
-        <Image Name="Im"></Image>
-        
         <StackPanel Orientation="Horizontal" Grid.Row="2">
             <Button x:Name="AddToFavouritesButton" Width="44" Height="40" 
                     Grid.Row="2" Style="{ThemeResource buttonStyle}">

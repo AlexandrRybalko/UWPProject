@@ -44,7 +44,7 @@
                 <GridView.ItemTemplate>
                     <DataTemplate x:Name="ImageOverlayDataTemplate" x:DataType="viewModels:CameraViewModel">
                         <Grid Height="180" Width="320">
-                            <Image Source="Placeholder.png" Stretch="UniformToFill"/>
+                            <Image Source="{x:Bind PreviewImage, Mode=OneWay}" Stretch="UniformToFill"/>
                             <StackPanel Orientation="Vertical" Height="60" VerticalAlignment="Bottom" Background="{ThemeResource SystemBaseLowColor}" Padding="12">
                                 <TextBlock Visibility="Collapsed" Text="{x:Bind Id, Mode=OneWay}"></TextBlock>
                                 <TextBlock Text="{x:Bind City, Mode=OneWay}"/>

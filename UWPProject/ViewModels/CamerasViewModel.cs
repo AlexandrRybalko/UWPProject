@@ -17,12 +17,6 @@ namespace UWPProject.ViewModels
             model = new CamerasModel();
             this.cameras = new ObservableCollection<CameraViewModel>();
 
-            var cameras = model.GetRandom();
-            foreach (var camera in cameras)
-            {
-                var cameraViewModel = new CameraViewModel(camera);
-                this.cameras.Add(cameraViewModel);
-            }
         }
 
         public ObservableCollection<CameraViewModel> Cameras
@@ -117,7 +111,7 @@ namespace UWPProject.ViewModels
         {
             this.cameras.Clear();
 
-            var cameras = model.GetAllCameras();
+            var cameras = model.GetRandom();
 
             foreach (var camera in cameras)
             {
