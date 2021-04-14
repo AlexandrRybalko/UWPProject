@@ -1,4 +1,5 @@
-﻿using MjpegProcessor;
+﻿using BackgroundTaskRuntimeComponent;
+using MjpegProcessor;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace UWPProject
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class MainPage : Page, IDisposable
     {
         private ResourceLoader resourceLoader;
         private NewCameraViewModel newCamera;
@@ -73,6 +74,11 @@ namespace UWPProject
 
         private void Navigation_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
+            if (args == null)
+            {
+                throw new ArgumentNullException(nameof(sender));
+            }
+
             if (args.IsSettingsSelected)
             {
                 this.Frame.Navigate(typeof(SettingsPage));
@@ -94,7 +100,7 @@ namespace UWPProject
 
             var taskBuilder = new BackgroundTaskBuilder();
             taskBuilder.Name = "testTask";
-            taskBuilder.TaskEntryPoint = typeof(UpdateLocalDbBackgroundTask.UpdateLocalDbBackgroundTask).ToString();
+            taskBuilder.TaskEntryPoint = typeof(UpdateLocalDbBackgroundTask).ToString();
 
             ApplicationTrigger trigger = new ApplicationTrigger();
 
@@ -108,6 +114,11 @@ namespace UWPProject
 
         private void SearchBox_QueryChanged(SearchBox sender, SearchBoxQueryChangedEventArgs args)
         {
+            if (sender == null)
+            {
+                throw new ArgumentNullException(nameof(sender));
+            }
+
             var selectedItem = this.Navigation.SelectedItem as NavigationViewItem;
 
             if (selectedItem.Content.Equals("Recent"))
@@ -134,6 +145,16 @@ namespace UWPProject
 
         private void Navigation_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
         {
+            if (args == null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
+            if (sender == null)
+            {
+                throw new ArgumentNullException(nameof(sender));
+            }
+
             this.Frame.GoBack();
         }
 
@@ -151,9 +172,9 @@ namespace UWPProject
                 CamerasViewModel.UpdateCameras();
                 HideFlyout();
             }
-            catch(Exception e)
+            catch(System.Runtime.InteropServices.COMException)
             {
-                ShowContentDialog(e.Message);
+                ShowContentDialog("Can not add this camera");
             }
         }
 
@@ -174,13 +195,27 @@ namespace UWPProject
             await dialog.ShowAsync();            
         }
 
-        private async void ShowContentDialog(string message)
+        private static async void ShowContentDialog(string message)
         {
             ContentDialog dialog = new ContentDialog();
             dialog.Content = message;
             dialog.CloseButtonText = "OK";
 
             await dialog.ShowAsync();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                newCamera.Dispose();
+            }
         }
     }
 }

@@ -47,7 +47,7 @@
             <uap:Logo>Assets\icon.png</uap:Logo>
           </uap:Protocol>
         </uap:Extension>
-        <Extension Category="windows.backgroundTasks" EntryPoint="UpdateLocalDbBackgroundTask.UpdateLocalDbBackgroundTask">
+        <Extension Category="windows.backgroundTasks" EntryPoint="BackgroundTaskRuntimeComponent.UpdateLocalDbBackgroundTask">
           <BackgroundTasks>
             <Task Type="general"/>
           </BackgroundTasks>

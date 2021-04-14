@@ -41,6 +41,11 @@ namespace UWPProject
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            if (e == null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
             base.OnNavigatedTo(e);
 
             try
@@ -52,7 +57,7 @@ namespace UWPProject
                 this.MediaElement.SetMediaStreamSource(streamSource);
                 this.MediaElement.Play();
             }
-            catch (Exception ex)
+            catch (System.Runtime.InteropServices.COMException ex)
             {
                 ContentDialog dialog = new ContentDialog();
                 dialog.Content = ex.Message;

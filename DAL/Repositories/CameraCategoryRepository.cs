@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace DAL.Repositories
 {
-    public class CameraCategoryRepository
+    public class CameraCategoryRepository : System.IDisposable
     {
         private readonly DatabaseContext ctx;
 
@@ -25,5 +25,16 @@ namespace DAL.Repositories
 
             ctx.SaveChanges();
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            System.GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            ctx.Dispose();
+        } 
     }
 }

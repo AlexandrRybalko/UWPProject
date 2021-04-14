@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace DAL.Repositories
 {
-    public class CameraRepository
+    public class CameraRepository : IDisposable
     {
         private DatabaseContext ctx;
 
@@ -56,6 +56,11 @@ namespace DAL.Repositories
 
         public void UpdateCameras(IEnumerable<CameraEntity> newCameras)
         {
+            if (newCameras == null)
+            {
+                throw new ArgumentNullException(nameof(newCameras));
+            }
+
             var allCameras = this.GetAll().ToList();
             List<CameraEntity> camerasToDelete = new List<CameraEntity>();
             List<CameraEntity> camerasToAdd = new List<CameraEntity>();
@@ -80,6 +85,17 @@ namespace DAL.Repositories
             ctx.Cameras.AddRange(camerasToAdd);
 
             ctx.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            ctx.Dispose();
         }
     }
 

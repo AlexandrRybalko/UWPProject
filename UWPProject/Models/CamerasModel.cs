@@ -11,7 +11,7 @@ using Windows.Web.Http;
 
 namespace UWPProject.Models
 {
-    public class CamerasModel
+    public class CamerasModel : IDisposable
     {
         private readonly CameraRepository cameraRepository;
         private readonly CategoryRepository categoryRepository;
@@ -46,6 +46,11 @@ namespace UWPProject.Models
 
         public IEnumerable<Camera> GetCamerasByCategory(string categoryName)
         {
+            if (string.IsNullOrWhiteSpace(categoryName))
+            {
+                throw new ArgumentNullException(nameof(categoryName));
+            }
+
             if (categoryName.Equals("Favourites"))
             {
                 return this.GetFavourites();
@@ -112,8 +117,13 @@ namespace UWPProject.Models
             cameraCategoryRepository.RemoveFromCategory(cameraId, categoryId);
         }
 
-        public async Task GetLatitude(Camera camera)
+        public static async Task GetLatitude(Camera camera)
         {
+            if (camera == null)
+            {
+                throw new ArgumentNullException(nameof(camera));
+            }
+
             StringBuilder sb = new StringBuilder("https://api.ipgeolocation.io/ipgeo?apiKey=4def6b275e0b429d8f133f0f55ffd0ba&ip=");
             sb.Append(camera.RtspAddress.Split('/')[2]);
             Uri requestURI = new Uri(sb.ToString());
@@ -123,11 +133,18 @@ namespace UWPProject.Models
             response = await client.GetAsync(requestURI);
             string responseString = await response.Content.ReadAsStringAsync();
 
-            camera.Latitude = this.GetLatitude(responseString);
+            camera.Latitude = GetLatitude(responseString);
+            response.Dispose();
+            client.Dispose();
         }
 
-        public async Task GetLongitude(Camera camera)
+        public static async Task GetLongitude(Camera camera)
         {
+            if (camera == null)
+            {
+                throw new ArgumentNullException(nameof(camera));
+            }
+
             StringBuilder sb = new StringBuilder("https://api.ipgeolocation.io/ipgeo?apiKey=4def6b275e0b429d8f133f0f55ffd0ba&ip=");
             sb.Append(camera.RtspAddress.Split('/')[2]);
             Uri requestURI = new Uri(sb.ToString());
@@ -137,10 +154,13 @@ namespace UWPProject.Models
             response = await client.GetAsync(requestURI);
             string responseString = await response.Content.ReadAsStringAsync();
 
-            camera.Longitude = this.GetLongitude(responseString);
+            camera.Longitude = GetLongitude(responseString);
+
+            client.Dispose();
+            response.Dispose();
         }
 
-        private double GetLatitude(string httpResponse)
+        private static double GetLatitude(string httpResponse)
         {
             double result = 0d;
             string latitude;
@@ -153,14 +173,14 @@ namespace UWPProject.Models
                     latitude = str.Split(':')[1].Remove(0, 1);
                     latitude = latitude.Remove(latitude.Length - 1);
 
-                    result = Double.Parse(latitude);
+                    result = double.Parse(latitude, new FormatProvider());
                 }
             }
 
             return result;
         }
 
-        private double GetLongitude(string httpResponse)
+        private static double GetLongitude(string httpResponse)
         {
             double result = 0d;
             string longtitude;
@@ -173,11 +193,35 @@ namespace UWPProject.Models
                     longtitude = str.Split(':')[1].Remove(0, 1);
                     longtitude = longtitude.Remove(longtitude.Length - 1);
 
-                    result = Double.Parse(longtitude);
+                    result = Double.Parse(longtitude, new FormatProvider());
                 }
             }
 
             return result;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                cameraRepository.Dispose();
+                categoryRepository.Dispose();
+                cameraCategoryRepository.Dispose();
+            }
+        }
+    }
+
+    public class FormatProvider : IFormatProvider
+    {
+        public object GetFormat(Type formatType)
+        {
+            return null;
         }
     }
 }

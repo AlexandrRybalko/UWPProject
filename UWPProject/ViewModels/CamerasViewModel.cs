@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 using UWPProject.Entities;
 using UWPProject.Models;
 
 namespace UWPProject.ViewModels
 {
-    public class CamerasViewModel : NotificationBase
+    public class CamerasViewModel : NotificationBase, System.IDisposable
     {
         private readonly CamerasModel model;
         private ObservableCollection<CameraViewModel> cameras;
@@ -16,13 +16,11 @@ namespace UWPProject.ViewModels
         {
             model = new CamerasModel();
             this.cameras = new ObservableCollection<CameraViewModel>();
-
         }
 
         public ObservableCollection<CameraViewModel> Cameras
         {
             get { return cameras; }
-            set { SetProperty(ref cameras, value); }
         }
 
         public Enums.Category SelectedCategory { get; set; }
@@ -120,14 +118,18 @@ namespace UWPProject.ViewModels
             }
         }
 
-        public async Task GetLatitude(Camera camera)
+        public void Dispose()
         {
-            await model.GetLatitude(camera);
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        public async Task GetLongitude(Camera camera)
+        protected virtual void Dispose(bool disposing)
         {
-             await model.GetLongitude(camera);
+            if (disposing)
+            {
+                model.Dispose();
+            }
         }
     }
 }

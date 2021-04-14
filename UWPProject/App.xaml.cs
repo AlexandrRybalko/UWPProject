@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BackgroundTaskRuntimeComponent;
+using System;
 using System.Linq;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -48,6 +49,11 @@ namespace UWPProject
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            if (e == null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
@@ -86,6 +92,11 @@ namespace UWPProject
 
         protected override void OnActivated(IActivatedEventArgs args)
         {
+            if (args == null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             base.OnActivated(args);
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -132,7 +143,7 @@ namespace UWPProject
             deferral.Complete();
         }
 
-        private async void StartBackgroundTask()
+        private static async void StartBackgroundTask()
         {
             var task = BackgroundTaskRegistration.AllTasks.Values.FirstOrDefault(x => x.Name == "testTask");
             if (task != null)
@@ -142,7 +153,7 @@ namespace UWPProject
 
             var taskBuilder = new BackgroundTaskBuilder();
             taskBuilder.Name = "testTask";
-            taskBuilder.TaskEntryPoint = typeof(UpdateLocalDbBackgroundTask.UpdateLocalDbBackgroundTask).ToString();
+            taskBuilder.TaskEntryPoint = typeof(UpdateLocalDbBackgroundTask).ToString();
 
             ApplicationTrigger trigger = new ApplicationTrigger();
 

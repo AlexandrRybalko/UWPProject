@@ -14,20 +14,25 @@ namespace UWPProject.ViewModels
         {
             if (EqualityComparer<T>.Default.Equals(field, value)) return false;
             field = value;
-            RaisePropertyChanged(property);
+            InvokePropertyChanged(property);
             return true;
         }
 
         // SetField(()=> somewhere.Name = value; somewhere.Name, value) // Advanced case where you rely on another property
         protected bool SetProperty<T>(T currentValue, T newValue, Action DoSet, [CallerMemberName] String property = null)
         {
+            if (DoSet == null)
+            {
+                throw new ArgumentNullException(nameof(DoSet));
+            }
+
             if (EqualityComparer<T>.Default.Equals(currentValue, newValue)) return false;
             DoSet.Invoke();
-            RaisePropertyChanged(property);
+            InvokePropertyChanged(property);
             return true;
         }
 
-        protected void RaisePropertyChanged(string property)
+        protected void InvokePropertyChanged(string property)
         {
             if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs(property)); }
         }
@@ -35,13 +40,16 @@ namespace UWPProject.ViewModels
 
     public class NotificationBase<T> : NotificationBase where T : class, new()
     {
-        protected T This;
+        private readonly T entity;
 
-        public static implicit operator T(NotificationBase<T> thing) { return thing.This; }
+        public T Entity
+        {
+            get => entity;
+        }
 
         public NotificationBase(T thing = null)
         {
-            This = (thing == null) ? new T() : thing;
+            entity = (thing == null) ? new T() : thing;
         }
     }
 }

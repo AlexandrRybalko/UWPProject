@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace UWPProject.ViewModels
 {
-    public class CameraViewModel : NotificationBase<Camera>
+    public class CameraViewModel : NotificationBase<Camera>, IDisposable
     {
         private readonly CamerasModel model = new CamerasModel();
         private MjpegDecoder mjpegDecoder;
@@ -28,40 +28,40 @@ namespace UWPProject.ViewModels
 
         public bool CanExecuteAddToFavouritesCommand()
         {
-            return !model.GetFavourites().Any(x => x.Id == this.This.Id);
+            return !model.GetFavourites().Any(x => x.Id == this.Entity.Id);
         }
 
         public int Id
         {
-            get { return This.Id; }
+            get { return Entity.Id; }
         }
 
         public string RtspAddress
         {
-            get { return This.RtspAddress; }
-            set { SetProperty(This.RtspAddress, value, () => This.RtspAddress = value); }
+            get { return Entity.RtspAddress; }
+            set { SetProperty(Entity.RtspAddress, value, () => Entity.RtspAddress = value); }
         }
 
         public string Country
         {
-            get { return This.Country; }
-            set { SetProperty(This.Country, value, () => This.Country = value); }
+            get { return Entity.Country; }
+            set { SetProperty(Entity.Country, value, () => Entity.Country = value); }
         }
 
         public string City
         {
-            get { return This.City; }
-            set { SetProperty(This.City, value, () => This.City = value); }
+            get { return Entity.City; }
+            set { SetProperty(Entity.City, value, () => Entity.City = value); }
         }
 
         public double Latitude 
         { 
-            get { return This.Latitude; } 
+            get { return Entity.Latitude; } 
         }
 
         public double Longitude 
         {
-            get { return This.Longitude; } 
+            get { return Entity.Longitude; } 
         }
 
         public string ToStringProperty
@@ -82,17 +82,17 @@ namespace UWPProject.ViewModels
 
         public void AddToFavourites()
         {
-            model.AddToCategory(This.Id, "Favourites");
+            model.AddToCategory(Entity.Id, "Favourites");
         }
 
         public void AddToRecent()
         {
-            model.AddToCategory(This.Id, "Recent");
+            model.AddToCategory(Entity.Id, "Recent");
         }
 
         public void RemoveFromFavourites()
         {
-            model.RemoveFromCategory(This.Id, "Favourites");
+            model.RemoveFromCategory(Entity.Id, "Favourites");
         }        
 
         private async void FrameReady(object sender, FrameReadyEventArgs e)
@@ -116,6 +116,20 @@ namespace UWPProject.ViewModels
             catch (System.ArgumentException)
             {
 
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                model.Dispose();
             }
         }
     }

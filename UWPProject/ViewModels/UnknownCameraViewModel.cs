@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using UWPProject.Entities;
 using UWPProject.Models;
 
 namespace UWPProject.ViewModels
 {
-    public class UnknownCameraViewModel : NotificationBase<Camera>
+    public class UnknownCameraViewModel : NotificationBase<Camera>, IDisposable
     {
         private readonly CamerasModel model;
 
@@ -15,35 +16,35 @@ namespace UWPProject.ViewModels
 
         public string CameraCountry 
         {
-            get => This.Country;
+            get => Entity.Country;
             set 
             { 
-                SetProperty(This.Country, value, () => This.Country = value); 
+                SetProperty(Entity.Country, value, () => Entity.Country = value); 
             }
         }
 
         public string CameraCity
         {
-            get => This.City;
-            set { SetProperty(This.City, value, () => This.City = value); }
+            get => Entity.City;
+            set { SetProperty(Entity.City, value, () => Entity.City = value); }
         }
 
         public string RtspAddress
         {
-            get => This.RtspAddress;
-            set { SetProperty(This.RtspAddress, value, () => This.RtspAddress = value); }
+            get => Entity.RtspAddress;
+            set { SetProperty(Entity.RtspAddress, value, () => Entity.RtspAddress = value); }
         }
 
         public double CameraLatitude
         {
-            get => This.Latitude;
-            set { SetProperty(This.Latitude, value, () => This.Latitude = value); }
+            get => Entity.Latitude;
+            set { SetProperty(Entity.Latitude, value, () => Entity.Latitude = value); }
         }
 
         public double CameraLongitude
         {
-            get => This.Longitude;
-            set { SetProperty(This.Longitude, value, () => This.Longitude = value); }
+            get => Entity.Longitude;
+            set { SetProperty(Entity.Longitude, value, () => Entity.Longitude = value); }
         }
 
         public string Latitude { get; set; }
@@ -59,7 +60,7 @@ namespace UWPProject.ViewModels
             }
             else
             {
-                await model.GetLatitude(This);
+                await CamerasModel.GetLatitude(Entity);
             }
 
             if (!string.IsNullOrWhiteSpace(Longitude) && double.TryParse(Longitude, out longitude))
@@ -68,16 +69,30 @@ namespace UWPProject.ViewModels
             }
             else
             {
-                await model.GetLongitude(This);
+                await CamerasModel.GetLongitude(Entity);
             }
 
-            model.AddCamera(This);
+            model.AddCamera(Entity);
         }
 
         public bool IsValid()
         {
-            return !(string.IsNullOrWhiteSpace(This.RtspAddress) || string.IsNullOrWhiteSpace(This.Country) ||
-                string.IsNullOrWhiteSpace(This.City));
+            return !(string.IsNullOrWhiteSpace(Entity.RtspAddress) || string.IsNullOrWhiteSpace(Entity.Country) ||
+                string.IsNullOrWhiteSpace(Entity.City));
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                model.Dispose();
+            }
         }
     }
 }

@@ -30,6 +30,11 @@ namespace UWPProject
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            if (e == null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
             base.OnNavigatedTo(e);
             Camera camera = e.Parameter as Camera;
             this.CameraViewModel = new CameraViewModel(camera);
@@ -58,7 +63,7 @@ namespace UWPProject
 
                 CameraViewModel.AddToRecent();
             }
-            catch(Exception exception)
+            catch(System.Runtime.InteropServices.COMException exception)
             {
                 ShowContentDialog(exception.Message);
                 GoBack();
@@ -88,7 +93,7 @@ namespace UWPProject
             this.AddToFavouritesButton.Command = new ButtonCommand(new Action(AddToFavourites));
         }
 
-        private async void ShowContentDialog(string message)
+        private static async void ShowContentDialog(string message)
         {
             ContentDialog dialog = new ContentDialog();
             dialog.Content = message;

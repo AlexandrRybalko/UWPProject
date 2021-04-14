@@ -1,6 +1,7 @@
 ﻿using DAL.Entities;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.IO;
 using Windows.Storage;
 
@@ -14,6 +15,11 @@ namespace DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            if (modelBuilder == null)
+            {
+                throw new ArgumentNullException(nameof(modelBuilder));
+            }
+
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<CamerasCategories>().HasKey(x => new { x.CameraId, x.CategoryId });
@@ -36,8 +42,7 @@ namespace DAL
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "CamerasDatabase.db");
             if (!File.Exists(dbpath))
             {
-                using (SqliteConnection db =
-               new SqliteConnection($"Filename={dbpath}"))
+                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
 
@@ -52,14 +57,17 @@ namespace DAL
                         "UpdatedTime TEXT, FOREIGN KEY(CategoryId) REFERENCES Categories(Id), FOREIGN KEY(CameraId) REFERENCES Cameras(Id)," +
                         "PRIMARY KEY(CameraId, CategoryId));";
 
-                    SqliteCommand createTable = new SqliteCommand(createCameras, db);
-                    createTable.ExecuteReader();
+                    SqliteCommand createCamerasTable = new SqliteCommand(createCameras, db);
+                    createCamerasTable.ExecuteReader();
+                    createCamerasTable.Dispose();
 
-                    createTable = new SqliteCommand(createCategories, db);
-                    createTable.ExecuteReader();
+                    SqliteCommand createCategoriesTable = new SqliteCommand(createCategories, db);
+                    createCategoriesTable.ExecuteReader();
+                    createCategoriesTable.Dispose();
 
-                    createTable = new SqliteCommand(createCamerasCategories, db);
-                    createTable.ExecuteReader();
+                    SqliteCommand createCamerasCategoriesTable = new SqliteCommand(createCamerasCategories, db);
+                    createCamerasCategoriesTable.ExecuteReader();
+                    createCamerasCategoriesTable.Dispose();
                 }
             }
         }

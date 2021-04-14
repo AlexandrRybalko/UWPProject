@@ -20,15 +20,6 @@ namespace UWPProject
             execute();
         }
 
-        public void RaiseCanExecuteChanged()
-        {
-            var handler = CanExecuteChanged;
-            if (handler != null)
-            {
-                handler(this, EventArgs.Empty);
-            }
-        }
-
         public ButtonCommand(Action execute)
             : this(execute, null)
         {
@@ -37,7 +28,10 @@ namespace UWPProject
         public ButtonCommand(Action execute, Func<bool> canExecute)
         {
             if (execute == null)
-                throw new ArgumentNullException("execute");
+            {
+                throw new ArgumentNullException(nameof(execute));
+            }                
+            
             this.execute = execute;
             this.canExecute = canExecute;
         }

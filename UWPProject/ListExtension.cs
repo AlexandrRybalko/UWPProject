@@ -23,6 +23,8 @@ namespace UWPProject
                 result[n] = value;
             }
 
+            provider.Dispose();
+
             return result;
         }
     }

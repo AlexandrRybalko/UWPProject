@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UWPProject.Models;
 using Windows.Devices.Geolocation;
@@ -7,7 +8,7 @@ using Windows.UI.Xaml.Controls.Maps;
 
 namespace UWPProject.ViewModels
 {
-    public class MapViewModel
+    public class MapViewModel : System.IDisposable
     {
         private readonly CamerasModel model;
 
@@ -55,6 +56,20 @@ namespace UWPProject.ViewModels
             };
 
             LandmarkLayers.Add(camerasLayer);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                model.Dispose();
+            }
         }
     }
 }
