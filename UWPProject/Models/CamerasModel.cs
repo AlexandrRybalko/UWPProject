@@ -41,6 +41,7 @@ namespace UWPProject.Models
         public IEnumerable<Camera> GetAllCameras()
         {
             var cameras = cameraRepository.GetAll();
+
             return mapper.Map<IEnumerable<Camera>>(cameras);
         }
 
@@ -97,6 +98,7 @@ namespace UWPProject.Models
         public Camera GetById(int id)
         {
             var camera = cameraRepository.GetById(id);
+
             return mapper.Map<Camera>(camera);
         }
 
@@ -113,8 +115,12 @@ namespace UWPProject.Models
 
         public void RemoveFromCategory(int cameraId, string categoryName)
         {
-            int categoryId = categoryRepository.GetAll().FirstOrDefault(x => x.Title.Equals(categoryName)).Id;
-            cameraCategoryRepository.RemoveFromCategory(cameraId, categoryId);
+            var category = categoryRepository.GetAll().FirstOrDefault(x => x.Title.Equals(categoryName));
+
+            if (category != null)
+            {
+                cameraCategoryRepository.RemoveFromCategory(cameraId, category.Id);
+            }            
         }
 
         public static async Task GetLatitude(Camera camera)

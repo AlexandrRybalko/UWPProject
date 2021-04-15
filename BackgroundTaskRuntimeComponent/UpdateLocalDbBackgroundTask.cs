@@ -42,10 +42,10 @@ namespace BackgroundTaskRuntimeComponent
 
             cameraRepository.UpdateCameras(cameras);
 
-            deferral.Complete();
-
             client.Dispose();
             streamReader.Dispose();
+
+            deferral.Complete();            
         }
 
         public void Dispose()

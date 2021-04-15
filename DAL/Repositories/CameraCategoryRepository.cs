@@ -21,7 +21,11 @@ namespace DAL.Repositories
         public void RemoveFromCategory(int cameraId, int categoryId)
         {
             var cameraCategory = ctx.CamerasCategories.FirstOrDefault(x => x.CameraId == cameraId && x.CategoryId == categoryId);
-            ctx.CamerasCategories.Remove(cameraCategory);
+
+            if (cameraCategory != null)
+            {
+                ctx.CamerasCategories.Remove(cameraCategory);
+            }
 
             ctx.SaveChanges();
         }

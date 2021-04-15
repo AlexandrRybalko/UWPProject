@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using UWPProject.Entities;
 using UWPProject.ViewModels;
@@ -13,6 +14,7 @@ using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Resources;
 using Windows.Storage;
 using Windows.Storage.Streams;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -106,9 +108,17 @@ namespace UWPProject
             taskBuilder.SetTrigger(trigger);
             taskBuilder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
             task = taskBuilder.Register();
-            //task.Completed += (BackgroundTaskRegistration sender, BackgroundTaskCompletedEventArgs args) => CamerasViewModel.UpdateCameras();
+            task.Completed += BackgroundTaskCompleted;
 
             await trigger.RequestAsync();
+        }
+
+        private async void BackgroundTaskCompleted(BackgroundTaskRegistration sender, BackgroundTaskCompletedEventArgs args)
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                CamerasViewModel.UpdateCameras();
+            });            
         }
 
         private void SearchBox_QueryChanged(SearchBox sender, SearchBoxQueryChangedEventArgs args)
@@ -167,8 +177,7 @@ namespace UWPProject
             try
             {
                 ffmpeg = await FFmpegInterop.FFmpegInteropMSS.CreateFromUriAsync(RtspAddressTextBox.Text);
-                await newCamera.AddNewCamera();
-                CamerasViewModel.UpdateCameras();
+                await CamerasViewModel.AddCamera(newCamera);
                 HideFlyout();
             }
             catch(System.Runtime.InteropServices.COMException)

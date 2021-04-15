@@ -33,9 +33,14 @@ namespace UwpBackend.Controllers
         {
             var camera = cameraRepository.GetById(id);
 
-            var result = new JsonResult(camera);
+            if (camera != null)
+            {
+                var result = new JsonResult(camera);
 
-            return result;
+                return result;
+            }
+
+            return new JsonResult(null);
         }
     }
 }

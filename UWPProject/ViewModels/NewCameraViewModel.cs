@@ -48,32 +48,7 @@ namespace UWPProject.ViewModels
         }
 
         public string Latitude { get; set; }
-        public string Longitude { get; set; }
-
-        public async Task AddNewCamera()
-        {
-            double latitude, longitude;
-
-            if (!string.IsNullOrWhiteSpace(Latitude) && double.TryParse(Latitude, out latitude))
-            {
-                CameraLatitude = latitude;
-            }
-            else
-            {
-                await CamerasModel.GetLatitude(Entity);
-            }
-
-            if (!string.IsNullOrWhiteSpace(Longitude) && double.TryParse(Longitude, out longitude))
-            {
-                CameraLongitude = longitude;
-            }
-            else
-            {
-                await CamerasModel.GetLongitude(Entity);
-            }
-
-            model.AddCamera(Entity);
-        }
+        public string Longitude { get; set; }        
 
         public bool IsValid()
         {

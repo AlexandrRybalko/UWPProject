@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using UWPProject.Entities;
 using UWPProject.Models;
 
@@ -25,10 +26,42 @@ namespace UWPProject.ViewModels
 
         public Enums.Category SelectedCategory { get; set; }
 
-        public void AddCamera(Camera camera)
+        public async Task AddCamera(NewCameraViewModel newCamera)
         {
+            double latitude, longitude;
+
+            if (newCamera == null)
+            {
+                throw new ArgumentNullException(nameof(newCamera));
+            }
+
+            var camera = new Camera()
+            {
+                City = newCamera.CameraCity,
+                Country = newCamera.CameraCountry,
+                RtspAddress = newCamera.RtspAddress
+            };            
+
+            if (!string.IsNullOrWhiteSpace(newCamera.Latitude) && double.TryParse(newCamera.Latitude, out latitude))
+            {
+                camera.Latitude = latitude;
+            }
+            else
+            {
+                await CamerasModel.GetLatitude(camera);
+            }
+
+            if (!string.IsNullOrWhiteSpace(newCamera.Longitude) && double.TryParse(newCamera.Longitude, out longitude))
+            {
+                camera.Longitude = longitude;
+            }
+            else
+            {
+                await CamerasModel.GetLongitude(camera);
+            }
+
             model.AddCamera(camera);
-            UpdateCameras(model.GetRandom());
+            cameras.Add(new CameraViewModel(camera));
         }
 
         public void GetByCategory(string categoryName)

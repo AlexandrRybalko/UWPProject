@@ -30,20 +30,28 @@ namespace DAL.Repositories
         public void AddToCategory(int cameraId, string categoryName)
         {
             ctx = new DatabaseContext();
+            var category = ctx.Categories.FirstOrDefault(x => x.Title.Equals(categoryName));
 
-            var entity = new CamerasCategories
+            if (category != null)
             {
-                CameraId = cameraId,
-                CategoryId = ctx.Categories.FirstOrDefault(x => x.Title.Equals(categoryName)).Id,
-                UpdatedTime = DateTime.UtcNow
-            };
+                var entity = new CamerasCategories
+                {
+                    CameraId = cameraId,
+                    CategoryId = category.Id,
+                    UpdatedTime = DateTime.UtcNow
+                };
 
-            var entityToUpdate = ctx.CamerasCategories.FirstOrDefault(x => x.CameraId == entity.CameraId && 
-            x.CategoryId == entity.CategoryId);
+                var entityToUpdate = ctx.CamerasCategories.FirstOrDefault(x => x.CameraId == entity.CameraId &&
+                x.CategoryId == entity.CategoryId);
 
-            if (entityToUpdate == null)
-            {
-                ctx.CamerasCategories.Add(entity);
+                if (entityToUpdate == null)
+                {
+                    ctx.CamerasCategories.Add(entity);
+                }
+                else
+                {
+                    entityToUpdate.UpdatedTime = entity.UpdatedTime;
+                }
             }
             
             ctx.SaveChanges();
