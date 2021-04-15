@@ -34,7 +34,6 @@ namespace UWPProject
         public CamerasViewModel CamerasViewModel { get; set; }
         public ButtonCommand AddNewCameraCommand { get; set; }
         public ButtonCommand RefreshCamerasCommand { get; set; }
-        public bool CanGoBack { get => (Window.Current.Content as Frame).CanGoBack; }
 
         public MainPage()
         {
@@ -60,7 +59,7 @@ namespace UWPProject
         private void MainPageLoaded(object sender, RoutedEventArgs e)
         {
             Navigation.SelectedItem = this.Random;
-            Navigation.IsBackButtonVisible = (CanGoBack) ? NavigationViewBackButtonVisible.Visible : NavigationViewBackButtonVisible.Collapsed;
+            Navigation.IsBackButtonVisible = (Window.Current.Content as Frame).CanGoBack ? NavigationViewBackButtonVisible.Visible : NavigationViewBackButtonVisible.Collapsed;
         }
 
         private void NavigateToCameraPage(object sender, RoutedEventArgs e)

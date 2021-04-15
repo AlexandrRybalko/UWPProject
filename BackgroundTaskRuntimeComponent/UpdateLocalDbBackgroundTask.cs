@@ -24,10 +24,10 @@ namespace BackgroundTaskRuntimeComponent
             deferral = taskInstance.GetDeferral();
 
             HttpClient client = new HttpClient();
-            var response = await client.GetAsync(new Uri("https://localhost:44389/api/Cameras"));
+            var response = await client.GetAsync(new Uri("https://localhost:44389/api/Cameras")).ConfigureAwait(true);
             response.EnsureSuccessStatusCode();
 
-            var contentStream = await response.Content.ReadAsStreamAsync();
+            var contentStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(true);
 
             StreamReader streamReader = new StreamReader(contentStream);
             JsonTextReader jsonReader = new JsonTextReader(streamReader);
