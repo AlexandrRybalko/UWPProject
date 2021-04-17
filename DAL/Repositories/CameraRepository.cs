@@ -33,8 +33,8 @@ namespace DAL.Repositories
                     City = "Colorado Springs",
                     Country = "USA",
                     RtspAddress = "rtsp://162.245.149.145/axis-media/media.amp",
-                    Longitude = 3.61388993263245,
-                    Latitude = -104.826477050781
+                    Longitude = -104.826477050781,
+                    Latitude = 38.7917785644531
                 });
                 newCameras.Add(new CameraEntity
                 {
