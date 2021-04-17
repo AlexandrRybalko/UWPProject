@@ -17,6 +17,54 @@ namespace DAL.Repositories
 
         public IEnumerable<CameraEntity> GetAll()
         {
+            var cameras = ctx.Cameras.Include(x => x.CamerasCategories).ToList();
+
+            if (cameras.Count == 0)
+            {
+                var newCameras = new List<CameraEntity>();
+
+                newCameras.Add(new CameraEntity {
+                    City = "Middelburg", 
+                    Country = "Netherlands", 
+                    RtspAddress = "rtsp://213.34.225.97/axis-media/media.amp", 
+                    Longitude = 3.61388993263245, Latitude = 51.5 });
+                newCameras.Add(new CameraEntity
+                {
+                    City = "Colorado Springs",
+                    Country = "USA",
+                    RtspAddress = "rtsp://162.245.149.145/axis-media/media.amp",
+                    Longitude = 3.61388993263245,
+                    Latitude = -104.826477050781
+                });
+                newCameras.Add(new CameraEntity
+                {
+                    City = "Reykjavik",
+                    Country = "Iceland",
+                    RtspAddress = "rtsp://157.157.138.235/axis-media/media.amp",
+                    Longitude = -21.8954105377197,
+                    Latitude = 64.1354827880859
+                });
+                newCameras.Add(new CameraEntity
+                {
+                    City = "Krems An Der Donau",
+                    Country = "Austria",
+                    RtspAddress = "rtsp://85.13.46.16/axis-media/media.amp",
+                    Longitude = 15.6141500473022,
+                    Latitude = 48.4092102050781
+                });
+                newCameras.Add(new CameraEntity
+                {
+                    City = "Oslo",
+                    Country = "Norway",
+                    RtspAddress = "rtsp://88.84.52.66/axis-media/media.amp",
+                    Longitude = 10.74609,
+                    Latitude = 59.91273
+                });
+
+                ctx.Cameras.AddRange(newCameras);
+                ctx.SaveChanges();
+            }
+
             return ctx.Cameras.Include(x => x.CamerasCategories).ToList();
         }
 

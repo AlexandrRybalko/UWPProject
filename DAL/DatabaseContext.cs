@@ -49,6 +49,7 @@ namespace DAL
                     string createCameras = "CREATE TABLE IF NOT EXISTS Cameras (Id INTEGER, RtspAddress TEXT NOT NULL," +
                         "Country TEXT NOT NULL, City TEXT NOT NULL, Latitude REAL NOT NULL, Longitude REAL NOT NULL, " +
                         "PRIMARY KEY(Id AUTOINCREMENT));";
+                    
                     string createCategories = "CREATE TABLE IF NOT EXISTS Categories(Id INTEGER, Title TEXT NOT NULL," +
                         "PRIMARY KEY(Id AUTOINCREMENT));" +
                         "INSERT INTO Categories(Title) VALUES(\"Recent\");" +
