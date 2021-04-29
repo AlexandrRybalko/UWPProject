@@ -8,7 +8,7 @@
 
   <Identity
     Name="0271b30b-64b9-4065-9639-7f8cc016a3fa"
-    Publisher="CN=Acer"
+    Publisher="CN=alexa"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="0271b30b-64b9-4065-9639-7f8cc016a3fa" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
